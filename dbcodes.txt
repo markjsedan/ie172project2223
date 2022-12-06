@@ -1,0 +1,32 @@
+CREATE TABLE genres(
+	genre_id serial primary key not null,
+	genre_name varchar(128),
+	genre_modified_date timestamp without time zone default now(),
+	genre_delete_ind bool default false
+);
+CREATE TABLE publishers(
+	pub_id serial primary key not null,
+	pub_name varchar(256),
+	pub_land_num varchar(128),
+	pub_email varchar(128),
+	pub_modified_date timestamp without time zone default now(),
+	pub_delete_ind bool default false
+);
+CREATE TABLE authors(
+	au_id serial primary key not null,
+	au_name varchar(128),
+	au_modified_date timestamp without time zone default now(),
+	au_delete_ind bool default false
+);
+CREATE TABLE books(
+	bk_id serial primary key not null,
+	bk_title varchar(256),
+	genre_id int references genres(genre_id),
+	au_id int references authors(au_id),
+	pub_id int references publishers(pub_id),
+	bk_pub_yr int2,
+	bk_price decimal(5,2),
+	bk_inv_count int2,
+	bk_modified_date timestamp without time zone default now(),
+	bk_delete_ind bool default false
+)
