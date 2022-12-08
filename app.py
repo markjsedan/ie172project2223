@@ -1,7 +1,7 @@
 import dash
 from dash import dcc
 from dash import html
-import dash_bootstrap_components
+import dash_bootstrap_components as dbc
 import logging
 
 app = dash.Dash(__name__, external_stylesheets=["assets/bootstrap.css"])

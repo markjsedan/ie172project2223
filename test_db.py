@@ -1,4 +1,4 @@
-import dbconnect as db
+import apps.dbconnect as db
 from datetime import datetime
 
 def addfewgenres():
