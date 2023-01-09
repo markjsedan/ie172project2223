@@ -258,7 +258,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
                 to_delete = bool(removerecord)
 
-                values = [title, author, genre, publisher, releasedate, price, count, to_delete, movieid]
+                values = [title, author, genre, publisher, releasedate, price, count, to_delete, bookid]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Book has been updated."
