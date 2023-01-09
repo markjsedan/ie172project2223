@@ -111,7 +111,7 @@ def updatecustomers_individuals_list(pathname, searchterm):
             for cust_ind_id in customers_individuals['Customer ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('Edit/Delete', href=f"/customers/individuals_profile?mode=edit&id={cust_ind_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/customers/individuals_profile?mode=edit&id={cust_ind_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )

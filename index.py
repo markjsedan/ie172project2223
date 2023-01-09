@@ -12,6 +12,7 @@ from apps import commonmodules as cm
 from apps.books import books_home, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home
+from apps.customers.customers_individuals import customers_individuals_profile
 
 
 CONTENT_STYLE = {
@@ -54,6 +55,8 @@ def displaypage(pathname):
             returnlayout = books_profile.layout
         elif pathname == '/customers':
             returnlayout = customers_individuals_home.layout
+        elif pathname == '/customers/individuals_profile':
+            returnlayout = customers_individuals_profile.layout
         elif pathname == '/publishers':
             returnlayout = 'publishers'
         elif pathname == '/employees':
