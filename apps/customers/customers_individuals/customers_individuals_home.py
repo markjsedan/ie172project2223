@@ -7,7 +7,7 @@ from dash.exceptions import PreventUpdate
 import pandas as pd
 
 from app import app
-from app import dbconnect as db
+from apps import dbconnect as db
 from dash.dependencies import Input, Output, State
 
 
@@ -15,12 +15,12 @@ layout = html.Div(
     [
         dbc.Row(
             [
-                dbc.Label("Search", width=2),
+                dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
                         type="text", id="customers_individuals_filter", placeholder="Enter keywords"
                     ),
-                    width=auto
+                    width="7",
                 ),
             ],
             className="mb-3"
@@ -43,7 +43,7 @@ layout = html.Div(
         html.Hr(),
         dbc.Card(
             [
-                dbc.CardHeader(html.H4("Individuals")),
+                dbc.CardHeader(html.H4("Customers - Individuals")),
                 dbc.CardBody(
                     [
                         dbc.Button("Add Customer", color="dark", href='/customers/individuals_profile?mode=add'),
@@ -73,10 +73,10 @@ layout = html.Div(
     ]
 )
 def updatecustomers_individuals_list(pathname, searchterm):
-    if pathname == '/customers/individuals':
+    if pathname == '/customers':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT cust_ind_id, cust_ind_name, cust_ind_prof, cust_ind_email varchar
+        sql = """ SELECT cust_ind_id, cust_ind_name, cust_ind_prof, cust_ind_email
                 FROM customers_individuals
                 WHERE NOT cust_ind_delete_ind
         """
@@ -94,7 +94,7 @@ def updatecustomers_individuals_list(pathname, searchterm):
         # 2. create the table and add it to the db
         if customers_individuals.shape[0]:
             buttons = []
-            for cust_ind_id in customers_individuals['ID']:
+            for cust_ind_id in customers_individuals['Customer ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('Edit/Delete', href=f"/customers/individuals_profile?mode=edit&id={cust_ind_id}",
@@ -107,7 +107,7 @@ def updatecustomers_individuals_list(pathname, searchterm):
             customers_individuals['Action'] = buttons
 
             # remove ID col
-            customers_individuals.drop('ID', axis=1, inplace=True)
+            # customers_individuals.drop('Customer ID', axis=1, inplace=True)
 
             customers_individuals_table = dbc.Table.from_dataframe(customers_individuals, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
