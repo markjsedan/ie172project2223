@@ -23,7 +23,7 @@ layout = html.Div(
                     width="7",
                 ),
             ],
-            className="mb-3"
+            # className="mb-3"
         ),
         # dbc.Row(
         #     [
