@@ -92,16 +92,26 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = login.layout
                 sessionlogout = True
 
-            elif pathname in ['/', '/books']:
+            if pathname in ['/', '/books']:
                 returnlayout = books_home.layout
             elif pathname == '/books/books_profile':
                 returnlayout = books_profile.layout
+            elif pathname == '/books/genres':
+                returnlayout = genres.layout
+            elif pathname == '/books/genres_profile':
+                returnlayout = genres_profile.layout
             elif pathname == '/customers/individuals_home':
                 returnlayout = customers_individuals_home.layout
             elif pathname == '/customers/individuals_profile':
                 returnlayout = customers_individuals_profile.layout
+            elif pathname == '/customers/institutions_home':
+                returnlayout = customers_institutions_home.layout
+            elif pathname == '/customers/institutions_profile':
+                returnlayout = customers_institutions_profile.layout
             elif pathname == '/publishers':
-                returnlayout = 'publishers'
+                returnlayout = publishers.layout
+            elif pathname == '/publishers/publishers_profile':
+                returnlayout = publishers_profile.layout
             elif pathname == '/employees':
                 returnlayout = employees.layout
             elif pathname == '/employees/employees_profile':
@@ -112,36 +122,6 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = aboutus.layout
             else:
                 returnlayout = 'error404'
-        if pathname in ['/', '/books']:
-            returnlayout = books_home.layout
-        elif pathname == '/books/books_profile':
-            returnlayout = books_profile.layout
-        elif pathname == '/books/genres':
-            returnlayout = genres.layout
-        elif pathname == '/books/genres_profile':
-            returnlayout = genres_profile.layout
-        elif pathname == '/customers/individuals_home':
-            returnlayout = customers_individuals_home.layout
-        elif pathname == '/customers/individuals_profile':
-            returnlayout = customers_individuals_profile.layout
-        elif pathname == '/customers/institutions_home':
-            returnlayout = customers_institutions_home.layout
-        elif pathname == '/customers/institutions_profile':
-            returnlayout = customers_institutions_profile.layout
-        elif pathname == '/publishers':
-            returnlayout = publishers.layout
-        elif pathname == '/publishers/publishers_profile':
-            returnlayout = publishers_profile.layout
-        elif pathname == '/employees':
-            returnlayout = employees.layout
-        elif pathname == '/employees/employees_profile':
-            returnlayout = employees_profile.layout
-        elif pathname == '/reports':
-            returnlayout = 'reports'
-        elif pathname == '/about_us':
-            returnlayout = aboutus.layout
-        else:
-            returnlayout = 'error404'
     
     else:
         raise PreventUpdate
