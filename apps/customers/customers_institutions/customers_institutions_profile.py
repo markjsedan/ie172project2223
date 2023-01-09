@@ -232,7 +232,6 @@ def cust_ins_submitprocess(submitbtn, closebtn,
             role,
             email,
             contact_number,
-
         ]
 
         if not all (inputs):
@@ -250,12 +249,12 @@ def cust_ins_submitprocess(submitbtn, closebtn,
                     cust_ins_cp,
                     cust_ins_cp_role,
                     cust_ins_cp_email,
-                    cust_ins_contact_num
+                    cust_ins_contact_num,
                     cust_ins_delete_ind
                 )
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """
-                values = [name, address,landline_number,contact_person, role, email, contact_number, False]
+                values = [name, address, landline_number, contact_person, role, email, contact_number, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been saved."
