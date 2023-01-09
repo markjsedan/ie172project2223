@@ -30,7 +30,7 @@ navbar = dbc.Navbar(
             href="/books",
             style={"textDecoration": "none", 'margin-left': '1.5em'}
         ),
-        dbc.NavLink("Books", href="/books", style={'margin-left': '24em', 'margin-right': '2em', 'color': 'white'}),
+        dbc.NavLink("Books", href="/books", style={'margin-left': '26em', 'margin-right': '2em', 'color': 'white'}),
         dbc.NavLink("Customers", href="/customers", style={'margin-right': '2em', 'color': 'white'}),
         dbc.NavLink("Publishers", href="/publishers", style={'margin-right': '2em', 'color': 'white'}),
         dbc.NavLink("Employees", href="/employees", style={'margin-right': '2em', 'color': 'white'}),

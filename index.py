@@ -10,6 +10,7 @@ import webbrowser
 from app import app
 from apps import commonmodules as cm
 from apps import books
+from apps import aboutus
 
 
 CONTENT_STYLE = {
@@ -57,7 +58,7 @@ def displaypage(pathname):
         elif pathname == '/reports':
             returnlayout = 'reports'
         elif pathname == '/about_us':
-            returnlayout = 'about us'
+            returnlayout = aboutus.layout
         else:
             returnlayout = 'error404'
     
