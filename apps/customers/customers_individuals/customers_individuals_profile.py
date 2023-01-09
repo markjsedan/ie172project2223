@@ -149,25 +149,15 @@ layout = html.Div(
 def cust_ind_prof_loaddropdown(pathname, search):
 
     if pathname == '/customers/individuals_profile':
-        sql = """
-            SELECT cust_ind_name, cust_ind_id 
-            FROM customers_individuals
-            WHERE cust_ind_delete_ind = False
-        """
-        values = []
-        cols = ['label', 'value']
-        df = db.querydatafromdatabase(sql, values, cols)
-        # cust_ind_opts = df.to_dict('records')
-        
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
+        return [toload, removerecord_div]
 
     else:
         raise PreventUpdate
 
-    return [toload, removerecord_div]
 
 
 
