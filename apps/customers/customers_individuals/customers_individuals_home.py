@@ -20,7 +20,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="customers_individuals_filter", placeholder="Enter keywords"
                     ),
-                    width=auto
+                    width="7",
                 ),
             ],
             className="mb-3"
