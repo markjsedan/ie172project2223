@@ -1,7 +1,7 @@
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
-import dash_table
+from dash import dash_table
 import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
@@ -19,48 +19,46 @@ sort_add = dbc.NavbarSimple(
                 dbc.DropdownMenuItem("Z-A", href="/books/allbooks/z-a"),
                 dbc.DropdownMenuItem("Latest", href="/books/allbooks/latest"),
             ],
-                nav=True,
-                in_navbar=True,
-                label="Sort by",
+            nav=True,
+            in_navbar=True,
+            label="Sort by",
         ),
-        dbc.Button("Add a book", color="#63AAC0", className="me-1"),
+        dbc.Button("Add a book", color="primary", className="me-1", href="/books/books_profile"),
     ],
     brand="Books",
-    color="dark",
 )
 
 
 layout = html.Div(
     [
-        html.Br(),
         dbc.Row(
             [
+                dbc.Label("Search", width=0.5, style={'margin-left': '2em'}),
                 dbc.Col(
-                    dbc.Button(
-                        "Search", className="ms-2", n_clicks=0
+                    dbc.Input(
+                        type="text",
+                        id="books_filter",
+                        placeholder="Enter keyword/s"
                     ),
-                    width="auto",
+                    width=5,
                 ),
-                dbc.Col(dbc.Input(type="search", placeholder="Enter keyword/s")),
             ],
-            className="g-0 ms-auto flex-nowrap mt-3 mt-md-0",
-            align="center",
-            style={'background-color': '#63AAC0'},
         ),
-        html.Br(),
-        html.Br(),
         dbc.Row(
             [
-                dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks")),
-                dbc.NavItem(dbc.NavLink("Authors", href="/books/authors")),
+                dbc. Col(dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", style={'margin-left': '2em', 'margin-right': '3em'}))),
+                dbc. Col(dbc.NavItem(dbc.NavLink("Authors", href="/books/authors", style={'margin-right': '2em'}))),
             ],
-            style={'background-color': '#63AAC0'},
         ),
-        html.Br(),
-        html.Br(),
-        dbc.Row(sort_add, width="auto"),
+        dbc.Row(
+            dbc.Col(sort_add),
+        ),
     ],
+    style={'background-color': '#63AAC0'},
 )
+
+html.Div("Table with books will go here.",
+    id='books_bookslist')
 
 
 
