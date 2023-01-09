@@ -14,6 +14,7 @@ from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home
 from apps.customers.customers_individuals import customers_individuals_profile
 from apps.employees import employees, employees_profile
+from apps.publishers import publishers, publishers_profile
 
 
 CONTENT_STYLE = {
@@ -59,7 +60,9 @@ def displaypage(pathname):
         elif pathname == '/customers/individuals_profile':
             returnlayout = customers_individuals_profile.layout
         elif pathname == '/publishers':
-            returnlayout = 'publishers'
+            returnlayout = publishers.layout
+        elif pathname == '/publishers/publishers_profile':
+            returnlayout = publishers_profile.layout
         elif pathname == '/employees':
             returnlayout = employees.layout
         elif pathname == '/employees/employees_profile':
