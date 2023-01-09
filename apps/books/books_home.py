@@ -13,7 +13,6 @@ from apps import dbconnect as db
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.Button("Add a book", color="primary", className="me-2", href="/books/books_profile"),
         dbc.DropdownMenu(
             children=[
                 dbc.DropdownMenuItem("A-Z", href="/books/allbooks/a-z"),
@@ -24,10 +23,11 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
+        dbc.Button("Add a book", color="dark", className="me-2", href="/books/books_profile"),
     ],
     brand="",
-    color="#ffffff",
-    dark=False,
+    # color="#ffffff",
+    # dark=False,
 
 )
 

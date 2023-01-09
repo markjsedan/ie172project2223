@@ -13,7 +13,6 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.Button("Add a customer", color="primary", className="me-2", href="/customers/individuals/profile"),
         dbc.DropdownMenu(
             children=[
                 dbc.DropdownMenuItem("A-Z", href="/customers/individuals/a-z"),
@@ -24,10 +23,11 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
+        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals/profile"),
     ],
     brand="",
-    color="#ffffff",
-    dark=False,
+    # color="#ffffff",
+    # dark=False,
 
 )
 
@@ -112,7 +112,7 @@ def updatecustomers_individuals_list(pathname, searchterm):
                 buttons += [
                     html.Div(
                         dbc.Button('Edit/Delete', href=f"/customers/individuals_profile?mode=edit&id={cust_ind_id}",
-                            size='sm', color='primary', ),
+                            size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
                 ]
