@@ -153,65 +153,13 @@ def cust_ind_prof_loaddropdown(pathname, search):
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
+        
         return [toload, removerecord_div]
 
     else:
         raise PreventUpdate
 
 
-
-
-@app.callback(
-    [
-        Output('cust_ind_id', 'value'),
-        Output('cust_ind_name', 'value'),
-        Output('cust_ind_prof', 'value'),
-        Output('cust_ind_email', 'value'),
-        Output('cust_ind_contact_num', 'value'),
-        Output('cust_ind_address', 'date'),
-    ],
-    [
-        Input('cust_ind_toload', 'modified_timestamp'),
-    ],
-    [
-        State('cust_ind_toload', 'data'),
-        State('url', 'search'),
-    ]
-)
-def cust_ind_loadprofile(timestamp,toload, search):
-    if toload == 1:
-
-        parsed = urlparse(search)
-        cust_ind_id = parse_qs(parsed.query)['id'][0]
-        # 1. query the details from the database
-        sql = """ SELECT 
-                    cust_ind_id,
-                    cust_ind_name,
-                    cust_ind_prof,
-                    cust_ind_email,
-                    cust_ind_contact_num,
-                    cust_ind_address,
-        FROM customers_indviduals
-        WHERE cust_ind_id = %s"""     
-        
-
-        val = [cust_ind_id]
-        colnames = ["customer_id","name","profession","email","contact number","address"]
-
-        df = db.querydatafromdatabase(sql, val, colnames)
-
-        # 2. load the value to the interface
-        customer_id = df['customer_id'][0]
-        name = df['name'][0]
-        profession = df['profession'][0]
-        email = df['email'][0]
-        contact_number = df['contact number'][0]
-        address = df['address'][0]
-
-        return [customer_id, name, profession, email, contact_number, address]
-
-    else:
-        raise PreventUpdate
 
 
 @app.callback(
@@ -300,9 +248,9 @@ def cust_ind_submitprocess(submitbtn, closebtn,
                     cust_ind_id = %s
                 """
 
-                to_delete = bool(removerecord)
+                todelete = bool(removerecord)
 
-                values = [name, profession, email, contact_number, address, to_delete,cust_ind_id]
+                values = [name, profession, email, contact_number, address, todelete,cust_ind_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."
@@ -320,3 +268,55 @@ def cust_ind_submitprocess(submitbtn, closebtn,
     return [openmodal, feedbackmessage, okay_href]
 
 
+
+@app.callback(
+    [
+        Output('cust_ind_id', 'value'),
+        Output('cust_ind_name', 'value'),
+        Output('cust_ind_prof', 'value'),
+        Output('cust_ind_email', 'value'),
+        Output('cust_ind_contact_num', 'value'),
+        Output('cust_ind_address', 'value'),
+    ],
+    [
+        Input('cust_ind_toload', 'modified_timestamp'),
+    ],
+    [
+        State('cust_ind_toload', 'data'),
+        State('url', 'search'),
+    ]
+)
+def cust_ind_loadprofile(timestamp,toload, search):
+    if toload == 1:
+
+        parsed = urlparse(search)
+        cust_ind_id = parse_qs(parsed.query)['id'][0]
+        # 1. query the details from the database
+        sql = """ SELECT 
+                    cust_ind_id,
+                    cust_ind_name,
+                    cust_ind_prof,
+                    cust_ind_email,
+                    cust_ind_contact_num,
+                    cust_ind_address,
+        FROM customers_individuals
+        WHERE cust_ind_id = %s """     
+        
+
+        val = [cust_ind_id]
+        colnames = ["customer_id","name","profession","email","contact number","address"]
+
+        df = db.querydatafromdatabase(sql, val, colnames)
+
+        # 2. load the value to the interface
+        customer_id = df['customer_id'][0]
+        name = df['name'][0]
+        profession = df['profession'][0]
+        email = df['email'][0]
+        contact_number = df['contact number'][0]
+        address = df['address'][0]
+
+        return [customer_id, name, profession, email, contact_number, address]
+
+    else:
+        raise PreventUpdate
