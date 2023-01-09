@@ -64,41 +64,77 @@ layout = html.Div(
                         dbc.Row(
                             dbc.Col(sort_add),
                         ),
+                        html.Div(
+                            [
+                                html.Div(
+                                    "This will contain the table for books",
+                                    id='books_allbooks_list',
+                                    style={'text-align': 'center'}
+                                ),
+                            ]
+                        )
                     ]
                 ),
             ]
         ),
-        # dbc.Row(
-        #     [
-        #         dbc.Label(html.H5("Search"), width=1, style={'margin-left': '2em'}),
-        #         dbc.Col(
-        #             dbc.Input(
-        #                 type="text",
-        #                 id="books_filter",
-        #                 placeholder="Enter keyword/s"
-        #             ),
-        #             width=5,
-        #         ),
-        #     ],
-        # ),
-        # html.Hr(),
-        # # dbc.Row(
-        # #     [
-        # #         dbc. Col(dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", style={'margin-left': '2em', 'margin-right': '3em'}))),
-        # #         dbc. Col(dbc.NavItem(dbc.NavLink("Authors", href="/books/authors", style={'margin-right': '2em'}))),
-        # #     ],
-        # dbc.Row(navs
-        # ),
-        # html.Hr(),
-        # dbc.Row(
-        #     dbc.Col(sort_add),
-        # ),
     ],
-    # style={'background-color': '#63AAC0'},
 )
 
-html.Div("Table with books will go here.",
-    id='books_bookslist')
+@app.callback(
+    [
+        Output('books_allbooks_list', 'children'),
+    ],
+    [
+        Input('url', 'pathname'),
+        Input('books_allbooks_filter', 'value'),
+    ]
+)
+def updatebooks_allbooks_list(pathname, searchterm):
+    if pathname == '/books':
+        # 1. query the relevant records, add filter first before query
+        
+        sql = """ SELECT bk_title, au_id, genre_id, bk_inv_count
+                FROM books
+                WHERE NOT bk_delete_ind
+        """
+        val = []
+        cols = ["Title", "Author", "Genre", "Stock Quantity"]
+        
+
+        if searchterm:
+            sql += """ AND bk_title ILIKE %s"""
+            val += [f"%{searchterm}%"]
+
+
+        books_allbooks = db.querydatafromdatabase(sql,val,cols)
+        
+        # 2. create the table and add it to the db
+        if books_allbooks.shape[0]:
+            buttons = []
+            for bk_title in books_allbooks['Title']:
+                buttons += [
+                    html.Div(
+                        dbc.Button('Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_title}",
+                            size='sm', color='dark', ),
+                            style={'text-align': 'center'}
+                    )
+                ]
+            
+            # we add the buttons to the table
+            books_allbooks['Action'] = buttons
+
+            # remove ID col
+            # customers_individuals.drop('Customer ID', axis=1, inplace=True)
+
+            books_allbooks_table = dbc.Table.from_dataframe(books_allbooks, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+
+            return [books_allbooks_table]
+        
+        else:
+            return ["There are no records that match the search term."]
+
+    else:
+        raise PreventUpdate
 
 
 
