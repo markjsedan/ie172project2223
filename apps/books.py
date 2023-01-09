@@ -10,6 +10,26 @@ import pandas as pd
 from app import app
 from apps import dbconnect as db
 
+
+sort_add = dbc.NavbarSimple(
+    children=[
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem("A-Z", href="/books/allbooks/a-z"),
+                dbc.DropdownMenuItem("Z-A", href="/books/allbooks/z-a"),
+                dbc.DropdownMenuItem("Latest", href="/books/allbooks/latest"),
+            ],
+                nav=True,
+                in_navbar=True,
+                label="Sort by",
+        ),
+        dbc.Button("Add a book", color="#63AAC0", className="me-1"),
+    ],
+    brand="Books",
+    color="dark",
+)
+
+
 layout = html.Div(
     [
         html.Br(),
@@ -34,29 +54,14 @@ layout = html.Div(
                 dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks")),
                 dbc.NavItem(dbc.NavLink("Authors", href="/books/authors")),
             ],
+            style={'background-color': '#63AAC0'},
         ),
+        html.Br(),
+        html.Br(),
+        dbc.Row(sort_add, width="auto"),
     ],
 )
 
-layout = html.Div(
-    [
-        navbar = dbc.NavbarSimple(
-            children=[
-                dbc.DropdownMenu(
-                    children=[
-                        dbc.DropdownMenuItem("A-Z", href="/books/allbooks/a-z"),
-                        dbc.DropdownMenuItem("Z-A", href="/books/allbooks/z-a"),
-                        dbc.DropdownMenuItem("Latest", href="/books/allbooks/latest"),
-                    ],
-                    nav=True,
-                    in_navbar=True,
-                    label="Sort by",
-                ),
-                dbc.Button("Add a book", color="#63AAC0", className="me-1"),
-            ],
-            brand="Books",
-            color="dark",
-    ],
-)
+
 
     
