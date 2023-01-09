@@ -11,6 +11,32 @@ from apps import dbconnect as db
 from dash.dependencies import Input, Output, State
 
 
+sort_add = dbc.NavbarSimple(
+    children=[
+        dbc.Button("Add a customer", color="primary", className="me-2", href="/customers/individuals/profile"),
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem("A-Z", href="/customers/individuals/a-z"),
+                dbc.DropdownMenuItem("Z-A", href="/customers/individuals/z-a"),
+                dbc.DropdownMenuItem("Latest", href="/customers/individuals/latest"),
+            ],
+            nav=True,
+            in_navbar=True,
+            label="Sort by",
+        ),
+    ],
+    brand="",
+    color="#ffffff",
+    dark=False,
+
+)
+
+nav_contents = [
+    dbc.NavItem(dbc.NavLink("Individuals", href="/customers/individuals", active=True)),
+    dbc.NavItem(dbc.NavLink("Institutions", href="/customers/institutions",)),
+]
+navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
+
 layout = html.Div(
     [
         dbc.Row(
@@ -23,31 +49,19 @@ layout = html.Div(
                     width=5,
                 ),
             ],
-            # className="mb-3"
+            className="mb-3"
         ),
-        # dbc.Row(
-        #     [
-        #         dbc.Col(
-        #             dbc.Button(
-        #                 "Search Customers", color="dark", className="ms-2", n_clicks=0
-        #             ),
-        #             width="auto",
-        #         ),
-        #         dbc.Col(dbc.Input(type="search", placeholder="Enter keyword/s")),
-        #     ],
-        #     className="g-0 ms-auto flex-nowrap mt-3 mt-md-0",
-        #     align="center",
-        # ),
-        
-        # html.H2("Individuals"),
-        html.Hr(),
         dbc.Card(
             [
-                dbc.CardHeader(html.H4("Customers - Individuals")),
+                dbc.CardHeader(html.H4("Customers > Individuals")),
                 dbc.CardBody(
                     [
-                        dbc.Button("Add Customer", color="dark", href='/customers/individuals_profile?mode=add'),
+                        dbc.Row(navs, style={'fontWeight':'bold',"color":"dark"}
+                        ),
                         html.Hr(),
+                        dbc.Row(
+                            dbc.Col(sort_add),
+                        ),
                         html.Div(
                             [
                                 html.Div(

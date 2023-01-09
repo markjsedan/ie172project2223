@@ -51,8 +51,8 @@ layout = html.Div(
                     width=5,
                 ),
             ],
+            className="mb-3"
         ),
-        html.Hr(),
         dbc.Card(
             [
                 dbc.CardHeader(html.H4("Books > All Books")),
