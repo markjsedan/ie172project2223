@@ -33,14 +33,14 @@ layout = html.Div(
     [
         dbc.Row(
             [
-                dbc.Label("Search", width=0.5, style={'margin-left': '2em'}),
+                dbc.Label("Search", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="text",
                         id="books_filter",
                         placeholder="Enter keyword/s"
                     ),
-                    width=5,
+                    width=6,
                 ),
             ],
         ),

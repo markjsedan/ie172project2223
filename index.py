@@ -9,7 +9,7 @@ import webbrowser
 
 from app import app
 from apps import commonmodules as cm
-from apps import books
+from apps.books import books_home
 from apps import aboutus
 
 
@@ -48,7 +48,7 @@ def displaypage(pathname):
 
     if eventid == 'url':
         if pathname in ['/', '/books']:
-            returnlayout = books.layout
+            returnlayout = books_home.layout
         elif pathname == '/customers':
             returnlayout = 'customers'
         elif pathname == '/publishers':
