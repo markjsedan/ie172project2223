@@ -27,7 +27,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_title", placeholder="Enter title"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -39,7 +39,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_author", placeholder="Enter author"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -51,7 +51,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_genre", placeholder="Enter genre"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -63,7 +63,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_publisher", placeholder="Enter publisher"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -75,7 +75,7 @@ layout = html.Div(
                     dcc.DatePickerSingle(
                         id='bookinfo_releasedate'
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -87,7 +87,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_price", placeholder="Enter price"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -99,7 +99,7 @@ layout = html.Div(
                     dbc.Input(
                         type="text", id="bookinfo_count", placeholder="Enter title"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
@@ -119,7 +119,7 @@ layout = html.Div(
                             ], # I want the label to be bold
                             style={'fontWeight':'bold'},
                         ),
-                        width=6,
+                        width=7,
                     ),
                 ],
                 className="mb-3",

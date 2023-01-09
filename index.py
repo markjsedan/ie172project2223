@@ -10,9 +10,9 @@ import webbrowser
 from app import app
 from apps import commonmodules as cm
 from apps.books import books_home, books_profile
-from apps import aboutus
+from apps import aboutus, employees
 from apps.customers.customers_individuals import customers_individuals_home
-from apps.customers.customers_individuals import customers_individuals_profile
+#from apps.customers.customers_individuals import customers_individuals_profile
 
 
 CONTENT_STYLE = {
@@ -60,7 +60,7 @@ def displaypage(pathname):
         elif pathname == '/publishers':
             returnlayout = 'publishers'
         elif pathname == '/employees':
-            returnlayout = 'employees'
+            returnlayout = employees.layout
         elif pathname == '/reports':
             returnlayout = 'reports'
         elif pathname == '/about_us':
