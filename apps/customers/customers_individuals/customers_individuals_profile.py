@@ -272,7 +272,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
     ]
 )
 def cust_ind_loadprofile(timestamp,to_load, search):
-    if to_load == 1:
+    if to_load:
 
         parsed = urlparse(search)
         cust_ind_id = parse_qs(parsed.query)['id'][0]
