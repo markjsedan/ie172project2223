@@ -146,6 +146,20 @@ layout = html.Div(
         State('url', 'search')
     ]
 )
+def cust_ind_prof_loaddropdown(pathname, search):
+
+    if pathname == '/customers/individuals_profile':
+        parsed = urlparse(search)
+        mode = parse_qs(parsed.query)['mode'][0]
+        toload = 1 if mode == 'edit' else 0
+        removerecord_div = None if toload else {'display': 'None'}
+        
+        return [toload, removerecord_div]
+
+    else:
+        raise PreventUpdate
+
+
 
 
 @app.callback(
@@ -234,9 +248,9 @@ def cust_ind_submitprocess(submitbtn, closebtn,
                     cust_ind_id = %s
                 """
 
-                to_delete = bool(removerecord)
+                todelete = bool(removerecord)
 
-                values = [name, profession, email, contact_number, address, to_delete,cust_ind_id]
+                values = [name, profession, email, contact_number, address, todelete,cust_ind_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."
@@ -254,6 +268,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
     return [openmodal, feedbackmessage, okay_href]
 
 
+
 @app.callback(
     [
         Output('cust_ind_id', 'value'),
@@ -261,7 +276,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
         Output('cust_ind_prof', 'value'),
         Output('cust_ind_email', 'value'),
         Output('cust_ind_contact_num', 'value'),
-        Output('cust_ind_address', 'date'),
+        Output('cust_ind_address', 'value'),
     ],
     [
         Input('cust_ind_toload', 'modified_timestamp'),
@@ -271,8 +286,8 @@ def cust_ind_submitprocess(submitbtn, closebtn,
         State('url', 'search'),
     ]
 )
-def cust_ind_loadprofile(timestamp,to_load, search):
-    if to_load:
+def cust_ind_loadprofile(timestamp,toload, search):
+    if toload == 1:
 
         parsed = urlparse(search)
         cust_ind_id = parse_qs(parsed.query)['id'][0]
@@ -284,8 +299,8 @@ def cust_ind_loadprofile(timestamp,to_load, search):
                     cust_ind_email,
                     cust_ind_contact_num,
                     cust_ind_address,
-        FROM customers_indviduals
-        WHERE cust_ind_id = %s"""     
+        FROM customers_individuals
+        WHERE cust_ind_id = %s """     
         
 
         val = [cust_ind_id]
