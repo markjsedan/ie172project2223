@@ -157,7 +157,7 @@ def cust_ind_prof_loaddropdown(pathname, search):
         values = []
         cols = ['label', 'value']
         df = db.querydatafromdatabase(sql, values, cols)
-        cust_ind_opts = df.to_dict('records')
+        # cust_ind_opts = df.to_dict('records')
         
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
@@ -167,7 +167,7 @@ def cust_ind_prof_loaddropdown(pathname, search):
     else:
         raise PreventUpdate
 
-    return [cust_ind_opts, toload, removerecord_div]
+    return [toload, removerecord_div]
 
 
 
@@ -295,7 +295,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
     ]
 )
 def cust_ind_loadprofile(timestamp,toload, search):
-    if toload == 0:
+    if toload == 1:
 
         parsed = urlparse(search)
         cust_ind_id = parse_qs(parsed.query)['id'][0]
