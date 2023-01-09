@@ -10,7 +10,7 @@ from apps import dbconnect as db
 
 layout = html.Div(
     [
-        html.H2('Please Login'),
+        html.H2('Please Log in'),
         html.Hr(),
         dbc.Alert('Username or password is incorrect.', color="danger", id='login_alert',
                   is_open=False),
