@@ -33,7 +33,7 @@ layout = html.Div(
     [
         dbc.Row(
             [
-                dbc.Label("Search", width=1),
+                dbc.Label("Search", width=1, style={'margin-left': '2em'}),
                 dbc.Col(
                     dbc.Input(
                         type="text",
