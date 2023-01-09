@@ -31,7 +31,7 @@ layout = html.Div(
                 dbc.Label("Password", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="login_password", placeholder="Enter password"
+                        type="password", id="login_password", placeholder="Enter password"
                     ),
                     width=6,
                 ),
@@ -106,7 +106,7 @@ def routelogin(logintime, userid):
     ctx = callback_context
     if ctx.triggered:
         if userid > 0:
-            url = '/home'
+            url = '/books'
         else:
             url = '/'
     else:

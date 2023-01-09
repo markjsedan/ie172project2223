@@ -88,11 +88,11 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = 'error404'
         
         else:
-            if pathname == '/logout':
+            if pathname in ['/logout']:
                 returnlayout = login.layout
                 sessionlogout = True
 
-            if pathname in ['/', '/books']:
+            elif pathname == '/books':
                 returnlayout = books_home.layout
             elif pathname == '/books/books_profile':
                 returnlayout = books_profile.layout
