@@ -62,10 +62,13 @@ CREATE TABLE employees(
     emp_delete_ind bool default false
 );
 CREATE TABLE users(
-        user_id serial primary key not null,
-        user_name varchar(32) unique,
-        user_password varchar(64) not null,
-        user_modified_on timestamp without time zone default now(),
-        user_delete_ind bool default false
+	user_id serial primary key not null,
+	user_name varchar(32) unique,
+	user_password varchar(64) not null,
+	user_modified_on timestamp without time zone default now(),
+	user_delete_ind bool default false
 );
-CREATE TABLE users
+CREATE TABLE customers_purchases(
+	cust_pur_id primary key not null,
+	cust_name_
+)

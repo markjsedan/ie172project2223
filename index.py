@@ -13,7 +13,7 @@ from apps.books.all_books import books_home, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
-from apps.customers.customers_purchases import customers_purchases_home, customers_purchases_profile
+from apps.purchases.purchases_individuals import purchases_individuals_home, purchases_individuals_profile
 from apps.employees import employees, employees_profile
 from apps import login, signup
 from apps.publishers import publishers, publishers_profile
@@ -109,10 +109,10 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = customers_institutions_home.layout
             elif pathname == '/customers/institutions_profile':
                 returnlayout = customers_institutions_profile.layout
-            elif pathname == '/customers/purchases_home':
-                returnlayout = customers_purchases_home.layout
-            elif pathname == '/customers/purchases_profile':
-                returnlayout = customers_purchases_profile.layout
+            elif pathname == '/purchases/individuals_home':
+                returnlayout = purchases_individuals_home.layout
+            elif pathname == '/purchases/individuals_profile':
+                returnlayout = purchases_individuals_profile.layout
             elif pathname == '/publishers':
                 returnlayout = publishers.layout
             elif pathname == '/publishers/publishers_profile':
