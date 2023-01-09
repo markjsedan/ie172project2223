@@ -35,7 +35,7 @@ navbar = dbc.Navbar(
         dbc.NavLink("Publishers", href="/publishers", style={'margin-right': '3em', 'color': 'white'}),
         dbc.NavLink("Employees", href="/employees", style={'margin-right': '3em', 'color': 'white'}),
         dbc.NavLink("About Us", href="/about_us", style={'margin-right': '3em', 'color': 'white'}),
-        dbc.NavLink("Logout", href="/logout", style={'margin-right': '3em', 'color': 'blue'}),
+        dbc.NavLink("Logout", href="/logout", style={'margin-right': '3em', 'color': 'yellow'}),
     ],
     dark=True,
     color="dark",
