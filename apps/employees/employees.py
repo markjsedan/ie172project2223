@@ -15,7 +15,7 @@ add = dbc.NavbarSimple(
     children=[
         dbc.Button("Add Employee", color="dark", className="me-2", href="/employees/employees_profile"),
     ],
-    brand="Employees",
+    brand="",
     # color="#ffffff",
     # dark=False,
 
@@ -29,7 +29,7 @@ layout = html.Div(
                 dbc.Col(
                     dbc.Input(
                         type="text",
-                        id="books_filter",
+                        id="employees_filter",
                         placeholder="Enter keyword/s"
                     ),
                     width=5,
@@ -39,14 +39,17 @@ layout = html.Div(
         ),
         dbc.Card(
             [
-                dbc.CardHeader(add),
+                dbc.CardHeader(html.H4("Employees")),
                 dbc.CardBody(
                     [
+                        dbc.Row(
+                            dbc.Col(add),
+                        ),
                         html.Div(
                             [
                                 html.Div(
                                     "This will contain the table for employees",
-                                    id='books_allbooks_list',
+                                    id='employees_list',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -71,49 +74,45 @@ def updateemployees_list(pathname, searchterm):
     if pathname == '/employees':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT bk_title, au_id, genre_id, bk_inv_count
-                FROM books
-                WHERE NOT bk_delete_ind
+        sql = """ SELECT emp_id, emp_name, emp_role, emp_email, emp_contact_num
+                FROM employees
+                WHERE NOT emp_delete_ind
         """
         val = []
-        cols = ["Title", "Author", "Genre", "Stock Quantity"]
+        cols = ["Employee ID", "Employee Name", "Role", "Email", "Contact Number"]
         
 
         if searchterm:
-            sql += """ AND bk_title ILIKE %s"""
+            sql += """ AND emp_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
-        books_allbooks = db.querydatafromdatabase(sql,val,cols)
+        employees = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if books_allbooks.shape[0]:
+        if employees.shape[0]:
             buttons = []
-            for bk_title in books_allbooks['Title']:
+            for emp_id in employees['Employee ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_title}",
+                        dbc.Button('View/Edit/Delete', href=f"/employees/employees_profile?mode=edit&id={emp_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
                 ]
             
             # we add the buttons to the table
-            books_allbooks['Action'] = buttons
+            employees['Action'] = buttons
 
             # remove ID col
             # customers_individuals.drop('Customer ID', axis=1, inplace=True)
 
-            books_allbooks_table = dbc.Table.from_dataframe(books_allbooks, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            employees_table = dbc.Table.from_dataframe(employees, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [books_allbooks_table]
+            return [employees_table]
         
         else:
             return ["There are no records that match the search term."]
 
     else:
         raise PreventUpdate
-
-
-
-    

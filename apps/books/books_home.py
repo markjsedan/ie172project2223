@@ -44,9 +44,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1, ),
                 dbc.Col(
                     dbc.Input(
-                        type="text",
-                        id="books_filter",
-                        placeholder="Enter keyword/s"
+                        type="text", id="books_allbooks_filter", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -79,7 +77,6 @@ layout = html.Div(
         ),
     ],
 )
-
 @app.callback(
     [
         Output('books_allbooks_list', 'children'),
@@ -114,7 +111,7 @@ def updatebooks_allbooks_list(pathname, searchterm):
             for bk_title in books_allbooks['Title']:
                 buttons += [
                     html.Div(
-                        dbc.Button('Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_title}",
+                        dbc.Button('View/Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_title}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
