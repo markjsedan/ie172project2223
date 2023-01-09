@@ -18,9 +18,9 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="customers_individuals_filter", placeholder="Enter keywords"
+                        type="text", id="customers_individuals_filter", placeholder="Enter keyword/s"
                     ),
-                    width="7",
+                    width=5,
                 ),
             ],
             # className="mb-3"

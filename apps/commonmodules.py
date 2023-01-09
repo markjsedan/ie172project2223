@@ -25,7 +25,7 @@ navbar = dbc.Navbar(
                     dbc.Col(dbc.NavbarBrand("The Bookstore", className="ms-2")),
                 ],
                 align="center",
-                className="g-0",
+                # className="g-0",
             ),
             href="/books",
             style={"textDecoration": "none", 'margin-left': '1.5em'}
