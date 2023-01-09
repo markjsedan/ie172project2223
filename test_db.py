@@ -1,18 +1,30 @@
 import apps.dbconnect as db
 from datetime import datetime
 
-def addemployeestable():
-    sqlcode = """ CREATE TABLE employees(
-        emp_id serial primary key not null,
-        emp_name varchar(256),
-        emp_role varchar(256),
-        emp_email varchar (256),
-	    emp_contact_num varchar (256),
-        emp_modified_date timestamp without time zone default now(),
-        emp_delete_ind bool default false
+def adduserstable():
+    sqlcode = """ CREATE TABLE users(
+        user_id serial primary key not null,
+        user_name varchar(32) unique,
+        user_password varchar(64) not null,
+        user_modified_on timestamp without time zone default now(),
+        user_delete_ind bool default false
     )
     """
-addemployeestable()
+adduserstable()
+
+
+# def addemployeestable():
+#     sqlcode = """ CREATE TABLE employees(
+#         emp_id serial primary key not null,
+#         emp_name varchar(256),
+#         emp_role varchar(256),
+#         emp_email varchar (256),
+# 	    emp_contact_num varchar (256),
+#         emp_modified_date timestamp without time zone default now(),
+#         emp_delete_ind bool default false
+#     )
+#     """
+# addemployeestable()
 
 # def addfewgenres():
 #     sqlcode = """ INSERT INTO genres (
