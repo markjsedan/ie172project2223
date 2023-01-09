@@ -28,6 +28,11 @@ sort_add = dbc.NavbarSimple(
     brand="Books",
 )
 
+nav_contents = [
+    dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", active=True)),
+    dbc.NavItem(dbc.NavLink("Authors", href="/books/authors")),
+]
+navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
 layout = html.Div(
     [
@@ -44,11 +49,12 @@ layout = html.Div(
                 ),
             ],
         ),
-        dbc.Row(
-            [
-                dbc. Col(dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", style={'margin-left': '2em', 'margin-right': '3em'}))),
-                dbc. Col(dbc.NavItem(dbc.NavLink("Authors", href="/books/authors", style={'margin-right': '2em'}))),
-            ],
+        # dbc.Row(
+        #     [
+        #         dbc. Col(dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", style={'margin-left': '2em', 'margin-right': '3em'}))),
+        #         dbc. Col(dbc.NavItem(dbc.NavLink("Authors", href="/books/authors", style={'margin-right': '2em'}))),
+        #     ],
+        dbc.Row(navs
         ),
         dbc.Row(
             dbc.Col(sort_add),
