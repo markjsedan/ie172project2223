@@ -1,6 +1,21 @@
 import apps.dbconnect as db
 from datetime import datetime
 
+def addfewgenres():
+    sqlcode = """ INSERT INTO genres (
+        genre_name,
+        genre_modified_date,
+        genre_delete_ind
+    )
+    VALUES (%s, %s, %s)"""
+
+    db.modifydatabase(sqlcode,['Academic', datetime.now(), False])
+    db.modifydatabase(sqlcode,['Children', datetime.now(), False])
+    db.modifydatabase(sqlcode,['Fiction', datetime.now(), False])
+    db.modifydatabase(sqlcode,['Lifestyle', datetime.now(), False])
+    db.modifydatabase(sqlcode,['Nonfiction', datetime.now(), False])
+
+
 # def addfewcustomers():
 #     sqlcode = """ INSERT INTO customers_individuals (
 #         cust_ind_id,

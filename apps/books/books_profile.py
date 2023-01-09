@@ -6,6 +6,7 @@ import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import pandas as pd
+from urllib.parse import urlparse, parse_qs
 
 from app import app
 from apps import dbconnect as db    
@@ -48,8 +49,13 @@ layout = html.Div(
             [
                 dbc.Label("Genre", width=2),
                 dbc.Col(
-                    dbc.Input(
-                        type="text", id="bookinfo_genre", placeholder="Enter genre"
+                    html.Div(
+                        dcc.Dropdown(
+                            id='bookinfo_genre',
+                            clearable=True,
+                            searchable=True
+                        ), 
+                        className="dash-bootstrap"
                     ),
                     width=7,
                 ),
@@ -147,6 +153,7 @@ layout = html.Div(
 
 @app.callback(
     [
+        Output('bookinfo_genre', 'options'),
         Output('bookinfo_toload', 'data'),
         Output('bookinfo_removerecord_div', 'style')
     ],
@@ -157,6 +164,33 @@ layout = html.Div(
         State('url', 'search')
     ]
 )
+
+def bookinfo_loaddropdown(pathname, search):
+    
+    if pathname == '/books/books_profile':
+        sql = """
+            SELECT genre_name as label, genre_id as value
+            FROM genres
+            WHERE genre_delete_ind = False
+        """
+        values = []
+        cols = ['label', 'value']
+        df = db.querydatafromdatabase(sql, values, cols)
+
+        genre_opts = df.to_dict('records')
+
+        parsed = urlparse(search)
+        mode = parse_qs(parsed.query)['mode'][0]
+
+        to_load = 1 if mode == 'edit' else 0
+        removerecord_div = None if to_load else {'display': 'none'}
+    
+    else:
+        raise PreventUpdate
+
+    return [genre_opts, to_load, removerecord_div]
+
+
 
 
 @app.callback(
@@ -261,7 +295,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 values = [title, author, genre, publisher, releasedate, price, count, to_delete, bookid]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Book has been updated."
+                feedbackmessage = "Book information has been updated."
                 okay_href = '/books'
 
             else:
