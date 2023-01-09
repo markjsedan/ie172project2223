@@ -32,7 +32,7 @@ sort_add = dbc.NavbarSimple(
 )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("All Books", href="/books/allbooks", active=True)),
+    dbc.NavItem(dbc.NavLink("All Books", href="/books", active=True)),
     dbc.NavItem(dbc.NavLink("Authors", href="/books/authors",)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))

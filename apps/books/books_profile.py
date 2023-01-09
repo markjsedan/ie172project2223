@@ -133,7 +133,7 @@ layout = html.Div(
             id='bookinfo_removerecord_div'
         ),
         html.Hr(),
-        dbc.Button('Submit', color='secondary', id='bookinfo_submitbtn'),
+        dbc.Button('Submit', color='dark', id='bookinfo_submitbtn'),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Saving Progress")),
