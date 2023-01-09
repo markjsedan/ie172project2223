@@ -16,7 +16,7 @@ from apps.customers.customers_individuals import customers_individuals_profile
 
 
 CONTENT_STYLE = {
-    "margin-top": "4em",
+    "margin-top": "1em",
     "margin-left": "1em",
     "margin-right": "1em",
     "padding": "1em 1em",
@@ -53,7 +53,7 @@ def displaypage(pathname):
             returnlayout = books_home.layout
         elif pathname == '/books/books_profile':
             returnlayout = books_profile.layout
-        elif pathname == '/customers':
+        elif pathname == '/customers/individuals_home':
             returnlayout = customers_individuals_home.layout
         elif pathname == '/customers/individuals_profile':
             returnlayout = customers_individuals_profile.layout
