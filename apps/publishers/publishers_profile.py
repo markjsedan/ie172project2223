@@ -110,6 +110,18 @@ layout = html.Div(
         State('url', 'search')
     ]
 )
+def pub_ln_loaddropdown(pathname, search):
+
+    if pathname == '/publishers/publishers_profile':
+        parsed = urlparse(search)
+        mode = parse_qs(parsed.query)['mode'][0]
+        toload = 1 if mode == 'edit' else 0
+        removerecord_div = None if toload else {'display': 'None'}
+        
+        return [toload, removerecord_div]
+
+    else:
+        raise PreventUpdate
 
 
 
