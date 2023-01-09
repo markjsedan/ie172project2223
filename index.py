@@ -9,13 +9,14 @@ import webbrowser
 
 from app import app
 from apps import commonmodules as cm
-from apps.books import books_home, books_profile
+from apps.books.all_books import books_home, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
 from apps.employees import employees, employees_profile
 from apps import login, signup
 from apps.publishers import publishers, publishers_profile
+from apps.books.genres import genres, genres_profile
 
 
 CONTENT_STYLE = {
@@ -111,6 +112,36 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = aboutus.layout
             else:
                 returnlayout = 'error404'
+        if pathname in ['/', '/books']:
+            returnlayout = books_home.layout
+        elif pathname == '/books/books_profile':
+            returnlayout = books_profile.layout
+        elif pathname == '/books/genres':
+            returnlayout = genres.layout
+        elif pathname == '/books/genres_profile':
+            returnlayout = genres_profile.layout
+        elif pathname == '/customers/individuals_home':
+            returnlayout = customers_individuals_home.layout
+        elif pathname == '/customers/individuals_profile':
+            returnlayout = customers_individuals_profile.layout
+        elif pathname == '/customers/institutions_home':
+            returnlayout = customers_institutions_home.layout
+        elif pathname == '/customers/institutions_profile':
+            returnlayout = customers_institutions_profile.layout
+        elif pathname == '/publishers':
+            returnlayout = publishers.layout
+        elif pathname == '/publishers/publishers_profile':
+            returnlayout = publishers_profile.layout
+        elif pathname == '/employees':
+            returnlayout = employees.layout
+        elif pathname == '/employees/employees_profile':
+            returnlayout = employees_profile.layout
+        elif pathname == '/reports':
+            returnlayout = 'reports'
+        elif pathname == '/about_us':
+            returnlayout = aboutus.layout
+        else:
+            returnlayout = 'error404'
     
     else:
         raise PreventUpdate
