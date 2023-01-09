@@ -146,7 +146,7 @@ layout = html.Div(
         State('url', 'search')
     ]
 )
-def cust_ind_prof_loaddropdown(pathname, search):
+def cust_ind_prof_toload(pathname, search):
 
     if pathname == '/customers/individuals_profile':
         parsed = urlparse(search)
