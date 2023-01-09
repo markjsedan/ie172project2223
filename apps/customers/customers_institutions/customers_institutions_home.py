@@ -32,8 +32,9 @@ sort_add = dbc.NavbarSimple(
 )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("institutions", href="/customers/institutions_home", active=True)),
-    dbc.NavItem(dbc.NavLink("Institutions", href="/customers/institutions",)),
+    dbc.NavItem(dbc.NavLink("Individuals", href="/customers/individuals_home")),
+    dbc.NavItem(dbc.NavLink("Institutions", href="/customers/institutions_home", active=True)),
+    dbc.NavItem(dbc.NavLink("All Purchases", href="/customers/allpurchases_home",)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -53,7 +54,7 @@ layout = html.Div(
         ),
         dbc.Card(
             [
-                dbc.CardHeader(html.H4("Customers > institutions")),
+                dbc.CardHeader(html.H4("Customers > Institutions")),
                 dbc.CardBody(
                     [
                         dbc.Row(navs, style={'fontWeight':'bold',"color":"dark"}
@@ -90,12 +91,12 @@ def updatecustomers_institutions_list(pathname, searchterm):
     if pathname == '/customers/institutions_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT cust_ins_id, cust_ins_name, cust_ins_prof, cust_ins_email
+        sql = """ SELECT cust_ins_id, cust_ins_name, cust_ins_cp, cust_ins_cp_role, cust_ins_cp_email
                 FROM customers_institutions
                 WHERE NOT cust_ins_delete_ind
         """
         val = []
-        cols = ["Customer ID", "Customer Name", "Profession", "Email"]
+        cols = ["Customer ID", "Customer Name", "Contact Person", "Role", "Email"]
         
 
         if searchterm:
@@ -117,12 +118,8 @@ def updatecustomers_institutions_list(pathname, searchterm):
                     )
                 ]
             
-            # we add the buttons to the table
+
             customers_institutions['Action'] = buttons
-
-            # remove ID col
-            # customers_institutions.drop('Customer ID', axis=1, inplace=True)
-
             customers_institutions_table = dbc.Table.from_dataframe(customers_institutions, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
             return [customers_institutions_table]
