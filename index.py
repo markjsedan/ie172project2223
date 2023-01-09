@@ -11,8 +11,8 @@ from app import app
 from apps import commonmodules as cm
 from apps.books import books_home, books_profile
 from apps import aboutus
-from apps.customers.customers_individuals import customers_individuals_home
-from apps.customers.customers_individuals import customers_individuals_profile
+from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
+from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
 from apps.employees import employees, employees_profile
 from apps.publishers import publishers, publishers_profile
 
@@ -59,6 +59,10 @@ def displaypage(pathname):
             returnlayout = customers_individuals_home.layout
         elif pathname == '/customers/individuals_profile':
             returnlayout = customers_individuals_profile.layout
+        elif pathname == '/customers/institutions_home':
+            returnlayout = customers_institutions_home.layout
+        elif pathname == '/customers/institutions_profile':
+            returnlayout = customers_institutions_profile.layout
         elif pathname == '/publishers':
             returnlayout = publishers.layout
         elif pathname == '/publishers/publishers_profile':
