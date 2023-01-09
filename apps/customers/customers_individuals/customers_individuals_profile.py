@@ -6,6 +6,7 @@ import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import pandas as pd
+from urllib.parse import urlparse, parse_qs
 
 from app import app
 from apps import dbconnect as db    
@@ -15,7 +16,7 @@ layout = html.Div(
     [
         html.Div(
             [
-                dcc.Store(id='customers_individuals_info_toload', storage_type='memory', data=0),
+                dcc.Store(id='cust_ind_toload', storage_type='memory', data=0),
             ]
         ),
         html.H2("Customer Information"),
@@ -25,7 +26,7 @@ layout = html.Div(
                 dbc.Label("Customer ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="cust_ind_id", placeholder="Leave this blank"
+                        type="text", id="cust_ind_id", placeholder="Leave this blank",readonly=True
                     ),
                     width=7,
                 ),
@@ -73,7 +74,7 @@ layout = html.Div(
                 dbc.Label("Contact Number", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="cust_ind_contact_num", placeholder="Enter publisher"
+                        type="text", id="cust_ind_contact_num", placeholder="Enter contact number"
                     ),
                     width=7,
                 ),
@@ -85,25 +86,13 @@ layout = html.Div(
                 dbc.Label("Address", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="cust_ind_address", placeholder="Enter publisher"
+                        type="text", id="cust_ind_address", placeholder="Enter address"
                     ),
                     width=7,
                 ),
             ],
             className="mb-3",
         ),
-        # dbc.Row(
-        #     [
-        #         dbc.Label("Date Modified", width=2),
-        #         dbc.Col(
-        #             dcc.DatePickerSingle(
-        #                 id='cust_ind_modified_date'
-        #             ),
-        #             width=7,
-        #         ),
-        #     ],
-        #     className="mb-3",
-        # ),
         html.Div(
             dbc.Row(
                 [
@@ -182,7 +171,7 @@ layout = html.Div(
 )
 def cust_ind_submitprocess(submitbtn, closebtn,
 
-                            id, name, profession, email, contact_number, address,
+                            customer_id, name, profession, email, contact_number, address,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -212,7 +201,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
 
             if mode == 'add':
 
-                sqlcode = """INSERT INTO books(
+                sqlcode = """INSERT INTO customers_individuals(
                     cust_ind_name,
                     cust_ind_prof,
                     cust_ind_email,
@@ -226,16 +215,15 @@ def cust_ind_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been saved."
-                okay_href = '/customers/individuals'
+                okay_href = '/customers/individuals_home'
 
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                bookid = parse_qs(parsed.query)['id'][0]
+                cust_ind_id = parse_qs(parsed.query)['id'][0]
 
                 sqlcode = """UPDATE customers_individuals
                 SET
-                    cust_ind_id = %s
                     cust_ind_name = %s,
                     cust_ind_prof = %s,
                     cust_ind_email = %s,
@@ -248,11 +236,11 @@ def cust_ind_submitprocess(submitbtn, closebtn,
 
                 to_delete = bool(removerecord)
 
-                values = [id,name, profession, email, contact_number, address, to_delete]
+                values = [name, profession, email, contact_number, address, to_delete,cust_ind_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."
-                okay_href = '/customers/individuals'
+                okay_href = '/customers/individuals_home'
 
             else:
                 raise PreventUpdate 
@@ -283,11 +271,14 @@ def cust_ind_submitprocess(submitbtn, closebtn,
         State('url', 'search'),
     ]
 )
-def cust_ind_loadprofile(timestamp, to_load, search):
-    if to_load == 1:
+def cust_ind_loadprofile(timestamp,to_load, search):
+    if to_load:
 
-        # 1. query the book details from the database
-        sql = """ SELECT cust_ind_id,
+        parsed = urlparse(search)
+        cust_ind_id = parse_qs(parsed.query)['id'][0]
+        # 1. query the details from the database
+        sql = """ SELECT 
+                    cust_ind_id,
                     cust_ind_name,
                     cust_ind_prof,
                     cust_ind_email,
@@ -296,20 +287,18 @@ def cust_ind_loadprofile(timestamp, to_load, search):
         FROM customers_indviduals
         WHERE cust_ind_id = %s"""     
         
-        parsed = urlparse(search)
-        cust_ind_id = parse_qs(parsed.query)['id'][0]
 
         val = [cust_ind_id]
-        colnames = ["id","name","profession","email","contact number","address"]
+        colnames = ["customer_id","name","profession","email","contact number","address"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        customer_id = df['id'][0]
+        customer_id = df['customer_id'][0]
         name = df['name'][0]
         profession = df['profession'][0]
         email = df['email'][0]
-        contact_number = df['contact_num'][0]
+        contact_number = df['contact number'][0]
         address = df['address'][0]
 
         return [customer_id, name, profession, email, contact_number, address]
