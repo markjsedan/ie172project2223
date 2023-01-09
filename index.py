@@ -108,6 +108,10 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = customers_institutions_home.layout
             elif pathname == '/customers/institutions_profile':
                 returnlayout = customers_institutions_profile.layout
+            elif pathname == '/customers/purchases_home':
+                returnlayout = customers_purchases_home.layout
+            elif pathname == '/customers/purchases_profile':
+                returnlayout = customers_purchases_profile.layout
             elif pathname == '/publishers':
                 returnlayout = publishers.layout
             elif pathname == '/publishers/publishers_profile':
