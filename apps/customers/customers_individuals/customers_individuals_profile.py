@@ -146,6 +146,29 @@ layout = html.Div(
         State('url', 'search')
     ]
 )
+def cust_ind_prof_loaddropdown(pathname, search):
+
+    if pathname == '/customers/individuals_profile':
+        sql = """
+            SELECT cust_ind_name as label, cust_ind_id as value
+            FROM customers_individuals
+            WHERE cust_ind_delete_ind = False
+        """
+        values = []
+        cols = ['label', 'value']
+        df = db.querydatafromdatabase(sql, values, cols)
+        cust_ind_opts = df.to_dict('records')
+        
+        parsed = urlparse(search)
+        mode = parse_qs(parsed.query)['mode'][0]
+        toload = 1 if mode == 'edit' else 0
+        removerecord_div = None if toload else {'display': 'None'}
+
+    else:
+        raise PreventUpdate
+
+    return [cust_ind_opts, toload, removerecord_div]
+
 
 
 @app.callback(
@@ -271,8 +294,8 @@ def cust_ind_submitprocess(submitbtn, closebtn,
         State('url', 'search'),
     ]
 )
-def cust_ind_loadprofile(timestamp,to_load, search):
-    if to_load:
+def cust_ind_loadprofile(timestamp,toload, search):
+    if toload == 0:
 
         parsed = urlparse(search)
         cust_ind_id = parse_qs(parsed.query)['id'][0]
