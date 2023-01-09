@@ -13,7 +13,7 @@ from apps import dbconnect as db
 
 add = dbc.NavbarSimple(
     children=[
-        dbc.Button("Add Employee", color="dark", className="me-2", href="/employees/employees_profile"),
+        dbc.Button("Add Employee", color="dark", className="me-2", href="/employees/employees_profile?mode=add"),
     ],
     brand="",
     # color="#ffffff",
