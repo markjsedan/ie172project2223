@@ -210,7 +210,7 @@ def cust_ins_prof_toload(pathname, search):
     ]
 )
 def cust_ins_submitprocess(submitbtn, closebtn,
-                            customer_id, name, address, landline_number, contact_person,role, email, contact_number,
+                            name, address, landline_number, contact_person,role, email, contact_number,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -252,7 +252,7 @@ def cust_ins_submitprocess(submitbtn, closebtn,
                     cust_ins_contact_num,
                     cust_ins_delete_ind
                 )
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 values = [name, address, landline_number, contact_person, role, email, contact_number, False]
                 db.modifydatabase(sqlcode, values)
