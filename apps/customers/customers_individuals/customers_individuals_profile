@@ -22,95 +22,95 @@ layout = html.Div(
         html.Hr(),
         dbc.Row(
             [
-                dbc.Label("Book Title", width=2),
+                dbc.Label("Customer ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_title", placeholder="Enter title"
+                        type=NULL, id="cust_ind_id", placeholder="Leave this blank"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Author", width=2),
+                dbc.Label("Customer Name", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_author", placeholder="Enter author"
+                        type="text", id="cust_ind_name", placeholder="Enter customer name"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Genre", width=2),
+                dbc.Label("Profession", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_genre", placeholder="Enter genre"
+                        type="text", id="cust_ind_prof", placeholder="Enter profession"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Publisher", width=2),
+                dbc.Label("Email", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_publisher", placeholder="Enter publisher"
+                        type="text", id="cust_ind_email", placeholder="Enter email address"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Release Date", width=2),
+                dbc.Label("Contact Number", width=2),
                 dbc.Col(
-                    dcc.DatePickerSingle(
-                        id='bookinfo_releasedate'
+                    dbc.Input(
+                        type="text", id="cust_ind_contact_num", placeholder="Enter publisher"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Price", width=2),
+                dbc.Label("Address", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_price", placeholder="Enter price"
+                        type="text", id="cust_ind_address", placeholder="Enter publisher"
                     ),
-                    width=6,
+                    width=7,
                 ),
             ],
             className="mb-3",
         ),
-        dbc.Row(
-            [
-                dbc.Label("Inventory Count", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="bookinfo_count", placeholder="Enter title"
-                    ),
-                    width=6,
-                ),
-            ],
-            className="mb-3",
-        ),
+        # dbc.Row(
+        #     [
+        #         dbc.Label("Date Modified", width=2),
+        #         dbc.Col(
+        #             dcc.DatePickerSingle(
+        #                 id='cust_ind_modified_date'
+        #             ),
+        #             width=7,
+        #         ),
+        #     ],
+        #     className="mb-3",
+        # ),
         html.Div(
             dbc.Row(
                 [
-                    dbc.Label("Delete Book", width=2),
+                    dbc.Label("Delete Customer", width=2),
                     dbc.Col(
                         dbc.Checklist(
-                            id='bookinfo_removerecord',
+                            id='cust_ind_removerecord',
                             options=[
                                 {
                                     'label': "Mark for Deletion",
@@ -119,26 +119,26 @@ layout = html.Div(
                             ], # I want the label to be bold
                             style={'fontWeight':'bold'},
                         ),
-                        width=6,
+                        width=7,
                     ),
                 ],
                 className="mb-3",
             ),
-            id='bookinfo_removerecord_div'
+            id='cust_ind_removerecord_div'
         ),
         html.Hr(),
-        dbc.Button('Submit', color='secondary', id='bookinfo_submitbtn'),
+        dbc.Button('Submit', color='dark', id='cust_ind_submitbtn'),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Saving Progress")),
-                dbc.ModalBody("tempmessage", id='bookinfo_feedback_message'),
+                dbc.ModalBody("tempmessage", id='cust_ind_feedback_message'),
                 dbc.ModalFooter(
                     dbc.Button(
-                        "Okay", id="bookinfoclosebtn", className="ms-auto", n_clicks=0
+                        "Okay", id="cust_ind_closebtn", className="ms-auto", n_clicks=0
                     )
                 ),
             ],
-            id="bookinfo_modal",
+            id="cust_ind_modal",
             is_open=False,
         ),
     ]
@@ -147,8 +147,8 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('bookinfo_toload', 'data'),
-        Output('bookinfo_removerecord_div', 'style')
+        Output('cust_ind_toload', 'data'),
+        Output('cust_ind_removerecord_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -161,29 +161,28 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('bookinfo_modal', 'is_open'),
-        Output('bookinfo_feedback_message', 'children'),
-        Output('bookinfo_closebtn', 'href')
+        Output('cust_ind_modal', 'is_open'),
+        Output('cust_ind_feedback_message', 'children'),
+        Output('cust_ind_closebtn', 'href')
     ],
     [
-        Input('bookinfo_submitbtn', 'n_clicks'),
-        Input('bookinfo_closebtn', 'n_clicks')
+        Input('cust_ind_submitbtn', 'n_clicks'),
+        Input('cust_ind_closebtn', 'n_clicks')
     ],
     [
-        State('bookinfo_title', 'value'),
-        State('bookinfo_author', 'value'),
-        State('bookinfo_genre', 'value'),
-        State('bookinfo_publisher', 'value'),
-        State('bookinfo_releasedate', 'date'),
-        State('bookinfo_price', 'value'),
-        State('bookinfo_count', 'value'),
+        State('cust_ind_id', 'value'),
+        State('cust_ind_name', 'value'),
+        State('cust_ind_prof', 'value'),
+        State('cust_ind_email', 'value'),
+        State('cust_ind_contact_num', 'value'),
+        State('cust_ind_address', 'value'),
         State('url', 'search'),
-        State('bookinfo_removerecord', 'value'),
+        State('cust_ind_removerecord', 'value'),
     ]
 )
-def bookinfo_submitprocess(submitbtn, closebtn,
+def cust_ind_submitprocess(submitbtn, closebtn,
 
-                            title, author, genre, publisher, releasedate, price, count,
+                            id, name, profession, email, contact_number, address,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -194,24 +193,19 @@ def bookinfo_submitprocess(submitbtn, closebtn,
     else:
         raise PreventUpdate
 
-    if eventid == 'bookinfo_submitbtn' and submitbtn:
+    if eventid == 'cust_ind_submitbtn' and submitbtn:
         openmodal = True
 
         inputs = [
-            title,
-            author,
-            genre,
-            publisher,
-            releasedate,
-            price,
-            count
+            name,
+            profession,
+            email,
+            contact_number,
+            address
         ]
 
         if not all (inputs):
             feedbackmessage = "Please supply all inputs."
-        elif len(title)>256:
-            feedbackmessage = "Title is too long (length>256)."
-        
         else:
             parsed = urlparse(search)
             mode = parse_qs(parsed.query)['mode'][0]
@@ -219,21 +213,19 @@ def bookinfo_submitprocess(submitbtn, closebtn,
             if mode == 'add':
 
                 sqlcode = """INSERT INTO books(
-                    bk_title,
-                    au_id,
-                    genre_id,
-                    pub_id,
-                    bk_pub_yr,
-                    bk_price,
-	                bk_inv_count,
-                    bk_delete_ind
+                    cust_ind_name,
+                    cust_ind_prof,
+                    cust_ind_email,
+                    cust_ind_contact_num,
+                    cust_ind_address,
+                    cust_ind_delete_ind
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s)
                 """
-                values = [title, author, genre, publisher, releasedate, price, count, False]
+                values = [name, profession, email, contact_number, address, False]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Book has been saved."
+                feedbackmessage = "Customer information has been saved."
                 okay_href = '/books'
 
             elif mode == 'edit':
@@ -241,33 +233,31 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 parsed = urlparse(search)
                 bookid = parse_qs(parsed.query)['id'][0]
 
-                sqlcode = """UPDATE books
+                sqlcode = """UPDATE customers_individuals
                 SET
-
-                    bk_title = %s,
-                    au_id = %s,
-                    genre_id = %s,
-                    pub_id = %s,
-                    bk_pub_yr = %s,
-                    bk_price = %s,
-	                bk_inv_count = %s,
-                    bk_delete_ind = %s
+                    cust_ind_id = %s
+                    cust_ind_name = %s,
+                    cust_ind_prof = %s,
+                    cust_ind_email = %s,
+                    cust_ind_contact_num = %s,
+                    cust_ind_address = %s,
+                    cust_ind_delete_ind = %s
                 WHERE
-                    bk_id = %s
+                    cust_ind_id = %s
                 """
 
                 to_delete = bool(removerecord)
 
-                values = [title, author, genre, publisher, releasedate, price, count, to_delete, bookid]
+                values = [id,name, profession, email, contact_number, address, to_delete]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Book has been updated."
-                okay_href = '/books'
+                feedbackmessage = "Customer information has been updated."
+                okay_href = '/customers/individuals'
 
             else:
                 raise PreventUpdate 
 
-    elif eventid == 'bookinfo_closebtn' and closebtn:
+    elif eventid == 'cust_ind_closebtn' and closebtn:
         pass
 
     else:
@@ -278,48 +268,51 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
 @app.callback(
     [
-        Output('bookinfo_title', 'value'),
-        Output('bookinfo_author', 'value'),
-        Output('bookinfo_genre', 'value'),
-        Output('bookinfo_publisher', 'value'),
-        Output('bookinfo_releasedate', 'date'),
-        Output('bookinfo_price', 'value'),
-        Output('bookinfo_count', 'value'),
+        Output('cust_ind_id', 'value'),
+        Output('cust_ind_name', 'value'),
+        Output('cust_ind_prof', 'value'),
+        Output('cust_ind_email', 'value'),
+        Output('cust_ind_contact_num', 'value'),
+        Output('cust_ind_address', 'date'),
     ],
     [
-        Input('bookinfo_toload', 'modified_timestamp'),
+        Input('cust_ind_toload', 'modified_timestamp'),
     ],
     [
-        State('bookinfo_toload', 'data'),
+        State('cust_ind_toload', 'data'),
         State('url', 'search'),
     ]
 )
-def bookinfo_loadprofile(timestamp, to_load, search):
+def cust_ind_loadprofile(timestamp, to_load, search):
     if to_load == 1:
 
         # 1. query the book details from the database
-        sql = """ SELECT bk_title, bk_title, au_id, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
-        FROM books
-        WHERE book_id = %s"""     
+        sql = """ SELECT cust_ind_id,
+                    cust_ind_name,
+                    cust_ind_prof,
+                    cust_ind_email,
+                    cust_ind_contact_num,
+                    cust_ind_address,
+        FROM customers_indviduals
+        WHERE cust_ind_id = %s"""     
         
         parsed = urlparse(search)
-        bookid = parse_qs(parsed.query)['id'][0]
+        cust_ind_id = parse_qs(parsed.query)['id'][0]
 
-        val = [bookid]
-        colnames = ['title', 'author', 'genre', 'publisher', 'reldate', 'price', 'count']
+        val = [cust_ind_id]
+        colnames = ["id","name","profession","email","contact number","address"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        title = df['title'][0]
-        author = df['author'][0]
-        genre = df['genre'][0]
-        publisher = df['publisher'][0]
-        reldate = df['reldate'][0]
-        price = df['price'][0]
-        count = df['count'][0]
+        customer_id = df['id'][0]
+        name = df['name'][0]
+        profession = df['profession'][0]
+        email = df['email'][0]
+        contact_number = df['contact_num'][0]
+        address = df['address'][0]
 
-        return [title, author, genre, publisher, reldate, price, count]
+        return [customer_id, name, profession, email, contact_number, address]
 
     else:
         raise PreventUpdate
