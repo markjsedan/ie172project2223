@@ -23,7 +23,7 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
-        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals/profile"),
+        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals_profile"),
     ],
     brand="",
     # color="#ffffff",

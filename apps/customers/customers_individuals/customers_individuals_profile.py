@@ -25,7 +25,7 @@ layout = html.Div(
                 dbc.Label("Customer ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type=NULL, id="cust_ind_id", placeholder="Leave this blank"
+                        type="text", id="cust_ind_id", placeholder="Leave this blank"
                     ),
                     width=7,
                 ),
@@ -226,7 +226,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been saved."
-                okay_href = '/books'
+                okay_href = '/customers/individuals'
 
             elif mode == 'edit':
 
