@@ -29,4 +29,26 @@ CREATE TABLE books(
 	bk_inv_count int2,
 	bk_modified_date timestamp without time zone default now(),
 	bk_delete_ind bool default false
+);
+CREATE TABLE customers_individuals(
+	cust_ind_id serial primary key not null,
+	cust_ind_name varchar(256),
+	cust_ind_prof varchar (256),
+	cust_ind_email varchar (256),
+	cust_ind_contact_num varchar (256),
+	cust_ind_address varchar (256),
+	cust_ind_modified_date timestamp without time zone default now(),
+	cust_ind_delete_ind bool default false
+);
+CREATE TABLE customers_institutions(
+	cust_ins_id serial primary key not null,
+	cust_ins_name varchar(256),
+	cust_ins_address varchar (256),
+	cust_ins_land_num varchar(128),
+	cust_ins_cp varchar (256),
+	cust_ins_cp_role varchar (256),
+	cust_ins_cp_email varchar (256),
+	cust_ins_contact_num varchar (256),
+	cust_ins_modified_date timestamp without time zone default now(),
+	cust_ins_delete_ind bool default false
 )
