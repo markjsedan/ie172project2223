@@ -51,7 +51,7 @@ def displaypage(pathname):
         if pathname in ['/', '/books']:
             returnlayout = books_home.layout
         elif pathname == '/customers':
-            returnlayout = 'customers'
+            returnlayout = customers_individuals_home.layout
         elif pathname == '/publishers':
             returnlayout = 'publishers'
         elif pathname == '/employees':
