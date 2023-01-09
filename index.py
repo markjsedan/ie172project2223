@@ -53,7 +53,7 @@ def displaypage(pathname):
             returnlayout = books_home.layout
         elif pathname == '/books/books_profile':
             returnlayout = books_profile.layout
-        elif pathname == '/customers/individuals':
+        elif pathname == '/customers/individuals_home':
             returnlayout = customers_individuals_home.layout
         elif pathname == '/customers/individuals_profile':
             returnlayout = customers_individuals_profile.layout

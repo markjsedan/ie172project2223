@@ -23,7 +23,7 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
-        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals_profile"),
+        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals_profile?mode=add"),
     ],
     brand="",
     # color="#ffffff",
@@ -32,7 +32,7 @@ sort_add = dbc.NavbarSimple(
 )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("Individuals", href="/customers/individuals", active=True)),
+    dbc.NavItem(dbc.NavLink("Individuals", href="/customers/individuals_home", active=True)),
     dbc.NavItem(dbc.NavLink("Institutions", href="/customers/institutions",)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
@@ -87,7 +87,7 @@ layout = html.Div(
     ]
 )
 def updatecustomers_individuals_list(pathname, searchterm):
-    if pathname == '/customers':
+    if pathname == '/customers/individuals_home':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT cust_ind_id, cust_ind_name, cust_ind_prof, cust_ind_email
@@ -99,7 +99,7 @@ def updatecustomers_individuals_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND cust_ind_id ILIKE %s"""
+            sql += """ AND cust_ind_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
