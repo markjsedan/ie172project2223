@@ -89,7 +89,7 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = 'error404'
         
         else:
-            if pathname in ['/logout']:
+            if pathname in ['/','/logout']:
                 returnlayout = login.layout
                 sessionlogout = True
 
