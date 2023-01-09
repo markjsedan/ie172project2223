@@ -67,4 +67,5 @@ CREATE TABLE users(
         user_password varchar(64) not null,
         user_modified_on timestamp without time zone default now(),
         user_delete_ind bool default false
-)
+);
+CREATE TABLE users

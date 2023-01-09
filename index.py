@@ -13,6 +13,7 @@ from apps.books.all_books import books_home, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
+from apps.customers.customers_purchases import customers_purchases_home, customers_purchases_profile
 from apps.employees import employees, employees_profile
 from apps import login, signup
 from apps.publishers import publishers, publishers_profile
