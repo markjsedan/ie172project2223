@@ -233,7 +233,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 values = [title, author, genre, publisher, releasedate, price, count, False]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Book has been saved."
+                feedbackmessage = "Book information has been saved."
                 okay_href = '/books'
 
             elif mode == 'edit':
