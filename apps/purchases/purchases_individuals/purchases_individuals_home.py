@@ -105,7 +105,7 @@ def updatepurchases_individuals_list(pathname, searchterm):
         # 2. create the table and add it to the db
         if purchases_individuals.shape[0]:
             buttons = []
-            for pur_ind_id in purchases_individuals['puromer ID']:
+            for pur_ind_id in purchases_individuals['Purchase ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/purchases/individuals_profile?mode=edit&id={pur_ind_id}",
