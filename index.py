@@ -209,9 +209,9 @@ def displaypage(pathname):
                 returnlayout = customers_institutions_home.layout
             elif pathname == '/customers/institutions_profile':
                 returnlayout = customers_institutions_profile.layout
-            elif pathname == '/purchase/individuals_home':
+            elif pathname == '/purchases/individuals_home':
                 returnlayout = purchases_individuals_home.layout
-            elif pathname == '/purchase/individuals_profile':
+            elif pathname == '/purchases/individuals_profile':
                 returnlayout = purchases_individuals_profile.layout
             elif pathname == '/publishers':
                 returnlayout = publishers.layout

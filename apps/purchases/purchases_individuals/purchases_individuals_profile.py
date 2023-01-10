@@ -134,7 +134,7 @@ def pur_ind_prof_toload(pathname, search):
         sql = """
             SELECT cust_ind_name as label, cust_ind_id as value
             FROM customers_individuals
-            WHERE cust_ind_delete_ind = False
+            WHERE NOT cust_ind_delete_ind
         """ 
         values = []
         cols = ['label', 'value']
@@ -169,7 +169,7 @@ def pur_ind_prof_toload(pathname, search):
         State('pur_ind_id', 'value'),
         State('pur_ind_name', 'value'),
         State('pur_ind_date', 'value'),
-        State('pur_ind_amount', 'value'),
+        State('pur_ind_amt', 'value'),
         State('url', 'search'),
         State('pur_ind_removerecord', 'value'),
     ]
