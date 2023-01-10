@@ -13,12 +13,19 @@ from apps import dbconnect as db
 
 add = dbc.NavbarSimple(
     children=[
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem("A-Z", href="/books/allbooks/a-z"),
+                dbc.DropdownMenuItem("Z-A", href="/books/allbooks/z-a"),
+                dbc.DropdownMenuItem("Latest", href="/books/allbooks/latest"),
+            ],
+            nav=True,
+            in_navbar=True,
+            label="Sort by",
+        ),
         dbc.Button("Add Employee", color="dark", className="me-2", href="/employees/employees_profile?mode=add"),
     ],
     brand="",
-    # color="#ffffff",
-    # dark=False,
-
 )
 
 layout = html.Div(
@@ -71,7 +78,7 @@ layout = html.Div(
     ]
 )
 def updateemployees_list(pathname, searchterm):
-    if pathname == '/employees':
+    if pathname == '/employees_home':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT emp_id, emp_name, emp_role, emp_email_address, emp_contact_number

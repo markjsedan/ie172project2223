@@ -87,15 +87,15 @@ layout = html.Div(
     ]
 )
 def updatebooks_allbooks_list(pathname, searchterm):
-    if pathname == '/books':
+    if pathname == '/' or '/books':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT bk_title, bk_author, genre_id, bk_inv_count
+        sql = """ SELECT bk_title, bk_author, bk_pub_yr, bk_inv_count
                 FROM books
                 WHERE NOT bk_delete_ind
         """
         val = []
-        cols = ["Title", "Author", "Genre", "Stock Quantity"]
+        cols = ["Title", "Author", "Publication Year","Stock Quantity"]
         
 
         if searchterm:

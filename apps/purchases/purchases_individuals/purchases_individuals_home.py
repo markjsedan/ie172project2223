@@ -13,6 +13,16 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem("A-Z", href="/books/allbooks/a-z"),
+                dbc.DropdownMenuItem("Z-A", href="/books/allbooks/z-a"),
+                dbc.DropdownMenuItem("Latest", href="/books/allbooks/latest"),
+            ],
+            nav=True,
+            in_navbar=True,
+            label="Sort by",
+        ),
         dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
     ],
     brand="",
