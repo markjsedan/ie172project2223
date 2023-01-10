@@ -89,12 +89,12 @@ def updatepublishers_list(pathname, searchterm):
     if pathname == '/publishers/publishers_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pub_id, pub_name, pub_land_num
+        sql = """ SELECT pub_id, pub_name, pub_land_num, pub_email
                 FROM publishers
                 WHERE NOT pub_delete_ind
         """
         val = []
-        cols = ["Publisher ID", "Publisher Name", "Landline Number"]
+        cols = ["Publisher ID", "Publisher Name", "Landline Number","Email"]
         
 
         if searchterm:
@@ -107,7 +107,7 @@ def updatepublishers_list(pathname, searchterm):
         # 2. create the table and add it to the db
         if publishers.shape[0]:
             buttons = []
-            for pub_id in publishers['Customer ID']:
+            for pub_id in publishers['Publisher ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_profile?mode=edit&id={pub_id}",
