@@ -124,7 +124,7 @@ layout = html.Div(
 )
 def order_profile_toload(pathname, search):
 
-    if pathname == '/publishers/orders_profile':
+    if pathname == '/publishers/publishers_orders_profile':
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
@@ -188,11 +188,11 @@ def order_submitprocess(submitbtn, closebtn,
 
             if mode == 'add':
 
-                sqlcode = """INSERT INTO orders(
-                    pub_name,
-                    order_date,
-                    order_amount
-                    order_delete_ind
+                sqlcode = """INSERT INTO publishers_orders(
+                    pub_order_name,
+                    pub_order_date,
+                    pub_order_amount
+                    pub_order_delete_ind
                 )
                 VALUES (%s, %s, %s, %s)
                 """
@@ -200,21 +200,21 @@ def order_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Order information has been saved."
-                okay_href = '/publishers/orders'
+                okay_href = '/publishers/publishers_orders'
 
             elif mode == 'edit':
 
                 parsed = urlparse(search)
                 orderid = parse_qs(parsed.query)['id'][0]
 
-                sqlcode = """UPDATE orders
+                sqlcode = """UPDATE publishers_orders
                 SET
-                    pub_name = %s,
-                    order_date = %s,
-                    order_amount = %s,
-                    order_delete_ind = %s
+                    pub_order_name = %s,
+                    pub_order_date = %s,
+                    pub_order_amount = %s,
+                    pub_order_delete_ind = %s
                 WHERE
-                    order_id = %s
+                    pub_order_id = %s
                 """
 
                 todelete = bool(removerecord)
@@ -223,7 +223,7 @@ def order_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Order information has been updated."
-                okay_href = '/publishers/orders'
+                okay_href = '/publishers/publishers_orders'
 
             else:
                 raise PreventUpdate 
@@ -260,11 +260,11 @@ def order_loadprofile(timestamp,toload, search):
         orderid = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
-                    order_id,
-                    pub_name,
-                    order_date,
-                    order_amount,
-        FROM orders
+                    pub_order_id,
+                    pub_order_name,
+                    pub_order_date,
+                    pub_order_amount,
+        FROM publishers_orders
         WHERE order_id = %s """     
         
 
