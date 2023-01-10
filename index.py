@@ -157,7 +157,8 @@ from apps.customers.customers_individuals import customers_individuals_home, cus
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
 from apps.employees import employees_home, employees_profile
 from apps import login, signup
-from apps.publishers import publishers_home, publishers_profile, publishers_orders, publishers_orders_profile
+from apps.publishers.all_publishers import publishers_home, publishers_profile
+from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_profile
 from apps.books.genres import genres, genres_profile
 from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
 
