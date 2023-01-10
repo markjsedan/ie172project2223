@@ -38,7 +38,7 @@ layout = html.Div(
                 dbc.Label("Purchaser", width=2),
                 dbc.Col(
                     html.Div(
-                        dbc.Dropdown(
+                        dcc.Dropdown(
                         id='cust_ind_name',
                         clearable=True,
                         searchable=True
