@@ -66,8 +66,13 @@ layout = html.Div(
             [
                 dbc.Label("Publisher", width=2),
                 dbc.Col(
-                    dbc.Input(
-                        type="text", id="bookinfo_publisher", placeholder="Enter publisher"
+                    html.Div(
+                        dcc.Dropdown(
+                            id='bookinfo_publisher',
+                            clearable=True,
+                            searchable=True
+                        ), 
+                        className="dash-bootstrap"
                     ),
                     width=7,
                 ),
@@ -76,10 +81,10 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Release Date", width=2),
+                dbc.Label("Publication Year", width=2),
                 dbc.Col(
-                    dcc.DatePickerSingle(
-                        id='bookinfo_releasedate'
+                    dbc.Input(
+                        type="text", id="bookinfo_pubyear", placeholder="Enter publication year"
                     ),
                     width=7,
                 ),
@@ -154,6 +159,7 @@ layout = html.Div(
 @app.callback(
     [
         Output('bookinfo_genre', 'options'),
+        Output('bookinfo_publisher', 'options'),
         Output('bookinfo_toload', 'data'),
         Output('bookinfo_removerecord_div', 'style')
     ],
@@ -168,6 +174,7 @@ layout = html.Div(
 def bookinfo_loaddropdown(pathname, search):
     
     if pathname == '/books/books_profile':
+        # genre options
         sql = """
             SELECT genre_name as label, genre_id as value
             FROM genres
@@ -175,10 +182,21 @@ def bookinfo_loaddropdown(pathname, search):
         """
         values = []
         cols = ['label', 'value']
-        df = db.querydatafromdatabase(sql, values, cols)
+        genre_opts_df = db.querydatafromdatabase(sql, values, cols)
+        genre_opts = genre_opts_df.to_dict('records')
 
-        genre_opts = df.to_dict('records')
-
+        # publisher options
+        sql = """
+            SELECT pub_name as label, pub_id as value
+            FROM publishers
+            WHERE pub_delete_ind = False
+        """
+        values = []
+        cols = ['label', 'value']
+        pubs_opts_df = db.querydatafromdatabase(sql, values, cols)
+        pubs_opts = pubs_opts_df.to_dict('records')
+        
+        # to_load
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
 
@@ -188,7 +206,7 @@ def bookinfo_loaddropdown(pathname, search):
     else:
         raise PreventUpdate
 
-    return [genre_opts, to_load, removerecord_div]
+    return [genre_opts, pubs_opts, to_load, removerecord_div]
 
 
 
@@ -208,7 +226,7 @@ def bookinfo_loaddropdown(pathname, search):
         State('bookinfo_author', 'value'),
         State('bookinfo_genre', 'value'),
         State('bookinfo_publisher', 'value'),
-        State('bookinfo_releasedate', 'date'),
+        State('bookinfo_pubyear', 'value'),
         State('bookinfo_price', 'value'),
         State('bookinfo_count', 'value'),
         State('url', 'search'),
@@ -217,7 +235,7 @@ def bookinfo_loaddropdown(pathname, search):
 )
 def bookinfo_submitprocess(submitbtn, closebtn,
 
-                            title, author, genre, publisher, releasedate, price, count,
+                            title, author, genre, publisher, pubyear, price, count,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -236,7 +254,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
             author,
             genre,
             publisher,
-            releasedate,
+            pubyear,
             price,
             count
         ]
@@ -264,7 +282,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
-                values = [title, author, genre, publisher, releasedate, price, count, False]
+                values = [title, author, genre, publisher, pubyear, price, count, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Book information has been saved."
@@ -292,7 +310,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
                 to_delete = bool(removerecord)
 
-                values = [title, author, genre, publisher, releasedate, price, count, to_delete, bookid]
+                values = [title, author, genre, publisher, pubyear, price, count, to_delete, bookid]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Book information has been updated."
@@ -316,7 +334,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
         Output('bookinfo_author', 'value'),
         Output('bookinfo_genre', 'value'),
         Output('bookinfo_publisher', 'value'),
-        Output('bookinfo_releasedate', 'date'),
+        Output('bookinfo_pubyear', 'value'),
         Output('bookinfo_price', 'value'),
         Output('bookinfo_count', 'value'),
     ],
@@ -332,28 +350,29 @@ def bookinfo_loadprofile(timestamp, to_load, search):
     if to_load == 1:
 
         # 1. query the book details from the database
-        sql = """ SELECT bk_title, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
+        sql = """ SELECT bk_id, bk_title, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
         FROM books
-        WHERE book_id = %s"""     
+        WHERE bk_id = %s"""     
         
         parsed = urlparse(search)
-        bookid = parse_qs(parsed.query)['id'][0]
+        bk_id = parse_qs(parsed.query)['id'][0]
 
-        val = [bookid]
-        colnames = ['title', 'author', 'genre', 'publisher', 'reldate', 'price', 'count']
+        val = [bk_id]
+        colnames = ['bookid','title', 'author', 'genre', 'publisher', 'pubyear', 'price', 'count']
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
+        bookid = df['bookid'][0]
         title = df['title'][0]
         author = df['author'][0]
         genre = df['genre'][0]
         publisher = df['publisher'][0]
-        reldate = df['reldate'][0]
+        pubyear = df['pubyear'][0]
         price = df['price'][0]
         count = df['count'][0]
 
-        return [title, author, genre, publisher, reldate, price, count]
+        return [bookid,title, author, genre, publisher, pubyear, price, count]
 
     else:
         raise PreventUpdate
