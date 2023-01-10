@@ -140,7 +140,7 @@ layout = html.Div(
                 dbc.ModalBody("tempmessage", id='bookinfo_feedback_message'),
                 dbc.ModalFooter(
                     dbc.Button(
-                        "Okay", id="bookinfoclosebtn", className="ms-auto", n_clicks=0
+                        "Okay", id="bookinfo_closebtn", className="ms-auto", n_clicks=0,
                     )
                 ),
             ],
