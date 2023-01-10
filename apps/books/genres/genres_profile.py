@@ -224,7 +224,7 @@ def genre_loadprofile(timestamp, toload, search):
         # 1. query the details from the database
         sql = """ SELECT 
                     genre_id,
-                    genre_name,
+                    genre_name
         FROM genres
         WHERE genre_id = %s """     
         

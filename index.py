@@ -139,7 +139,7 @@ def displaypage(pathname, sessionlogout, currentuserid):
     else:
         raise PreventUpdate
 
-    navbar_div = {'display': 'none' if sessionlogout else 'unset'}
+    navbar_div = {'display': 'unset' if sessionlogout else 'unset'}
     return [returnlayout, navbar_div, sessionlogout]
 
 
