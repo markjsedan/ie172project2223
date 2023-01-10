@@ -99,7 +99,7 @@ def updategenres_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND genre_id ILIKE %s"""
+            sql += """ AND genre_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 

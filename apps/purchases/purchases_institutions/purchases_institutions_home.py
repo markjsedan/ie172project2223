@@ -10,29 +10,17 @@ from app import app
 from apps import dbconnect as db
 from dash.dependencies import Input, Output, State
 
+
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.DropdownMenu(
-            children=[
-                dbc.DropdownMenuItem("A-Z", href="/publishers/allpublishers/a-z"),
-                dbc.DropdownMenuItem("Z-A", href="/publishers/allpublishers/z-a"),
-                dbc.DropdownMenuItem("Latest", href="/publishers/allpublishers/latest"),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="Sort by",
-        ),
-        dbc.Button("Add a publisher", color="dark", className="me-2", href="/publishers/publishers_profile?mode=add"),
+        dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/institutions_profile?mode=add"),
     ],
     brand="",
-    # color="#ffffff",
-    # dark=False,
-
 )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/publishers_home", active=True)),
-    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/publishers_orders",)),
+    dbc.NavItem(dbc.NavLink("Individuals", href="/purchases/individuals_home")),
+    dbc.NavItem(dbc.NavLink("Institutions", href="/purchases/institutions_home",active=True))),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -43,7 +31,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="publishers_filter", placeholder="Enter keyword/s"
+                        type="text", id="purchases_institutions_filter", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -52,7 +40,7 @@ layout = html.Div(
         ),
         dbc.Card(
             [
-                dbc.CardHeader(html.H4("Publishers > All Publishers")),
+                dbc.CardHeader(html.H4("Purchases > Institutions")),
                 dbc.CardBody(
                     [
                         dbc.Row(navs, style={'fontWeight':'bold',"color":"dark"}
@@ -64,8 +52,8 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    "This will contain the table for publishers",
-                                    id='publishers_list',
+                                    "This will contain the table for purchases_institutions",
+                                    id='purchases_institutions_list',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -78,50 +66,53 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('publishers_list', 'children'),
+        Output('purchases_institutions_list', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('publishers_filter', 'value'),
+        Input('purchases_institutions_filter', 'value'),
     ]
 )
-def updatepublishers_list(pathname, searchterm):
-    if pathname == '/publishers/publishers_home':
+def updatepurchases_institutions_list(pathname, searchterm):
+    if pathname == '/purchases/institutions_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pub_id, pub_name, pub_land_num
-                FROM publishers
-                WHERE NOT pub_delete_ind
+        sql = """ SELECT pur_ins_id, pur_ins_name, pur_ins_date, pur_ins_amt
+                FROM purchases_institutions
+                WHERE NOT pur_ins_delete_ins
         """
         val = []
-        cols = ["Publisher ID", "Publisher Name", "Landline Number"]
+        cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
         
 
         if searchterm:
-            sql += """ AND pub_name ILIKE %s"""
+            sql += """ AND pur_ins_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
-        publishers = db.querydatafromdatabase(sql,val,cols)
+        purchases_institutions = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if publishers.shape[0]:
+        if purchases_institutions.shape[0]:
             buttons = []
-            for pub_id in publishers['Customer ID']:
+            for pur_ins_id in purchases_institutions['Purchase ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_profile?mode=edit&id={pub_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/purchases/institutions_profile?mode=edit&id={pur_ins_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
                 ]
             
             # we add the buttons to the table
-            publishers['Action'] = buttons
+            purchases_institutions['Action'] = buttons
 
-            publishers_table = dbc.Table.from_dataframe(publishers, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            # remove ID col
+            # purchases_institutions.drop('puromer ID', axis=1, inplace=True)
 
-            return [publishers_table]
+            purchases_institutions_table = dbc.Table.from_dataframe(purchases_institutions, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+
+            return [purchases_institutions_table]
         
         else:
             return ["There are no records that match the search term."]
