@@ -132,7 +132,7 @@ def pur_ind_prof_toload(pathname, search):
 
     if pathname == '/purchasers/individuals_profile':
         sql = """
-            SELECT cust_ind_name, cust_ind_id
+            SELECT cust_ind_name as label, cust_ind_id as value
             FROM customers_individuals
             WHERE NOT cust_ind_delete_ind
         """ 

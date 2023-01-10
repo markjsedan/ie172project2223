@@ -87,7 +87,7 @@ layout = html.Div(
     ]
 )
 def updatebooks_allbooks_list(pathname, searchterm):
-    if pathname == '/books':
+    if pathname == '/' or '/books':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT bk_title, bk_author, bk_pub_yr, bk_inv_count
