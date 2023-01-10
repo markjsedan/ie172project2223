@@ -184,7 +184,6 @@ def cust_ind_prof_toload(pathname, search):
     ]
 )
 def cust_ind_submitprocess(submitbtn, closebtn,
-
                             customer_id, name, profession, email, contact_number, address,
                             search, removerecord):
     ctx = dash.callback_context
