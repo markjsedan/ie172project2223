@@ -79,7 +79,7 @@ def updatepurchases_institutions_list(pathname, searchterm):
         
         sql = """ SELECT pur_ins_id, pur_ins_name, pur_ins_date, pur_ins_amt
                 FROM purchases_institutions
-                WHERE NOT pur_ins_delete_ins
+                WHERE NOT pur_ins_delete_ind
         """
         val = []
         cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
