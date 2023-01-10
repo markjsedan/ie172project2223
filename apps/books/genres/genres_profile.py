@@ -117,7 +117,7 @@ def genre_name_loaddropdown(pathname, search):
 @app.callback(
     [
         Output('genre_modal', 'is_open'),
-        Output('cgenre_feedback_message', 'children'),
+        Output('genre_feedback_message', 'children'),
         Output('genre_closebtn', 'href')
     ],
     [
@@ -127,12 +127,14 @@ def genre_name_loaddropdown(pathname, search):
     [
         State('genre_id', 'value'),
         State('genre_name', 'value'),
+        State('url', 'search'),
+        State('genre_removerecord', 'value')
     ]
 )
-def cust_ind_submitprocess(submitbtn, closebtn,
-
-                            genre_id, name, 
-                            search, removerecord):
+def genre_submitprocess(submitbtn, closebtn,
+                            
+                        genre_id, name, 
+                        search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
         eventid = ctx.triggered[0]['prop_id'].split('.')[0]
@@ -145,9 +147,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
     if eventid == 'genre_submitbtn' and submitbtn:
         openmodal = True
 
-        inputs = [
-            name
-        ]
+        inputs = [name]
 
         if not all (inputs):
             feedbackmessage = "Please supply all inputs."
@@ -172,7 +172,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                cust_ind_id = parse_qs(parsed.query)['id'][0]
+                genre_id = parse_qs(parsed.query)['id'][0]
 
                 sqlcode = """UPDATE genres
                 SET
@@ -212,11 +212,11 @@ def cust_ind_submitprocess(submitbtn, closebtn,
         Input('genre_toload', 'modified_timestamp'),
     ],
     [
-        State('genretoload', 'data'),
+        State('genre_toload', 'data'),
         State('url', 'search'),
     ]
 )
-def genre_loadprofile(timestamp,toload, search):
+def genre_loadprofile(timestamp, toload, search):
     if toload == 1:
 
         parsed = urlparse(search)
@@ -235,7 +235,7 @@ def genre_loadprofile(timestamp,toload, search):
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        genre_id = df['customer_id'][0]
+        genre_id = df['genre_id'][0]
         name = df['name'][0]
 
         return [genre_id, name]

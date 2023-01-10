@@ -13,7 +13,7 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.Button("Add a puromer", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
+        dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
     ],
     brand="",
 )
