@@ -157,7 +157,7 @@ from apps.customers.customers_individuals import customers_individuals_home, cus
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
 from apps.employees import employees, employees_profile
 from apps import login, signup
-from apps.publishers import publishers, publishers_profile, publishers_orders
+from apps.publishers import publishers, publishers_profile, publishers_orders, publishers_orders_profile
 from apps.books.genres import genres, genres_profile
 from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
 
@@ -217,8 +217,10 @@ def displaypage(pathname):
                 returnlayout = publishers.layout
             elif pathname == '/publishers/publishers_profile':
                 returnlayout = publishers_profile.layout
-            elif pathname == '/publishers/publishers_orders':
+            elif pathname == '/publishers/orders':
                 returnlayout = publishers_orders.layout
+            elif pathname == '/publishers/orders_profile':
+                returnlayout = publishers_orders_profile.layout
             elif pathname == '/employees':
                 returnlayout = employees.layout
             elif pathname == '/employees/employees_profile':
@@ -237,4 +239,4 @@ def displaypage(pathname):
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
-    app.run_server(debug=True)
+    app.run_server(debug=False)

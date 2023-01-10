@@ -93,7 +93,9 @@ CREATE TABLE purchases_institutions(
 );
 CREATE TABLE orders(
 	order_id serial primary key not null,
-	pub_name varchar references publishers(pub_id),
+	pub_name varchar(256) references publishers(pub_name),
+	order_date date,
+	order_amount, decimal(6,2),
 	order_modified_date timestamp without time zone default now(),
-	user_delete_ind bool default false
+	order_delete_ind bool default false
 )
