@@ -31,8 +31,13 @@ sort_add = dbc.NavbarSimple(
 )
 
 nav_contents = [
+<<<<<<< HEAD:apps/publishers/publishers_home.py
     dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/publishers_home", active=True)),
     dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/publishers_orders",)),
+=======
+    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers", active=True)),
+    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/orders",)),
+>>>>>>> f80d5a539ea3c4aa3af75cd2e59906ee8fb7892c:apps/publishers/publishers.py
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -86,7 +91,11 @@ layout = html.Div(
     ]
 )
 def updatepublishers_list(pathname, searchterm):
+<<<<<<< HEAD:apps/publishers/publishers_home.py
     if pathname == '/publishers/publishers_home':
+=======
+    if pathname == '/publishers':
+>>>>>>> f80d5a539ea3c4aa3af75cd2e59906ee8fb7892c:apps/publishers/publishers.py
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT pub_id, pub_name, pub_ln
