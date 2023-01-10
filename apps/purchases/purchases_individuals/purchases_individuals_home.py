@@ -86,7 +86,7 @@ def updatepurchases_individuals_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND cust_ind_name ILIKE %s"""
+            sql += """ AND pur_ind_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
