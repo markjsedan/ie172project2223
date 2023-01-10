@@ -13,16 +13,6 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        # dbc.DropdownMenu(
-        #     children=[
-        #         dbc.DropdownMenuItem("A-Z", href="/purchases/individuals/a-z"),
-        #         dbc.DropdownMenuItem("Z-A", href="/purchases/individuals/z-a"),
-        #         dbc.DropdownMenuItem("Latest", href="/purchases/individuals/latest"),
-        #     ],
-        #     nav=True,
-        #     in_navbar=True,
-        #     label="Sort by",
-        # ),
         dbc.Button("Add a puromer", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
     ],
     brand="",

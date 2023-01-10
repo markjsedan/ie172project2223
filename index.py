@@ -158,7 +158,7 @@ from apps.customers.customers_institutions import customers_institutions_home, c
 from apps.employees import employees, employees_profile
 from apps.publishers import publishers, publishers_profile
 from apps.books.genres import genres, genres_profile
-from apps.purchase.purchases_individuals import purchase_individuals_home,purchase_individuals_profile
+from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
 
 
 CONTENT_STYLE = {
@@ -209,9 +209,9 @@ def displaypage(pathname):
             elif pathname == '/customers/institutions_profile':
                 returnlayout = customers_institutions_profile.layout
             elif pathname == '/purchase/individuals_home':
-                returnlayout = purchase_individuals_home.layout
+                returnlayout = purchases_individuals_home.layout
             elif pathname == '/purchase/individuals_profile':
-                returnlayout = purchase_individuals_profile.layout
+                returnlayout = purchases_individuals_profile.layout
             elif pathname == '/publishers':
                 returnlayout = publishers.layout
             elif pathname == '/publishers/publishers_profile':
@@ -234,4 +234,4 @@ def displaypage(pathname):
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
-    app.run_server(debug=False)
+    app.run_server(debug=True)
