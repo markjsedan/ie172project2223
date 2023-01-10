@@ -10,6 +10,13 @@ WHERE cust_ind_id IN (3,4,5,6,7,8);
 ALTER TABLE customers_individuals
 ADD CONSTRAINT cust_ind_name_unique UNIQUE (cust_ind_name);
 
+ALTER TABLE publishers_orders
+ADD pub_id int references publishers(pub_id);
+ALTER TABLE purchases_individuals
+ADD cust_ind_id int references customers_individuals(cust_ind_id);
+ALTER TABLE purchases_institutions
+ADD cust_ins_id int references customers_institutions(cust_ins_id);
+
 
 CREATE TABLE genres(
 	genre_id serial primary key not null,

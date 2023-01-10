@@ -120,9 +120,6 @@ def updatebooks_allbooks_list(pathname, searchterm):
             # we add the buttons to the table
             books_allbooks['Action'] = buttons
 
-            # remove ID col
-            # customers_individuals.drop('Customer ID', axis=1, inplace=True)
-
             books_allbooks_table = dbc.Table.from_dataframe(books_allbooks, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
             return [books_allbooks_table]

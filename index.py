@@ -127,7 +127,7 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = publishers_orders.layout
             elif pathname == '/publishers/publishers_orders_profile':
                 returnlayout = publishers_orders_profile.layout
-            elif pathname == '/employees':
+            elif pathname == '/employees_home':
                 returnlayout = employees_home.layout
             elif pathname == '/employees/employees_profile':
                 returnlayout = employees_profile.layout
@@ -139,13 +139,13 @@ def displaypage(pathname, sessionlogout, currentuserid):
     else:
         raise PreventUpdate
 
-    navbar_div = {'display': 'unset' if sessionlogout else 'unset'}
+    navbar_div = {'display': 'none' if sessionlogout else 'unset'}
     return [returnlayout, navbar_div, sessionlogout]
 
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
-    app.run_server(debug=False)
+    app.run_server(debug=True)
 
 
 # from dash import dcc

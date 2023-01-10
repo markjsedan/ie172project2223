@@ -57,6 +57,18 @@ layout = html.Div(
             ],
             className="mb-3",
         ),
+        dbc.Row(
+            [
+                dbc.Label("Email", width=2),
+                dbc.Col(
+                    dbc.Input(
+                        type="text", id="pub_email", placeholder="Enter email"
+                    ),
+                    width=7,
+                ),
+            ],
+            className="mb-3",
+        ),
         html.Div(
             dbc.Row(
                 [
@@ -139,13 +151,14 @@ def pub_ln_loaddropdown(pathname, search):
         State('pub_id', 'value'),
         State('pub_name', 'value'),
         State('pub_ln', 'value'),
+        State('pub_email', 'value'),
         State('url', 'search'),
         State('pub_removerecord', 'value'),
     ]
 )
 def pub_submitprocess(submitbtn, closebtn,
 
-                            pub_id, name, landline_number,
+                            pub_id, name, landline_number,email,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -161,7 +174,8 @@ def pub_submitprocess(submitbtn, closebtn,
 
         inputs = [
             name,
-            landline_number
+            landline_number,
+            email
         ]
 
         if not all (inputs):
@@ -175,11 +189,12 @@ def pub_submitprocess(submitbtn, closebtn,
                 sqlcode = """INSERT INTO publishers(
                     pub_name,
                     pub_land_num,
+                    pub_email,
                     pub_delete_ind
                 )
                 VALUES (%s, %s, %s)
                 """
-                values = [name, landline_number, False]
+                values = [name, landline_number, email, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Publisher information has been saved."
@@ -194,6 +209,7 @@ def pub_submitprocess(submitbtn, closebtn,
                 SET
                     pub_name = %s,
                     pub_land_num = %s,
+                    pub_email = %s,
                     pub_delete_ind = %s
                 WHERE
                     pub_id = %s
@@ -201,7 +217,7 @@ def pub_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, landline_number, todelete,pub_id]
+                values = [name, landline_number, email, todelete,pub_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Publisher information has been updated."
@@ -225,6 +241,7 @@ def pub_submitprocess(submitbtn, closebtn,
         Output('pub_id', 'value'),
         Output('pub_name', 'value'),
         Output('pub_ln', 'value'),
+        Output('pub_email','value')
     ],
     [
         Input('pub_allpub_toload', 'modified_timestamp'),
@@ -238,18 +255,19 @@ def pub_loadprofile(timestamp,toload, search):
     if toload == 1:
 
         parsed = urlparse(search)
-        cust_ind_id = parse_qs(parsed.query)['id'][0]
+        pub_id = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
                     pub_id,
                     pub_name,
                     pub_land_num,
+                    pub_email
         FROM publishers
         WHERE pub_id = %s """     
         
 
         val = [pub_id]
-        colnames = ["pub_id","name","landline number"]
+        colnames = ["pub_id","name","landline number","email"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
@@ -257,8 +275,9 @@ def pub_loadprofile(timestamp,toload, search):
         pub_id = df['pub_id'][0]
         name = df['name'][0]
         landline_number = df['landline number'][0]
+        email = df['email'][0]
 
-        return [pub_id, name, landline_number]
+        return [pub_id, name, landline_number,email]
 
     else:
         raise PreventUpdate
