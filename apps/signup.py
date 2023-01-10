@@ -16,24 +16,24 @@ layout = html.Div(
                   is_open=False),
         dbc.Row(
             [
-                dbc.Label("Username", width=2),
+                dbc.Label("Username", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="text", id="signup_username", placeholder="Enter a username"
                     ),
-                    width=6,
+                    width=5,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Password", width=2),
+                dbc.Label("Password", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="password", id="signup_password", placeholder="Enter a password"
                     ),
-                    width=6,
+                    width=5,
                 ),
             ],
             className="mb-3",
@@ -41,17 +41,17 @@ layout = html.Div(
         
         dbc.Row(
             [
-                dbc.Label(" Confirm Password", width=2),
+                dbc.Label(" Confirm Password", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="password", id="signup_passwordconf", placeholder="Re-type the password"
                     ),
-                    width=6,
+                    width=5,
                 ),
             ],
             className="mb-3",
         ),
-        dbc.Button('Sign up', color="secondary", id='signup_signupbtn'),
+        dbc.Button('Sign up', color="dark", id='signup_signupbtn'),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("User Saved")),

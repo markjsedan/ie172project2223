@@ -1,3 +1,16 @@
+CREATE TABLE authors(
+	au_id serial primary key not null,
+	au_name varchar(128),
+	au_modified_date timestamp without time zone default now(),
+	au_delete_ind bool default false
+);
+
+DELETE FROM customers_individuals
+WHERE cust_ind_id IN (3,4,5,6,7,8);
+ALTER TABLE customers_individuals
+ADD CONSTRAINT cust_ind_name_unique UNIQUE (cust_ind_name);
+
+
 CREATE TABLE genres(
 	genre_id serial primary key not null,
 	genre_name varchar(128),
@@ -6,23 +19,17 @@ CREATE TABLE genres(
 );
 CREATE TABLE publishers(
 	pub_id serial primary key not null,
-	pub_name varchar(256),
+	pub_name varchar(256) unique,
 	pub_land_num varchar(128),
 	pub_email varchar(128),
 	pub_modified_date timestamp without time zone default now(),
 	pub_delete_ind bool default false
 );
-CREATE TABLE authors(
-	au_id serial primary key not null,
-	au_name varchar(128),
-	au_modified_date timestamp without time zone default now(),
-	au_delete_ind bool default false
-);
 CREATE TABLE books(
 	bk_id serial primary key not null,
 	bk_title varchar(256),
 	genre_id int references genres(genre_id),
-	au_id int references authors(au_id),
+	bk_author varchar(256),
 	pub_id int references publishers(pub_id),
 	bk_pub_yr int2,
 	bk_price decimal(5,2),
@@ -62,9 +69,31 @@ CREATE TABLE employees(
     emp_delete_ind bool default false
 );
 CREATE TABLE users(
-        user_id serial primary key not null,
-        user_name varchar(32) unique,
-        user_password varchar(64) not null,
-        user_modified_on timestamp without time zone default now(),
-        user_delete_ind bool default false
+	user_id serial primary key not null,
+	user_name varchar(32) unique,
+	user_password varchar(64) not null,
+	user_modified_on timestamp without time zone default now(),
+	user_delete_ind bool default false
+);
+CREATE TABLE purchases_individuals(
+	pur_ind_id serial primary key not null,
+	cust_ind_name varchar(256) references customers_individuals(cust_ind_name),
+	pur_ind_date date,
+	pur_ind_amt decimal(6,2),
+	pur_ind_modified_on timestamp without time zone default now(),
+	pur_ind_delete_ind bool default false
+);
+CREATE TABLE purchases_institutions(
+	pur_ins_id serial primary key not null,
+	cust_ins_name varchar(256) references customers_institutions(cust_ins_name),
+	pur_ins_date date,
+	pur_ins_amt decimal(6,2),
+	pur_ins_modified_on timestamp without time zone default now(),
+	pur_ins_delete_ind bool default false
+);
+CREATE TABLE orders(
+	order_id serial primary key not null,
+	pub_name varchar references publishers(pub_id),
+	order_modified_date timestamp without time zone default now(),
+	user_delete_ind bool default false
 )

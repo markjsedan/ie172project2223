@@ -13,27 +13,14 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.DropdownMenu(
-            children=[
-                dbc.DropdownMenuItem("A-Z", href="/customers/individuals/a-z"),
-                dbc.DropdownMenuItem("Z-A", href="/customers/individuals/z-a"),
-                dbc.DropdownMenuItem("Latest", href="/customers/individuals/latest"),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="Sort by",
-        ),
-        dbc.Button("Add a customer", color="dark", className="me-2", href="/customers/individuals_profile?mode=add"),
+        dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
     ],
     brand="",
-    # color="#ffffff",
-    # dark=False,
-
 )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("Individuals", href="/customers/individuals_home", active=True)),
-    dbc.NavItem(dbc.NavLink("Institutions", href="/customers/institutions_home",)),
+    dbc.NavItem(dbc.NavLink("Individuals", href="/purchases/individuals_home", active=True)),
+    dbc.NavItem(dbc.NavLink("Institutions", href="/purchases/institutions_home",)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -44,7 +31,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="customers_individuals_filter", placeholder="Enter keyword/s"
+                        type="text", id="purchases_individuals_filter", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -53,7 +40,7 @@ layout = html.Div(
         ),
         dbc.Card(
             [
-                dbc.CardHeader(html.H4("Customers > Individuals")),
+                dbc.CardHeader(html.H4("Purchases > Individuals")),
                 dbc.CardBody(
                     [
                         dbc.Row(navs, style={'fontWeight':'bold',"color":"dark"}
@@ -65,8 +52,8 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    "This will contain the table for customers_individuals",
-                                    id='customers_individuals_list',
+                                    "This will contain the table for purchases_individuals",
+                                    id='purchases_individuals_list',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -79,23 +66,23 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('customers_individuals_list', 'children'),
+        Output('purchases_individuals_list', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('customers_individuals_filter', 'value'),
+        Input('purchases_individuals_filter', 'value'),
     ]
 )
-def updatecustomers_individuals_list(pathname, searchterm):
-    if pathname == '/customers/individuals_home':
+def updatepurchases_individuals_list(pathname, searchterm):
+    if pathname == '/purchases/individuals_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT cust_ind_id, cust_ind_name, cust_ind_prof, cust_ind_email
-                FROM customers_individuals
-                WHERE NOT cust_ind_delete_ind
+        sql = """ SELECT pur_ind_id, cust_ind_name, pur_ind_date, pur_ind_amt
+                FROM purchases_individuals
+                WHERE NOT pur_ind_delete_ind
         """
         val = []
-        cols = ["Customer ID", "Customer Name", "Profession", "Email"]
+        cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
         
 
         if searchterm:
@@ -103,29 +90,29 @@ def updatecustomers_individuals_list(pathname, searchterm):
             val += [f"%{searchterm}%"]
 
 
-        customers_individuals = db.querydatafromdatabase(sql,val,cols)
+        purchases_individuals = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if customers_individuals.shape[0]:
+        if purchases_individuals.shape[0]:
             buttons = []
-            for cust_ind_id in customers_individuals['Customer ID']:
+            for pur_ind_id in purchases_individuals['Purchase ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('View/Edit/Delete', href=f"/customers/individuals_profile?mode=edit&id={cust_ind_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/purchases/individuals_profile?mode=edit&id={pur_ind_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
                 ]
             
             # we add the buttons to the table
-            customers_individuals['Action'] = buttons
+            purchases_individuals['Action'] = buttons
 
             # remove ID col
-            # customers_individuals.drop('Customer ID', axis=1, inplace=True)
+            # purchases_individuals.drop('puromer ID', axis=1, inplace=True)
 
-            customers_individuals_table = dbc.Table.from_dataframe(customers_individuals, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            purchases_individuals_table = dbc.Table.from_dataframe(purchases_individuals, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [customers_individuals_table]
+            return [purchases_individuals_table]
         
         else:
             return ["There are no records that match the search term."]
