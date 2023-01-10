@@ -120,7 +120,7 @@ layout = html.Div(
                 dbc.Label("Inventory Count", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="bookinfo_count", placeholder="Enter title"
+                        type="text", id="bookinfo_count", placeholder="Enter physical stock quantity"
                     ),
                     width=7,
                 ),
