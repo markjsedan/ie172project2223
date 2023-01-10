@@ -176,7 +176,7 @@ def pur_ind_prof_toload(pathname, search):
 )
 def pur_ind_submitprocess(submitbtn, closebtn,
 
-                            purchaser_id, name, profession, email, contact_number, address,
+                            purchaser_id, name, date, amount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -192,10 +192,8 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
         inputs = [
             name,
-            profession,
-            email,
-            contact_number,
-            address
+            date,
+            amount
         ]
 
         if not all (inputs):
@@ -207,19 +205,17 @@ def pur_ind_submitprocess(submitbtn, closebtn,
             if mode == 'add':
 
                 sqlcode = """INSERT INTO purchasers_individuals(
-                    pur_ind_name,
-                    pur_ind_prof,
-                    pur_ind_email,
-                    pur_ind_contact_num,
-                    pur_ind_address,
+                    cust_ind_name,
+                    pur_ind_date,
+                    pur_ind_amt,
                     pur_ind_delete_ind
                 )
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s)
                 """
-                values = [name, profession, email, contact_number, address, False]
+                values = [name, date, amount, False]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Customer information has been saved."
+                feedbackmessage = "Purchase information has been saved."
                 okay_href = '/purchasers/individuals_home'
 
             elif mode == 'edit':
@@ -229,11 +225,9 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 sqlcode = """UPDATE purchasers_individuals
                 SET
-                    pur_ind_name = %s,
-                    pur_ind_prof = %s,
-                    pur_ind_email = %s,
-                    pur_ind_contact_num = %s,
-                    pur_ind_address = %s,
+                    cust_ind_name = %s,
+                    pur_ind_date = %s,
+                    pur_ind_amt = %s,
                     pur_ind_delete_ind = %s
                 WHERE
                     pur_ind_id = %s
@@ -241,10 +235,10 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, profession, email, contact_number, address, todelete,pur_ind_id]
+                values = [name, date, amount, todelete, pur_ind_id]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Customer information has been updated."
+                feedbackmessage = "Purchase information has been updated."
                 okay_href = '/purchasers/individuals_home'
 
             else:
@@ -263,11 +257,9 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 @app.callback(
     [
         Output('pur_ind_id', 'value'),
-        Output('pur_ind_name', 'value'),
-        Output('pur_ind_prof', 'value'),
-        Output('pur_ind_email', 'value'),
-        Output('pur_ind_contact_num', 'value'),
-        Output('pur_ind_address', 'value'),
+        Output('cust_ind_name', 'value'),
+        Output('pur_ind_date', 'value'),
+        Output('pur_ind_amt', 'value'),
     ],
     [
         Input('pur_ind_toload', 'modified_timestamp'),
@@ -285,29 +277,25 @@ def pur_ind_loadprofile(timestamp,toload, search):
         # 1. query the details from the database
         sql = """ SELECT 
                     pur_ind_id,
-                    pur_ind_name,
-                    pur_ind_prof,
-                    pur_ind_email,
-                    pur_ind_contact_num,
-                    pur_ind_address,
+                    cust_ind_name,
+                    pur_ind_date,
+                    pur_ind_amt
         FROM purchasers_individuals
         WHERE pur_ind_id = %s """     
         
 
         val = [pur_ind_id]
-        colnames = ["purchaser_id","name","profession","email","contact number","address"]
+        colnames = ["purchaser_id","name","date","amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
         purchaser_id = df['purchaser_id'][0]
         name = df['name'][0]
-        profession = df['profession'][0]
-        email = df['email'][0]
-        contact_number = df['contact number'][0]
-        address = df['address'][0]
+        date = df['date'][0]
+        amount = df['amount'][0]
 
-        return [purchaser_id, name, profession, email, contact_number, address]
+        return [purchaser_id, name, date, amount]
 
     else:
         raise PreventUpdate
