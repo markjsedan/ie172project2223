@@ -227,7 +227,7 @@ def displaypage(pathname):
                 returnlayout = publishers_orders.layout
             elif pathname == '/publishers/publishers_orders_profile':
                 returnlayout = publishers_orders_profile.layout
-            elif pathname == '/employees_home':
+            elif pathname == '/employees':
                 returnlayout = employees_home.layout
             elif pathname == '/employees/employees_profile':
                 returnlayout = employees_profile.layout
