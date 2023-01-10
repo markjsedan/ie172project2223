@@ -139,6 +139,7 @@ def pub_ln_loaddropdown(pathname, search):
         State('pub_id', 'value'),
         State('pub_name', 'value'),
         State('pub_ln', 'value'),
+        State('url', 'search'),
         State('pub_removerecord', 'value'),
     ]
 )
@@ -173,7 +174,7 @@ def pub_submitprocess(submitbtn, closebtn,
 
                 sqlcode = """INSERT INTO publishers(
                     pub_name,
-                    pub_ln,
+                    pub_land_num,
                     pub_delete_ind
                 )
                 VALUES (%s, %s, %s)
@@ -182,7 +183,7 @@ def pub_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Publisher information has been saved."
-                okay_href = '/publishers/home'
+                okay_href = '/publishers/publishers_home'
 
             elif mode == 'edit':
 
@@ -204,7 +205,7 @@ def pub_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Publisher information has been updated."
-                okay_href = '/publishers/home'
+                okay_href = '/publishers/publishers_home'
 
             else:
                 raise PreventUpdate 
@@ -242,7 +243,7 @@ def pub_loadprofile(timestamp,toload, search):
         sql = """ SELECT 
                     pub_id,
                     pub_name,
-                    pub_ln,
+                    pub_land_num,
         FROM publishers
         WHERE pub_id = %s """     
         
