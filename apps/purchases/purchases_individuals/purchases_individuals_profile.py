@@ -39,9 +39,9 @@ layout = html.Div(
                 dbc.Col(
                     html.Div(
                         dcc.Dropdown(
-                        id='pur_ind_name',
-                        clearable=True,
-                        searchable=True
+                            id='pur_ind_name',
+                            clearable=True,
+                            searchable=True
                         ),
                         className="dash-bootstrap"
                     ),
@@ -132,15 +132,15 @@ def pur_ind_prof_toload(pathname, search):
 
     if pathname == '/purchasers/individuals_profile':
         sql = """
-            SELECT cust_ind_name as label, cust_ind_id as value
+            SELECT cust_ind_name
             FROM customers_individuals
             WHERE NOT cust_ind_delete_ind
         """ 
         values = []
-        cols = ['label', 'value']
+        cols = ['cust_ind_name']
         df = db.querydatafromdatabase(sql, values, cols)
 
-        cust_name_options = df.to_dict('records')
+        cust_name_options = df.to_dict()
 
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
@@ -210,7 +210,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
                     pur_ind_amt,
                     pur_ind_delete_ind
                 )
-                VALUES (%s, %s, %s)
+                VALUES (%s, %s, %s, %s)
                 """
                 values = [name, date, amount, False]
                 db.modifydatabase(sqlcode, values)

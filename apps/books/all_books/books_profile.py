@@ -363,13 +363,14 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 def bookinfo_loadprofile(timestamp, to_load, search):
     if to_load == 1:
 
-        # 1. query the book details from the database
-        sql = """ SELECT bk_id, bk_title, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
-        FROM books
-        WHERE bk_id = %s"""     
-        
         parsed = urlparse(search)
         bookid = parse_qs(parsed.query)['id'][0]
+        
+        # 1. query the book details from the database
+        sql = """ SELECT bk_id, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
+        FROM books
+        WHERE bk_id = %s, genre_id="""     
+        
 
         val = [bookid]
         colnames = ['bookid','title', 'author', 'genre', 'publisher', 'pubyear', 'price', 'count']
