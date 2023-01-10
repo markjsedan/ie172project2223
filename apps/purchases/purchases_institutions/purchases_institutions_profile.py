@@ -134,7 +134,7 @@ def pur_ins_prof_toload(pathname, search):
         sql = """
             SELECT cust_ins_name as label, cust_ins_id as value
             FROM customers_institutions
-            WHERE NOT cust_ins_delete_ins
+            WHERE NOT cust_ins_delete_ind
         """ 
         values = []
         cols = ['label', 'value']
@@ -208,7 +208,7 @@ def pur_ins_submitprocess(submitbtn, closebtn,
                     pur_ins_name,
                     pur_ins_date,
                     pur_ins_amt,
-                    pur_ins_delete_ins
+                    pur_ins_delete_ind
                 )
                 VALUES (%s, %s, %s)
                 """
@@ -228,7 +228,7 @@ def pur_ins_submitprocess(submitbtn, closebtn,
                     pur_ins_name = %s,
                     pur_ins_date = %s,
                     pur_ins_amt = %s,
-                    pur_ins_delete_ins = %s
+                    pur_ins_delete_ind = %s
                 WHERE
                     pur_ins_id = %s
                 """

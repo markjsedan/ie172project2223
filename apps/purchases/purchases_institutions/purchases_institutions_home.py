@@ -20,7 +20,7 @@ sort_add = dbc.NavbarSimple(
 
 nav_contents = [
     dbc.NavItem(dbc.NavLink("Individuals", href="/purchases/individuals_home")),
-    dbc.NavItem(dbc.NavLink("Institutions", href="/purchases/institutions_home",active=True))),
+    dbc.NavItem(dbc.NavLink("Institutions", href="/purchases/institutions_home",active=True)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -79,7 +79,7 @@ def updatepurchases_institutions_list(pathname, searchterm):
         
         sql = """ SELECT pur_ins_id, pur_ins_name, pur_ins_date, pur_ins_amt
                 FROM purchases_institutions
-                WHERE NOT pur_ins_delete_ins
+                WHERE NOT pur_ins_delete_ind
         """
         val = []
         cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
