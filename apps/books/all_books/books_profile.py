@@ -254,7 +254,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
                 sqlcode = """INSERT INTO books(
                     bk_title,
-                    au_id,
+                    bk_author,
                     genre_id,
                     pub_id,
                     bk_pub_yr,
@@ -279,7 +279,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 SET
 
                     bk_title = %s,
-                    au_id = %s,
+                    bk_author = %s,
                     genre_id = %s,
                     pub_id = %s,
                     bk_pub_yr = %s,
@@ -332,7 +332,7 @@ def bookinfo_loadprofile(timestamp, to_load, search):
     if to_load == 1:
 
         # 1. query the book details from the database
-        sql = """ SELECT bk_title, bk_title, au_id, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
+        sql = """ SELECT bk_title, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
         FROM books
         WHERE book_id = %s"""     
         

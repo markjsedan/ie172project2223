@@ -297,7 +297,7 @@ def cust_ind_loadprofile(timestamp,toload, search):
                     cust_ind_prof,
                     cust_ind_email,
                     cust_ind_contact_num,
-                    cust_ind_address,
+                    cust_ind_address
         FROM customers_individuals
         WHERE cust_ind_id = %s """     
         
