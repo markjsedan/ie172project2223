@@ -74,7 +74,7 @@ def updateemployees_list(pathname, searchterm):
     if pathname == '/employees':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT emp_id, emp_name, emp_role, emp_email, emp_contact_num
+        sql = """ SELECT emp_id, emp_name, emp_role, emp_email_address, emp_contact_number
                 FROM employees
                 WHERE NOT emp_delete_ind
         """

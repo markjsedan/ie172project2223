@@ -31,8 +31,8 @@ from dash.dependencies import Input, Output, State
 # )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/home")),
-    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/orderstopublishers", active=True)),
+    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/publishers_home")),
+    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/publishers_orders", active=True)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -86,7 +86,7 @@ layout = html.Div(
     ]
 )
 def updatepublishers_orders_list(pathname, searchterm):
-    if pathname == '/publishers/orders':
+    if pathname == '/publishers/publishers_orders':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT pub_id, pub_name, pub_ln
@@ -110,7 +110,7 @@ def updatepublishers_orders_list(pathname, searchterm):
             for pub_id in publishers['Customer ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_profile?mode=edit&id={pub_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_orders_profile?mode=edit&id={pub_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )

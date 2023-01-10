@@ -249,7 +249,7 @@ def cust_ind_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, profession, email, contact_number, address, todelete,cust_ind_id]
+                values = [name, profession, email, contact_number, address, todelete,customer_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."

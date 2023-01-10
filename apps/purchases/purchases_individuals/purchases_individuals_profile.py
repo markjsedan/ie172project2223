@@ -235,7 +235,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, date, amount, todelete, pur_ind_id]
+                values = [name, date, amount, todelete, purchaser_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
