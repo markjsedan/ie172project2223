@@ -91,3 +91,9 @@ CREATE TABLE purchases_institutions(
 	pur_ins_modified_on timestamp without time zone default now(),
 	pur_ins_delete_ind bool default false
 );
+CREATE TABLE orders(
+	order_id serial primary key not null,
+	pub_name varchar references publishers(pub_id),
+	order_modified_date timestamp without time zone default now(),
+	user_delete_ind bool default false
+)
