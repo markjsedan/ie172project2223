@@ -254,7 +254,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
                 sqlcode = """INSERT INTO books(
                     bk_title,
-                    au_id,
+                    bk_author,
                     genre_id,
                     pub_id,
                     bk_pub_yr,
@@ -279,7 +279,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
                 SET
 
                     bk_title = %s,
-                    au_id = %s,
+                    bk_author = %s,
                     genre_id = %s,
                     pub_id = %s,
                     bk_pub_yr = %s,

@@ -279,7 +279,7 @@ def emp_loadprofile(timestamp,to_load, search):
                     emp_name,
                     emp_role,
                     emp_email,
-                    emp_contact_num,
+                    emp_contact_num
         FROM employees
         WHERE emp_id = %s"""     
         

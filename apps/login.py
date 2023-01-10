@@ -16,29 +16,29 @@ layout = html.Div(
                   is_open=False),
         dbc.Row(
             [
-                dbc.Label("Username", width=2),
+                dbc.Label("Username", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="text", id="login_username", placeholder="Enter username"
                     ),
-                    width=6,
+                    width=5,
                 ),
             ],
             className="mb-3",
         ),
         dbc.Row(
             [
-                dbc.Label("Password", width=2),
+                dbc.Label("Password", width=1),
                 dbc.Col(
                     dbc.Input(
                         type="password", id="login_password", placeholder="Enter password"
                     ),
-                    width=6,
+                    width=5,
                 ),
             ],
             className="mb-3",
         ),
-        dbc.Button('Login', color="secondary", id='login_loginbtn'),
+        dbc.Button('Login', color="dark", id='login_loginbtn'),
         html.Hr(),
         html.A('Signup Now!', href='/signup'),
     ]
