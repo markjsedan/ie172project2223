@@ -214,7 +214,7 @@ def emp_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Employee information has been saved."
-                okay_href = '/employees'
+                okay_href = '/employees_home'
 
             elif mode == 'edit':
 
@@ -238,7 +238,7 @@ def emp_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Employee information has been updated."
-                okay_href = '/employees'
+                okay_href = '/employees_home'
 
             else:
                 raise PreventUpdate 
