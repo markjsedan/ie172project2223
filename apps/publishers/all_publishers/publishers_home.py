@@ -89,7 +89,7 @@ def updatepublishers_list(pathname, searchterm):
     if pathname == '/publishers/publishers_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pub_id, pub_name, pub_ln
+        sql = """ SELECT pub_id, pub_name, pub_land_num
                 FROM publishers
                 WHERE NOT publishers_delete_ind
         """

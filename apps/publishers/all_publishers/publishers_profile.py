@@ -193,7 +193,7 @@ def pub_submitprocess(submitbtn, closebtn,
                 sqlcode = """UPDATE publishers
                 SET
                     pub_name = %s,
-                    pub_ln = %s,
+                    pub_land_num = %s,
                     pub_delete_ind = %s
                 WHERE
                     pub_id = %s
