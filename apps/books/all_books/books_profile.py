@@ -23,6 +23,18 @@ layout = html.Div(
         html.Hr(),
         dbc.Row(
             [
+                dbc.Label("Book ID", width=2),
+                dbc.Col(
+                    dbc.Input(
+                        type="text", id="bookinfo_id", placeholder="Leave this blank",readonly=True
+                    ),
+                    width=7,
+                ),
+            ],
+            className="mb-3",
+        ),
+        dbc.Row(
+            [
                 dbc.Label("Book Title", width=2),
                 dbc.Col(
                     dbc.Input(
@@ -222,6 +234,7 @@ def bookinfo_loaddropdown(pathname, search):
         Input('bookinfo_closebtn', 'n_clicks')
     ],
     [
+        State('bookinfo_id', 'value'),
         State('bookinfo_title', 'value'),
         State('bookinfo_author', 'value'),
         State('bookinfo_genre', 'value'),
@@ -235,7 +248,7 @@ def bookinfo_loaddropdown(pathname, search):
 )
 def bookinfo_submitprocess(submitbtn, closebtn,
 
-                            title, author, genre, publisher, pubyear, price, count,
+                            bookid,title, author, genre, publisher, pubyear, price, count,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -330,6 +343,7 @@ def bookinfo_submitprocess(submitbtn, closebtn,
 
 @app.callback(
     [
+        Output('bookinfo_id', 'value'),
         Output('bookinfo_title', 'value'),
         Output('bookinfo_author', 'value'),
         Output('bookinfo_genre', 'value'),
@@ -355,9 +369,9 @@ def bookinfo_loadprofile(timestamp, to_load, search):
         WHERE bk_id = %s"""     
         
         parsed = urlparse(search)
-        bk_id = parse_qs(parsed.query)['id'][0]
+        bookid = parse_qs(parsed.query)['id'][0]
 
-        val = [bk_id]
+        val = [bookid]
         colnames = ['bookid','title', 'author', 'genre', 'publisher', 'pubyear', 'price', 'count']
 
         df = db.querydatafromdatabase(sql, val, colnames)
