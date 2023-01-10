@@ -19,11 +19,11 @@ layout = html.Div(
                 dcc.Store(id='pur_ind_toload', storage_type='memory', data=0),
             ]
         ),
-        html.H2("Customer Information"),
+        html.H2("Purchase Information"),
         html.Hr(),
         dbc.Row(
             [
-                dbc.Label("Customer ID", width=2),
+                dbc.Label("Purchase ID", width=2),
                 dbc.Col(
                     dbc.Input(
                         type="text", id="pur_ind_id", placeholder="Leave this blank",readonly=True
@@ -35,10 +35,15 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Customer Name", width=2),
+                dbc.Label("Purchaser", width=2),
                 dbc.Col(
-                    dbc.Input(
-                        type="text", id="pur_ind_name", placeholder="Enter purchaser name"
+                    html.Div(
+                        dbc.Dropdown(
+                        id='cust_ind_name',
+                        clearable=True,
+                        searchable=True
+                        ),
+                        className="dash-bootstrap"
                     ),
                     width=7,
                 ),
@@ -47,10 +52,10 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Profession", width=2),
+                dbc.Label("Date", width=2),
                 dbc.Col(
-                    dbc.Input(
-                        type="text", id="pur_ind_prof", placeholder="Enter profession"
+                    dcc.DatePickerSingle(
+                        id="pur_ind_date"
                     ),
                     width=7,
                 ),
@@ -59,34 +64,10 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Email", width=2),
+                dbc.Label("Amount", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="pur_ind_email", placeholder="Enter email address"
-                    ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                dbc.Label("Contact Number", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="pur_ind_contact_num", placeholder="Enter contact number"
-                    ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                dbc.Label("Address", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="pur_ind_address", placeholder="Enter address"
+                        type="text", id="pur_ind_amt", placeholder="Enter amount of purchase"
                     ),
                     width=7,
                 ),
@@ -96,7 +77,7 @@ layout = html.Div(
         html.Div(
             dbc.Row(
                 [
-                    dbc.Label("Delete Customer", width=2),
+                    dbc.Label("Delete Transaction", width=2),
                     dbc.Col(
                         dbc.Checklist(
                             id='pur_ind_removerecord',
@@ -136,6 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
+        Output('cust_ind_name','options'),
         Output('pur_ind_toload', 'data'),
         Output('pur_ind_removerecord_div', 'style')
     ],
@@ -149,12 +131,23 @@ layout = html.Div(
 def pur_ind_prof_toload(pathname, search):
 
     if pathname == '/purchasers/individuals_profile':
+        sql = """
+            SELECT cust_ind_name as label, cust_ind_id as value
+            FROM customers_individuals
+            WHERE cust_ind_delete_ind = False
+        """ 
+        values = []
+        cols = ['label', 'value']
+        df = db.querydatafromdatabase(sql, values, cols)
+
+        cust_name_options = df.to_dict('records')
+
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
         
-        return [toload, removerecord_div]
+        return [cust_name_options, toload, removerecord_div]
 
     else:
         raise PreventUpdate
@@ -174,11 +167,9 @@ def pur_ind_prof_toload(pathname, search):
     ],
     [
         State('pur_ind_id', 'value'),
-        State('pur_ind_name', 'value'),
-        State('pur_ind_prof', 'value'),
-        State('pur_ind_email', 'value'),
-        State('pur_ind_contact_num', 'value'),
-        State('pur_ind_address', 'value'),
+        State('cust_ind_name', 'value'),
+        State('pur_ind_date', 'value'),
+        State('pur_ind_amount', 'value'),
         State('url', 'search'),
         State('pur_ind_removerecord', 'value'),
     ]

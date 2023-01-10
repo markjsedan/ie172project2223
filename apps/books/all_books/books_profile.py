@@ -332,7 +332,7 @@ def bookinfo_loadprofile(timestamp, to_load, search):
     if to_load == 1:
 
         # 1. query the book details from the database
-        sql = """ SELECT bk_title, bk_title, au_id, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
+        sql = """ SELECT bk_title, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
         FROM books
         WHERE book_id = %s"""     
         
