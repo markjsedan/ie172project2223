@@ -37,8 +37,13 @@ layout = html.Div(
             [
                 dbc.Label("Publisher Name", width=2),
                 dbc.Col(
-                    dbc.Input(
-                        type="text", id="orderprof_pub_name", placeholder="Enter publisher name"
+                    html.Div(
+                        dcc.Dropdown(
+                            id="orderprof_pub_name",
+                            clearable=True,
+                            searchable=True
+                        ),
+                        className="dash-bootstrap"
                     ),
                     width=7,
                 ),
@@ -81,7 +86,7 @@ layout = html.Div(
                                     'label': "Mark for Deletion",
                                     'value': 1
                                 }
-                            ], # I want the label to be bold
+                            ], 
                             style={'fontWeight':'bold'},
                         ),
                         width=7,
@@ -112,6 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
+        Output('orderprof_pub_name', 'options'),
         Output('orderprof_toload', 'data'),
         Output('orderprof_removerecord_div', 'style')
     ],
@@ -125,12 +131,22 @@ layout = html.Div(
 def order_profile_toload(pathname, search):
 
     if pathname == '/publishers/publishers_orders_profile':
+        sql = """
+            SELECT pub_name
+            FROM publishers
+            WHERE pub_delete_ind = False
+        """
+        values = []
+        cols = ['pub_name']
+        pubname_opts_df = db.querydatafromdatabase(sql, values, cols)
+        pubname_options = pubname_opts_df.to_dict('records')
+
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
         
-        return [toload, removerecord_div]
+        return [pubname_options,toload, removerecord_div]
 
     else:
         raise PreventUpdate
