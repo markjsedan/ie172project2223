@@ -210,7 +210,7 @@ def cust_ins_prof_toload(pathname, search):
     ]
 )
 def cust_ins_submitprocess(submitbtn, closebtn,
-                            name, address, landline_number, contact_person,role, email, contact_number,
+                            customer_id, name, address, landline_number, contact_person, role, email, contact_number,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -231,7 +231,7 @@ def cust_ins_submitprocess(submitbtn, closebtn,
             contact_person,
             role,
             email,
-            contact_number,
+            contact_number
         ]
 
         if not all (inputs):
@@ -281,7 +281,7 @@ def cust_ins_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, address,landline_number,contact_person, role, email, contact_number, todelete, cust_ins_id]
+                values = [name, address, landline_number, contact_person, role, email, contact_number, todelete, cust_ins_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."
@@ -324,7 +324,7 @@ def cust_ins_loadprofile(timestamp,toload, search):
 
         parsed = urlparse(search)
         cust_ins_id = parse_qs(parsed.query)['id'][0]
-
+        #1. query the details from the database
         sql = """ SELECT 
                     cust_ins_id,
                     cust_ins_name,
