@@ -161,6 +161,7 @@ from apps.publishers.all_publishers import publishers_home, publishers_profile
 from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_profile
 from apps.books.genres import genres, genres_profile
 from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
+from apps.purchases.purchases_institutions import purchases_institutions_home,purchases_institutions_profile
 
 
 CONTENT_STYLE = {
@@ -214,6 +215,10 @@ def displaypage(pathname):
                 returnlayout = purchases_individuals_home.layout
             elif pathname == '/purchases/individuals_profile':
                 returnlayout = purchases_individuals_profile.layout
+            elif pathname == '/purchases/institutions_home':
+                returnlayout = purchases_institutions_home.layout
+            elif pathname == '/purchases/institutions_profile':
+                returnlayout = purchases_institutions_profile.layout
             elif pathname == '/publishers/publishers_home':
                 returnlayout = publishers_home.layout
             elif pathname == '/publishers/publishers_profile':
