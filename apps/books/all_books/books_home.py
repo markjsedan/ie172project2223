@@ -23,7 +23,7 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
-        dbc.Button("Add a book", color="dark", className="me-2", href="/books/books_profile"),
+        dbc.Button("Add a book", color="dark", className="me-2", href="/books/books_profile?mode=add"),
     ],
     brand="",
     # color="#ffffff",

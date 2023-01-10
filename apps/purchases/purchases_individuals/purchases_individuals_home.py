@@ -77,7 +77,7 @@ def updatepurchases_individuals_list(pathname, searchterm):
     if pathname == '/purchases/individuals_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pur_ind_id, cust_ind_name, pur_ind_date, pur_ind_amt
+        sql = """ SELECT pur_ind_id, pur_ind_name, pur_ind_date, pur_ind_amt
                 FROM purchases_individuals
                 WHERE NOT pur_ind_delete_ind
         """
@@ -86,7 +86,7 @@ def updatepurchases_individuals_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND cust_ind_name ILIKE %s"""
+            sql += """ AND pur_ind_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 

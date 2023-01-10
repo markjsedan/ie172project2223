@@ -281,7 +281,7 @@ def cust_ins_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, address, landline_number, contact_person, role, email, contact_number, todelete, cust_ins_id]
+                values = [name, address, landline_number, contact_person, role, email, contact_number, todelete, customer_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Customer information has been updated."

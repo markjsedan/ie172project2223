@@ -38,8 +38,8 @@ layout = html.Div(
                 dbc.Label("Purchaser", width=2),
                 dbc.Col(
                     html.Div(
-                        dbc.Dropdown(
-                        id='cust_ind_name',
+                        dcc.Dropdown(
+                        id='pur_ind_name',
                         clearable=True,
                         searchable=True
                         ),
@@ -117,7 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('cust_ind_name','options'),
+        Output('pur_ind_name','options'),
         Output('pur_ind_toload', 'data'),
         Output('pur_ind_removerecord_div', 'style')
     ],
@@ -134,7 +134,7 @@ def pur_ind_prof_toload(pathname, search):
         sql = """
             SELECT cust_ind_name as label, cust_ind_id as value
             FROM customers_individuals
-            WHERE cust_ind_delete_ind = False
+            WHERE NOT cust_ind_delete_ind
         """ 
         values = []
         cols = ['label', 'value']
@@ -167,9 +167,9 @@ def pur_ind_prof_toload(pathname, search):
     ],
     [
         State('pur_ind_id', 'value'),
-        State('cust_ind_name', 'value'),
+        State('pur_ind_name', 'value'),
         State('pur_ind_date', 'value'),
-        State('pur_ind_amount', 'value'),
+        State('pur_ind_amt', 'value'),
         State('url', 'search'),
         State('pur_ind_removerecord', 'value'),
     ]
@@ -205,7 +205,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
             if mode == 'add':
 
                 sqlcode = """INSERT INTO purchasers_individuals(
-                    cust_ind_name,
+                    pur_ind_name,
                     pur_ind_date,
                     pur_ind_amt,
                     pur_ind_delete_ind
@@ -225,7 +225,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 sqlcode = """UPDATE purchasers_individuals
                 SET
-                    cust_ind_name = %s,
+                    pur_ind_name = %s,
                     pur_ind_date = %s,
                     pur_ind_amt = %s,
                     pur_ind_delete_ind = %s
@@ -235,7 +235,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [name, date, amount, todelete, pur_ind_id]
+                values = [name, date, amount, todelete, purchaser_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
@@ -257,7 +257,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 @app.callback(
     [
         Output('pur_ind_id', 'value'),
-        Output('cust_ind_name', 'value'),
+        Output('pur_ind_name', 'value'),
         Output('pur_ind_date', 'value'),
         Output('pur_ind_amt', 'value'),
     ],
@@ -277,7 +277,7 @@ def pur_ind_loadprofile(timestamp,toload, search):
         # 1. query the details from the database
         sql = """ SELECT 
                     pur_ind_id,
-                    cust_ind_name,
+                    pur_ind_name,
                     pur_ind_date,
                     pur_ind_amt
         FROM purchasers_individuals

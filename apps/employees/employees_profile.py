@@ -204,8 +204,8 @@ def emp_submitprocess(submitbtn, closebtn,
                 sqlcode = """INSERT INTO employees(
                     emp_name,
                     emp_role,
-                    emp_email,
-                    emp_contact_num,
+                    emp_email_address,
+                    emp_contact_number,
                     emp_delete_ind
                 )
                 VALUES (%s, %s, %s, %s, %s)
@@ -225,8 +225,8 @@ def emp_submitprocess(submitbtn, closebtn,
                 SET
                     emp_name = %s,
                     emp_role = %s,
-                    emp_email = %s,
-                    emp_contact_num = %s,
+                    emp_email_address = %s,
+                    emp_contact_number = %s,
                     emp_delete_ind = %s
                 WHERE
                     emp_id = %s
@@ -278,8 +278,8 @@ def emp_loadprofile(timestamp,to_load, search):
                     emp_id,
                     emp_name,
                     emp_role,
-                    emp_email,
-                    emp_contact_num
+                    emp_email_address,
+                    emp_contact_number
         FROM employees
         WHERE emp_id = %s"""     
         

@@ -31,8 +31,8 @@ from dash.dependencies import Input, Output, State
 # )
 
 nav_contents = [
-    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/home")),
-    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/orderstopublishers", active=True)),
+    dbc.NavItem(dbc.NavLink("All Publishers", href="/publishers/publishers_home")),
+    dbc.NavItem(dbc.NavLink("Orders to Publishers", href="/publishers/publishers_orders", active=True)),
 ]
 navs = html.Div(dbc.Nav(nav_contents,pills=True,fill=True))
 
@@ -86,45 +86,45 @@ layout = html.Div(
     ]
 )
 def updatepublishers_orders_list(pathname, searchterm):
-    if pathname == '/publishers/orders':
+    if pathname == '/publishers/publishers_orders':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pub_id, pub_name, pub_ln
-                FROM publishers
-                WHERE NOT publishers_delete_ind
+        sql = """ SELECT pub_order_id, pub_order_name, pub_order_date,pub_order_amt
+                FROM publishers_orders
+                WHERE NOT pub_order_delete_ind
         """
         val = []
-        cols = ["Publisher ID", "Publisher Name", "Landline Number"]
+        cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]
         
 
         if searchterm:
-            sql += """ AND pub_name ILIKE %s"""
+            sql += """ AND pub_order_id ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
-        publishers = db.querydatafromdatabase(sql,val,cols)
+        publishers_orders = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if publishers.shape[0]:
+        if publishers_orders.shape[0]:
             buttons = []
-            for pub_id in publishers['Customer ID']:
+            for pub_order_id in publishers_orders['Order ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_profile?mode=edit&id={pub_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_orders_profile?mode=edit&id={pub_order_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
                 ]
             
             # we add the buttons to the table
-            publishers['Action'] = buttons
+            publishers_orders['Action'] = buttons
 
             # remove ID col
             # customers_individuals.drop('Customer ID', axis=1, inplace=True)
 
-            publishers_table = dbc.Table.from_dataframe(publishers, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            publishers_orders_table = dbc.Table.from_dataframe(publishers_orders, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [publishers_table]
+            return [publishers_orders_table]
         
         else:
             return ["There are no records that match the search term."]

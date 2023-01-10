@@ -23,7 +23,7 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
-        dbc.Button("Add a genre", color="dark", className="me-2", href="/books/genres_profile"),
+        dbc.Button("Add a genre", color="dark", className="me-2", href="/books/genres_profile?mode=add"),
     ],
     brand="",
     # color="#ffffff",
@@ -87,11 +87,11 @@ layout = html.Div(
     ]
 )
 def updategenres_list(pathname, searchterm):
-    if pathname == '/books':
+    if pathname == '/books/genres':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT genre_id, genre_name
-                FROM books
+                FROM genres
                 WHERE NOT genre_delete_ind
         """
         val = []
@@ -111,7 +111,7 @@ def updategenres_list(pathname, searchterm):
             for genre_id in genres['Genre ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('Edit/Delete', href=f"/books/genres_profile?mode=edit&id={genre_id}",
+                        dbc.Button('View/Edit/Delete', href=f"/books/genres_profile?mode=edit&id={genre_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )

@@ -155,9 +155,10 @@ from apps.books.all_books import books_home, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
-from apps.employees import employees, employees_profile
+from apps.employees import employees_home, employees_profile
 from apps import login, signup
-from apps.publishers import publishers, publishers_profile, publishers_orders
+from apps.publishers.all_publishers import publishers_home, publishers_profile
+from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_profile
 from apps.books.genres import genres, genres_profile
 from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
 
@@ -209,18 +210,20 @@ def displaypage(pathname):
                 returnlayout = customers_institutions_home.layout
             elif pathname == '/customers/institutions_profile':
                 returnlayout = customers_institutions_profile.layout
-            elif pathname == '/purchase/individuals_home':
+            elif pathname == '/purchases/individuals_home':
                 returnlayout = purchases_individuals_home.layout
-            elif pathname == '/purchase/individuals_profile':
+            elif pathname == '/purchases/individuals_profile':
                 returnlayout = purchases_individuals_profile.layout
-            elif pathname == '/publishers':
-                returnlayout = publishers.layout
+            elif pathname == '/publishers/publishers_home':
+                returnlayout = publishers_home.layout
             elif pathname == '/publishers/publishers_profile':
                 returnlayout = publishers_profile.layout
             elif pathname == '/publishers/publishers_orders':
                 returnlayout = publishers_orders.layout
+            elif pathname == '/publishers/publishers_orders_profile':
+                returnlayout = publishers_orders_profile.layout
             elif pathname == '/employees':
-                returnlayout = employees.layout
+                returnlayout = employees_home.layout
             elif pathname == '/employees/employees_profile':
                 returnlayout = employees_profile.layout
             elif pathname == '/about_us':
@@ -237,4 +240,4 @@ def displaypage(pathname):
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
-    app.run_server(debug=False)
+    app.run_server(debug=True)
