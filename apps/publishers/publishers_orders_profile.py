@@ -16,7 +16,7 @@ layout = html.Div(
     [
         html.Div(
             [
-                dcc.Store(id='order_profile_toload', storage_type='memory', data=0),
+                dcc.Store(id='orderprof_toload', storage_type='memory', data=0),
             ]
         ),
         html.H2("Order Information"),
@@ -26,7 +26,7 @@ layout = html.Div(
                 dbc.Label("Order ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="order_id", placeholder="Leave this blank",readonly=True
+                        type="text", id="orderprof_id", placeholder="Leave this blank",readonly=True
                     ),
                     width=7,
                 ),
@@ -38,7 +38,7 @@ layout = html.Div(
                 dbc.Label("Publisher Name", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="pub_name", placeholder="Enter publisher name"
+                        type="text", id="orderprof_pub_name", placeholder="Enter publisher name"
                     ),
                     width=7,
                 ),
@@ -50,7 +50,7 @@ layout = html.Div(
                 dbc.Label("Date Received", width=2),
                 dbc.Col(
                     dcc.DatePickerSingle(
-                        id='order_date'
+                        id='orderprof_date'
                     ),
                     width=7,
                 ),
@@ -62,7 +62,7 @@ layout = html.Div(
                 dbc.Label("Amount", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="order_amount", placeholder="Enter amount"
+                        type="text", id="orderprof_amount", placeholder="Enter amount"
                     ),
                     width=7,
                 ),
@@ -75,7 +75,7 @@ layout = html.Div(
                     dbc.Label("Delete Transaction", width=2),
                     dbc.Col(
                         dbc.Checklist(
-                            id='order_removerecord',
+                            id='orderprof_removerecord',
                             options=[
                                 {
                                     'label': "Mark for Deletion",
@@ -89,21 +89,21 @@ layout = html.Div(
                 ],
                 className="mb-3",
             ),
-            id='order_removerecord_div'
+            id='orderprof_removerecord_div'
         ),
         html.Hr(),
-        dbc.Button('Submit', color='dark', id='order_submitbtn'),
+        dbc.Button('Submit', color='dark', id='orderprof_submitbtn'),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Saving Progress")),
-                dbc.ModalBody("tempmessage", id='order_feedback_message'),
+                dbc.ModalBody("tempmessage", id='orderprof_feedback_message'),
                 dbc.ModalFooter(
                     dbc.Button(
-                        "Okay", id="order_closebtn", className="ms-auto", n_clicks=0
+                        "Okay", id="orderprof_closebtn", className="ms-auto", n_clicks=0
                     )
                 ),
             ],
-            id="order_modal",
+            id="orderprof_modal",
             is_open=False,
         ),
     ]
@@ -112,8 +112,8 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('order_toload', 'data'),
-        Output('order_removerecord_div', 'style')
+        Output('orderprof_toload', 'data'),
+        Output('orderprof_removerecord_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -140,26 +140,26 @@ def order_profile_toload(pathname, search):
 
 @app.callback(
     [
-        Output('order_modal', 'is_open'),
-        Output('order_feedback_message', 'children'),
-        Output('order_closebtn', 'href')
+        Output('orderprof_modal', 'is_open'),
+        Output('orderprof_feedback_message', 'children'),
+        Output('orderprof_closebtn', 'href')
     ],
     [
-        Input('order_submitbtn', 'n_clicks'),
-        Input('order_closebtn', 'n_clicks')
+        Input('orderprof_submitbtn', 'n_clicks'),
+        Input('orderprof_closebtn', 'n_clicks')
     ],
     [
-        State('order_id', 'value'),
-        State('pub_name', 'value'),
-        State('order_date', 'value'),
-        State('order_amount', 'value'),
+        State('orderprof_id', 'value'),
+        State('orderprof_pub_name', 'value'),
+        State('orderprof_date', 'value'),
+        State('orderprof_amount', 'value'),
         State('url', 'search'),
-        State('order_removerecord', 'value'),
+        State('orderprof_removerecord', 'value'),
     ]
 )
 def order_submitprocess(submitbtn, closebtn,
 
-                            order_id, pub_name, order_date, order_amount,
+                            orderid, pubname, orderdate, orderamount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -170,14 +170,14 @@ def order_submitprocess(submitbtn, closebtn,
     else:
         raise PreventUpdate
 
-    if eventid == 'order_submitbtn' and submitbtn:
+    if eventid == 'orderprof_submitbtn' and submitbtn:
         openmodal = True
 
         inputs = [
-            order_id,
-            pub_name,
-            order_date,
-            order_amount,
+            orderid,
+            pubname,
+            orderdate,
+            orderamount,
         ]
 
         if not all (inputs):
@@ -196,7 +196,7 @@ def order_submitprocess(submitbtn, closebtn,
                 )
                 VALUES (%s, %s, %s, %s)
                 """
-                values = [pub_name, order_date, order_amount, False]
+                values = [pubname, orderdate, orderamount, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Order information has been saved."
@@ -205,7 +205,7 @@ def order_submitprocess(submitbtn, closebtn,
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                order_id = parse_qs(parsed.query)['id'][0]
+                orderid = parse_qs(parsed.query)['id'][0]
 
                 sqlcode = """UPDATE orders
                 SET
@@ -219,16 +219,16 @@ def order_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [pub_name, order_date, order_amount, todelete, order_id]
+                values = [pubname, orderdate, orderamount, todelete, orderid]
                 db.modifydatabase(sqlcode, values)
 
-                feedbackmessage = "Customer information has been updated."
+                feedbackmessage = "Order information has been updated."
                 okay_href = '/publishers/orders'
 
             else:
                 raise PreventUpdate 
 
-    elif eventid == 'order_closebtn' and closebtn:
+    elif eventid == 'orderprof_closebtn' and closebtn:
         pass
 
     else:
@@ -240,16 +240,16 @@ def order_submitprocess(submitbtn, closebtn,
 
 @app.callback(
     [
-        Output('order_id', 'value'),
-        Output('pub_name', 'value'),
-        Output('order_date', 'value'),
-        Output('order_amount', 'value'),
+        Output('orderprof_id', 'value'),
+        Output('orderprof_pub_name', 'value'),
+        Output('orderprof_date', 'value'),
+        Output('orderprof_amount', 'value'),
     ],
     [
-        Input('order_toload', 'modified_timestamp'),
+        Input('orderprof_toload', 'modified_timestamp'),
     ],
     [
-        State('order_toload', 'data'),
+        State('orderprof_toload', 'data'),
         State('url', 'search'),
     ]
 )
@@ -257,7 +257,7 @@ def order_loadprofile(timestamp,toload, search):
     if toload == 1:
 
         parsed = urlparse(search)
-        pur_ind_id = parse_qs(parsed.query)['id'][0]
+        orderid = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
                     order_id,
@@ -268,18 +268,18 @@ def order_loadprofile(timestamp,toload, search):
         WHERE order_id = %s """     
         
 
-        val = [order_id]
-        colnames = ["order_id","pub_name","order_date","order_amount"]
+        val = [orderid]
+        colnames = ["Order ID","Publisher Name","Date Received","Amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        order_id = df['order_id'][0]
-        pub_name = df['pub_name'][0]
-        order_date = df['order_date'][0]
-        order_amount = df['order_amount'][0]
+        orderid = df['orderid'][0]
+        pubname = df['pubname'][0]
+        orderdate = df['orderdate'][0]
+        orderamount = df['orderamount'][0]
 
-        return [order_id, pub_name, order_date, order_amount]
+        return [orderid, pubname, orderdate, orderamount]
 
     else:
         raise PreventUpdate
