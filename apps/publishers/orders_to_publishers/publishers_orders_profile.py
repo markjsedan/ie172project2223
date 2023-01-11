@@ -175,7 +175,7 @@ def order_profile_toload(pathname, search):
 )
 def order_submitprocess(submitbtn, closebtn,
 
-                            orderid, pubname, orderdate, orderamount,
+                            order_id, pubname, orderdate, orderamount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -234,7 +234,7 @@ def order_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [pubname, orderdate, orderamount, todelete, orderid]
+                values = [pubname, orderdate, orderamount, todelete, order_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Order information has been updated."
@@ -284,7 +284,7 @@ def order_loadprofile(timestamp,toload, search):
         
 
         val = [pub_order_id]
-        colnames = ["Order ID","Publisher Name","Date Received","Amount"]
+        colnames = ["orderid","pubname","orderdate","orderamount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 

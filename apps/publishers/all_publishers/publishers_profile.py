@@ -192,7 +192,7 @@ def pub_submitprocess(submitbtn, closebtn,
                     pub_email,
                     pub_delete_ind
                 )
-                VALUES (%s, %s, %s)
+                VALUES (%s, %s, %s,%s)
                 """
                 values = [name, landline_number, email, False]
                 db.modifydatabase(sqlcode, values)
