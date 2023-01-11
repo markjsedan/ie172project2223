@@ -22,7 +22,7 @@ sort_add = dbc.NavbarSimple(
             in_navbar=True,
             label="Sort by",
         ),
-        dbc.Button("Add a publisher", color="dark", className="me-2", href="/publishers/publishers_orders_profile?mode=add"),
+        dbc.Button("Add an order", color="dark", className="me-2", href="/publishers/publishers_orders_profile?mode=add"),
     ],
     brand="",
 
@@ -92,11 +92,11 @@ def updatepublishers_orders_list(pathname, searchterm):
                 WHERE NOT pub_order_delete_ind
         """
         val = []
-        cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]
+        cols = ["Order ID", "Publisher", "Date Received", "Amount"]
         
 
         if searchterm:
-            sql += """ AND pub_order_id ILIKE %s"""
+            sql += """ AND pub_order_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 

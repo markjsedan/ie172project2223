@@ -132,12 +132,12 @@ def order_profile_toload(pathname, search):
 
     if pathname == '/publishers/publishers_orders_profile':
         sql = """
-            SELECT pub_name
+            SELECT pub_name as label, pub_id as value
             FROM publishers
             WHERE pub_delete_ind = False
         """
         values = []
-        cols = ['pub_name']
+        cols = ['label','value']
         pubname_opts_df = db.querydatafromdatabase(sql, values, cols)
         pubname_options = pubname_opts_df.to_dict('records')
 
@@ -190,10 +190,9 @@ def order_submitprocess(submitbtn, closebtn,
         openmodal = True
 
         inputs = [
-            orderid,
             pubname,
             orderdate,
-            orderamount,
+            orderamount
         ]
 
         if not all (inputs):
@@ -207,7 +206,7 @@ def order_submitprocess(submitbtn, closebtn,
                 sqlcode = """INSERT INTO publishers_orders(
                     pub_order_name,
                     pub_order_date,
-                    pub_order_amount
+                    pub_order_amt,
                     pub_order_delete_ind
                 )
                 VALUES (%s, %s, %s, %s)
@@ -221,13 +220,13 @@ def order_submitprocess(submitbtn, closebtn,
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                orderid = parse_qs(parsed.query)['id'][0]
+                pub_order_id = parse_qs(parsed.query)['id'][0]
 
                 sqlcode = """UPDATE publishers_orders
                 SET
                     pub_order_name = %s,
                     pub_order_date = %s,
-                    pub_order_amount = %s,
+                    pub_order_amt = %s,
                     pub_order_delete_ind = %s
                 WHERE
                     pub_order_id = %s
@@ -273,18 +272,18 @@ def order_loadprofile(timestamp,toload, search):
     if toload == 1:
 
         parsed = urlparse(search)
-        orderid = parse_qs(parsed.query)['id'][0]
+        pub_order_id = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
                     pub_order_id,
                     pub_order_name,
                     pub_order_date,
-                    pub_order_amount,
+                    pub_order_amt
         FROM publishers_orders
-        WHERE order_id = %s """     
+        WHERE pub_order_id = %s """     
         
 
-        val = [orderid]
+        val = [pub_order_id]
         colnames = ["Order ID","Publisher Name","Date Received","Amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
