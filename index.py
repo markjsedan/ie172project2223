@@ -14,6 +14,7 @@ from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
 from apps.employees import employees_home, employees_profile
+from apps.reports import reports_home
 from apps import login, signup
 from apps.publishers.all_publishers import publishers_home, publishers_profile
 from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_profile
@@ -141,6 +142,8 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = employees_home.layout
             elif pathname == '/employees/employees_profile':
                 returnlayout = employees_profile.layout
+            elif pathname == '/reports_home':
+                returnlayout = reports_home.layout
             elif pathname == '/about_us':
                 returnlayout = aboutus.layout
             else:
