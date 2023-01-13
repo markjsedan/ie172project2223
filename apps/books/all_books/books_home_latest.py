@@ -15,6 +15,7 @@ sort_add = dbc.NavbarSimple(
     children=[
         dbc.DropdownMenu(
             children=[
+                dbc.DropdownMenuItem("No filter", href="/books"),
                 dbc.DropdownMenuItem("A-Z", href="/books/books_home_atoz"),
                 dbc.DropdownMenuItem("Z-A", href="/books/books_home_ztoa"),
                 dbc.DropdownMenuItem("Latest", href="/books/books_home_latest"),
