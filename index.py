@@ -16,10 +16,10 @@ from apps.customers.customers_institutions import customers_institutions_home, c
 from apps.employees import employees_home, employees_profile
 from apps import login, signup
 from apps.publishers.all_publishers import publishers_home, publishers_profile
-from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_profile
-from apps.books.genres import genres, genres_profile
-from apps.purchases.purchases_individuals import purchases_individuals_home,purchases_individuals_profile
-from apps.purchases.purchases_institutions import purchases_institutions_home,purchases_institutions_profile
+from apps.publishers.orders_to_publishers import publishers_orders, publishers_orders_latest, publishers_orders_profile
+from apps.books.genres import genres, genres_profile, genres_atoz, genres_ztoa
+from apps.purchases.purchases_individuals import purchases_individuals_home, purchases_individuals_latest, purchases_individuals_profile
+from apps.purchases.purchases_institutions import purchases_institutions_home, purchases_institutions_latest, purchases_institutions_profile
 
 
 CONTENT_STYLE = {
@@ -109,6 +109,10 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = genres.layout
             elif pathname == '/books/genres_profile':
                 returnlayout = genres_profile.layout
+            elif pathname == '/books/genres_atoz':
+                returnlayout = genres_atoz.layout
+            elif pathname == '/books/genres_ztoa':
+                returnlayout = genres_ztoa.layout
             elif pathname == '/customers/individuals_home':
                 returnlayout = customers_individuals_home.layout
             elif pathname == '/customers/individuals_profile':
@@ -121,10 +125,14 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = purchases_individuals_home.layout
             elif pathname == '/purchases/individuals_profile':
                 returnlayout = purchases_individuals_profile.layout
+            elif pathname == '/purchases/individuals_latest':
+                returnlayout = purchases_individuals_latest.layout
             elif pathname == '/purchases/institutions_home':
                 returnlayout = purchases_institutions_home.layout
             elif pathname == '/purchases/institutions_profile':
                 returnlayout = purchases_institutions_profile.layout
+            elif pathname == '/purchases/institutions_latest':
+                returnlayout = purchases_institutions_latest.layout
             elif pathname == '/publishers/publishers_home':
                 returnlayout = publishers_home.layout
             elif pathname == '/publishers/publishers_profile':
@@ -133,6 +141,8 @@ def displaypage(pathname, sessionlogout, currentuserid):
                 returnlayout = publishers_orders.layout
             elif pathname == '/publishers/publishers_orders_profile':
                 returnlayout = publishers_orders_profile.layout
+            elif pathname == '/publishers/publishers_orders_latest':
+                returnlayout = publishers_orders_latest.layout
             elif pathname == '/employees_home':
                 returnlayout = employees_home.layout
             elif pathname == '/employees/employees_profile':

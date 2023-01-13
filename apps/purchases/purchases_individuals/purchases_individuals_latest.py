@@ -21,7 +21,7 @@ sort_add = dbc.NavbarSimple(
             ],
             nav=True,
             in_navbar=True,
-            label="Sort by",
+            label="Latest",
         ),
         dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/individuals_profile?mode=add"),
     ],
@@ -41,7 +41,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="purchases_individuals_filter", placeholder="Enter keyword/s"
+                        type="text", id="purchases_individuals_filter_latest", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -63,7 +63,7 @@ layout = html.Div(
                             [
                                 html.Div(
                                     "This will contain the table for purchases (individuals)",
-                                    id='purchases_individuals_list',
+                                    id='purchases_individuals_list_latest',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -76,20 +76,21 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('purchases_individuals_list', 'children'),
+        Output('purchases_individuals_list_latest', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('purchases_individuals_filter', 'value'),
+        Input('purchases_individuals_filter_latest', 'value'),
     ]
 )
-def updatepurchases_individuals_list(pathname, searchterm):
+def updatepurchases_individuals_list_latest(pathname, searchterm):
     if pathname == '/purchases/individuals_home':
         # 1. query the relevant records, add filter first before query
         sql = """ SELECT pur_ind_id, cust_ind_name, pur_ind_date, pur_ind_amt
                 FROM purchases_individuals
                     INNER JOIN customers_individuals on purchases_individuals.cust_ind_id = customers_individuals.cust_ind_id
                 WHERE NOT pur_ind_delete_ind
+                ORDER BY pur_ind_date DESC
         """
         val = []
         cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]
@@ -100,12 +101,12 @@ def updatepurchases_individuals_list(pathname, searchterm):
             val += [f"%{searchterm}%"]
 
 
-        pur_ind_list = db.querydatafromdatabase(sql,val,cols)
+        pur_ind_list_latest = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if pur_ind_list.shape[0]:
+        if pur_ind_list_latest.shape[0]:
             buttons = []
-            for pur_ind_id in pur_ind_list['Purchase ID']:
+            for pur_ind_id in pur_ind_list_latest['Purchase ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/purchases/individuals_profile?mode=edit&id={pur_ind_id}",
@@ -115,10 +116,10 @@ def updatepurchases_individuals_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            pur_ind_list['Action'] = buttons
-            purchases_individuals_table = dbc.Table.from_dataframe(pur_ind_list, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            pur_ind_list_latest['Action'] = buttons
+            purchases_individuals_table_latest = dbc.Table.from_dataframe(pur_ind_list_latest, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [purchases_individuals_table]
+            return [purchases_individuals_table_latest]
         
         else:
             return ["There are no records that match the search term."] 

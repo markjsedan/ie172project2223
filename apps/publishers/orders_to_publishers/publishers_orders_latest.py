@@ -20,7 +20,7 @@ sort_add = dbc.NavbarSimple(
             ],
             nav=True,
             in_navbar=True,
-            label="Sort by",
+            label="Latest",
         ),
         dbc.Button("Add an order", color="dark", className="me-2", href="/publishers/publishers_orders_profile?mode=add"),
     ],
@@ -41,7 +41,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="publishers_orders_filter", placeholder="Enter keyword/s"
+                        type="text", id="publishers_orders_filter_latest", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -63,7 +63,7 @@ layout = html.Div(
                             [
                                 html.Div(
                                     "This will contain the table for orders to publishers",
-                                    id='publishers_orders_list',
+                                    id='publishers_orders_list_latest',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -76,14 +76,14 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('publishers_orders_list', 'children'),
+        Output('publishers_orders_list_latest', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('publishers_orders_filter', 'value'),
+        Input('publishers_orders_filter_latest', 'value'),
     ]
 )
-def updatepublishers_orders_list(pathname, searchterm):
+def updatepublishers_orders_list_latest(pathname, searchterm):
     if pathname == '/publishers/publishers_orders':
         # 1. query the relevant records, add filter first before query
         
@@ -91,6 +91,7 @@ def updatepublishers_orders_list(pathname, searchterm):
                 FROM publishers_orders
                     INNER JOIN publishers on publishers_orders.pub_id = publishers.pub_id
                 WHERE NOT pub_order_delete_ind
+                ORDER BY pub_order_date DESC
         """
         val = []
         cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]
@@ -101,12 +102,12 @@ def updatepublishers_orders_list(pathname, searchterm):
             val += [f"%{searchterm}%"]
 
 
-        publishers_orders = db.querydatafromdatabase(sql,val,cols)
+        publishers_orders_latest = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if publishers_orders.shape[0]:
+        if publishers_orders_latest.shape[0]:
             buttons = []
-            for pub_order_id in publishers_orders['Order ID']:
+            for pub_order_id in publishers_orders_latest['Order ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/publishers/publishers_orders_profile?mode=edit&id={pub_order_id}",
@@ -116,10 +117,10 @@ def updatepublishers_orders_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            publishers_orders['Action'] = buttons
-            publishers_orders_table = dbc.Table.from_dataframe(publishers_orders, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            publishers_orders_latest['Action'] = buttons
+            publishers_orders_table_latest = dbc.Table.from_dataframe(publishers_orders_latest, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [publishers_orders_table]
+            return [publishers_orders_table_latest]
         
         else:
             return ["There are no records that match the search term."]

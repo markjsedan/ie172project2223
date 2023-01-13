@@ -20,7 +20,7 @@ sort_add = dbc.NavbarSimple(
             ],
             nav=True,
             in_navbar=True,
-            label="Sort by",
+            label="Sort from A to Z",
         ),
         dbc.Button("Add a genre", color="dark", className="me-2", href="/books/genres_profile?mode=add"),
     ],
@@ -43,7 +43,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1, ),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="genres_filter", placeholder="Enter keyword/s"
+                        type="text", id="genres_filter_atoz", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -65,7 +65,7 @@ layout = html.Div(
                             [
                                 html.Div(
                                     "This will contain the table for genres",
-                                    id='genres_list',
+                                    id='genres_list_atoz',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -78,20 +78,21 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('genres_list', 'children'),
+        Output('genres_list_atoz', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('genres_filter', 'value'),
+        Input('genres_filter_atoz', 'value'),
     ]
 )
-def updategenres_list(pathname, searchterm):
+def updategenres_list_atoz(pathname, searchterm):
     if pathname == '/books/genres':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT genre_id, genre_name
                 FROM genres
                 WHERE NOT genre_delete_ind
+                ORDER BY genre_name
         """
         val = []
         cols = ["Genre ID", "Genre"]
@@ -102,12 +103,12 @@ def updategenres_list(pathname, searchterm):
             val += [f"%{searchterm}%"]
 
 
-        genres = db.querydatafromdatabase(sql,val,cols)
+        genres_atoz = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if genres.shape[0]:
+        if genres_atoz.shape[0]:
             buttons = []
-            for genre_id in genres['Genre ID']:
+            for genre_id in genres_atoz['Genre ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/books/genres_profile?mode=edit&id={genre_id}",
@@ -117,14 +118,14 @@ def updategenres_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            genres['Action'] = buttons
+            genres_atoz['Action'] = buttons
 
             # remove ID col
             # customers_individuals.drop('Customer ID', axis=1, inplace=True)
 
-            genres_table = dbc.Table.from_dataframe(genres, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            genres_table_atoz = dbc.Table.from_dataframe(genres_atoz, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
-            return [genres_table]
+            return [genres_table_atoz]
         
         else:
             return ["There are no records that match the search term."]
