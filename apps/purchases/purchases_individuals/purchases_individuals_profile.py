@@ -168,7 +168,7 @@ def pur_ind_prof_toload(pathname, search):
     [
         State('info_pur_ind_id', 'value'),
         State('info_cust_ind_name', 'value'),
-        State('info_pur_ind_date', 'value'),
+        State('info_pur_ind_date', 'date'),
         State('info_pur_ind_amt', 'value'),
         State('url', 'search'),
         State('pur_ind_removerecord', 'value'),
@@ -258,7 +258,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
     [
         Output('info_pur_ind_id', 'value'),
         Output('info_cust_ind_name', 'value'),
-        Output('info_pur_ind_date', 'value'),
+        Output('info_pur_ind_date', 'date'),
         Output('info_pur_ind_amt', 'value'),
     ],
     [
