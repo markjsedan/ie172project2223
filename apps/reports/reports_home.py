@@ -9,6 +9,7 @@ import pandas as pd
 
 from app import app
 from apps import dbconnect as db
+from openpyxl import Workbook
 
 
 layout = html.Div(
@@ -18,24 +19,20 @@ layout = html.Div(
                 dbc.CardHeader(html.H4("Reports")),
                 dbc.CardBody(
                     [
-                        html.Div([
-                            html.Button("Download Text", id="btn-download-txt"),
-                            dcc.Download(id="download-text")
-                        ]),
+                        html.Button("Download Excel", id="btn_xlsx"),
+                        dcc.Download(id="download-dataframe-xlsx"),
                     ]
                 ),
             ]
         ),
     ],
 )
+df = pd.DataFrame({"a": [1, 2, 3, 4], "b": [2, 1, 5, 6], "c": ["x", "x", "y", "y"]})
 
 @app.callback(
-    [
-        Output("download-text", "data"),
-    ],
-    [
-        Input("btn-download-txt", "n_clicks")
-    ]
+    Output("download-dataframe-xlsx", "data"),
+    Input("btn_xlsx", "n_clicks"),
+    prevent_initial_call=True,
 )
 def func(n_clicks):
-    return dict(content="Hello world!", filename="hello.txt")
+    return dcc.send_data_frame(df.to_excel, "mydf.xlsx", sheet_name="Sheet_name_1")
