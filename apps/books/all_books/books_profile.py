@@ -370,7 +370,6 @@ def bookinfo_loadprofile(timestamp, to_load, search):
         FROM books
         WHERE bk_id = %s"""     
         
-
         val = [bookid]
         colnames = ['bookid','title', 'author', 'genre', 'publisher', 'pubyear', 'price', 'count']
 

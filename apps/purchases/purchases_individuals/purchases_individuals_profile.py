@@ -130,7 +130,7 @@ layout = html.Div(
 )
 def pur_ind_prof_toload(pathname, search):
 
-    if pathname == '/purchasers/individuals_profile':
+    if pathname == '/purchases/individuals_profile':
         # customer options
         sql = """
             SELECT cust_ind_name as label, cust_ind_id as value
@@ -204,7 +204,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
             if mode == 'add':
 
-                sqlcode = """INSERT INTO purchasers_individuals(
+                sqlcode = """INSERT INTO purchases_individuals(
                     cust_ind_id,
                     pur_ind_date,
                     pur_ind_amt,
@@ -216,14 +216,14 @@ def pur_ind_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been saved."
-                okay_href = '/purchasers/individuals_home'
+                okay_href = '/purchases/individuals_home'
 
             elif mode == 'edit':
 
                 parsed = urlparse(search)
                 pur_id = parse_qs(parsed.query)['id'][0]
 
-                sqlcode = """UPDATE purchasers_individuals
+                sqlcode = """UPDATE purchases_individuals
                 SET
                     cust_ind_id = %s,
                     pur_ind_date = %s,
@@ -239,7 +239,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
-                okay_href = '/purchasers/individuals_home'
+                okay_href = '/purchases/individuals_home'
 
             else:
                 raise PreventUpdate 
@@ -273,18 +273,17 @@ def pur_ind_loadprofile(timestamp,to_load, search):
     if to_load == 1:
 
         parsed = urlparse(search)
-        purchase_id = parse_qs(parsed.query)['id'][0]
+        pur_id = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
                     pur_ind_id,
                     cust_ind_id,
                     pur_ind_date,
                     pur_ind_amt
-        FROM purchasers_individuals
+        FROM purchases_individuals
         WHERE pur_ind_id = %s """     
         
-
-        val = [purchase_id]
+        val = [pur_id]
         colnames = ["pur_id","customer","date","amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
