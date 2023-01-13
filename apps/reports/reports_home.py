@@ -19,11 +19,8 @@ layout = html.Div(
                 dbc.CardHeader(html.H4("Reports")),
                 dbc.CardBody(
                     [
-                        dbc.Row(
-                            dbc.Col("Top 10 Customers"),
-                            dbc.Button("Download Excel", id="btn_xlsx"),
-                            
-                        ),
+                        dbc.Col("Top 10 Customers"),
+                        dbc.Button("Download Excel", id="btn_xlsx"),
                         dcc.Download(id="download-dataframe-xlsx"),
                     ]
                 ),
@@ -37,7 +34,7 @@ layout = html.Div(
     Input("btn_xlsx", "n_clicks"),
     prevent_initial_call=True,
 )
-def func(n_clicks):
+def func(n_clicks,n_clicks):
     # df = pd.DataFrame({"a": [1, 2, 3, 4], "b": [2, 1, 5, 6], "c": ["x", "x", "y", "y"]})
     
     sql = """ SELECT cust_ind_name, COUNT(pur_ind_amt), SUM(pur_ind_amt)
