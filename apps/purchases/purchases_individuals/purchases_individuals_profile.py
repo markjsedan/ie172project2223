@@ -21,17 +21,20 @@ layout = html.Div(
         ),
         html.H2("Purchase Information"),
         html.Hr(),
-        dbc.Row(
-            [
-                dbc.Label("Purchase ID", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="prof_pur_ind_id", placeholder="Leave this blank",readonly=True
+        html.Div(
+            dbc.Row(
+                [
+                    dbc.Label("Purchase ID", width=2),
+                    dbc.Col(
+                        dbc.Input(
+                            type="text", id="prof_pur_ind_id", placeholder="Leave this blank",readonly=True
+                        ),
+                        width=7,
                     ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
+                ],
+                className="mb-3",
+            ),
+            id="prof_pur_ind_id_div"
         ),
         dbc.Row(
             [
@@ -119,7 +122,8 @@ layout = html.Div(
     [
         Output('prof_cust_ind_name','options'),
         Output('pur_ind_toload', 'data'),
-        Output('pur_ind_removerecord_div', 'style')
+        Output('pur_ind_removerecord_div', 'style'),
+        Output('prof_pur_ind_id_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -147,11 +151,12 @@ def pur_ind_prof_toload(pathname, search):
         mode = parse_qs(parsed.query)['mode'][0]
         to_load = 1 if mode == 'edit' else 0
         removerecord_div = None if to_load else {'display': 'None'}
+        prof_pur_ind_id_div = None if to_load else {'display': 'None'}
 
     else:
         raise PreventUpdate
 
-    return [cust_name_opts, to_load, removerecord_div]
+    return [cust_name_opts, to_load, removerecord_div, prof_pur_ind_id_div]
 
 
 

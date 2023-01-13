@@ -22,17 +22,20 @@ layout = html.Div(
         dbc.Alert(id='genreprofile_alert', is_open=False), # For feedback purposes
         html.H2("Genre"),
         html.Hr(),
-        dbc.Row(
-            [
-                dbc.Label("Genre ID", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="genre_id", placeholder="Leave this blank",readonly=True
+        html.Div(
+            dbc.Row(
+                [
+                    dbc.Label("Genre ID", width=2),
+                    dbc.Col(
+                        dbc.Input(
+                            type="text", id="genre_id", placeholder="Leave this blank",readonly=True
+                        ),
+                        width=7,
                     ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
+                ],
+                className="mb-3",
+            ),
+            id="genre_id_div"
         ),
         dbc.Row(
             [
@@ -90,7 +93,8 @@ layout = html.Div(
 @app.callback(
     [
         Output('genre_toload', 'data'),
-        Output('genre_removerecord_div', 'style')
+        Output('genre_removerecord_div', 'style'),
+        Output('genre_id_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -106,8 +110,9 @@ def genre_name_loaddropdown(pathname, search):
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
+        genre_id_div = None if toload else {'display': 'None'}
         
-        return [toload, removerecord_div]
+        return [toload, removerecord_div, genre_id_div]
 
     else:
         raise PreventUpdate

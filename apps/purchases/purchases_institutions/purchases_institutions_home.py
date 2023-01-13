@@ -96,7 +96,7 @@ def updatepurchases_institutions_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND pur_ins_name ILIKE %s"""
+            sql += """ AND cust_ins_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 

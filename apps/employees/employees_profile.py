@@ -21,17 +21,20 @@ layout = html.Div(
         ),
         html.H2("Employee Information"),
         html.Hr(),
-        dbc.Row(
-            [
-                dbc.Label("Employee ID", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="emp_id", placeholder="Leave this blank",readonly=True
+        html.Div(
+            dbc.Row(
+                [
+                    dbc.Label("Employee ID", width=2),
+                    dbc.Col(
+                        dbc.Input(
+                            type="text", id="emp_id", placeholder="Leave this blank",readonly=True
+                        ),
+                        width=7,
                     ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
+                ],
+                className="mb-3",
+            ),
+            id="emp_id_div"
         ),
         dbc.Row(
             [
@@ -125,7 +128,8 @@ layout = html.Div(
 @app.callback(
     [
         Output('emp_toload', 'data'),
-        Output('emp_removerecord_div', 'style')
+        Output('emp_removerecord_div', 'style'),
+        Output('emp_id_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -142,8 +146,9 @@ def emp_role_loaddropdown(pathname, search):
         mode = parse_qs(parsed.query)['mode'][0]
         toload = 1 if mode == 'edit' else 0
         removerecord_div = None if toload else {'display': 'None'}
+        emp_id_div = None if toload else {'display': 'None'}
         
-        return [toload, removerecord_div]
+        return [toload, removerecord_div, emp_id_div]
 
     else:
         raise PreventUpdate

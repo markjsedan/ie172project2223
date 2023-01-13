@@ -21,17 +21,20 @@ layout = html.Div(
         ),
         html.H2("Book Information"),
         html.Hr(),
-        dbc.Row(
-            [
-                dbc.Label("Book ID", width=2),
-                dbc.Col(
-                    dbc.Input(
-                        type="text", id="bookinfo_id", placeholder="Leave this blank",readonly=True
+        html.Div(
+            dbc.Row(
+                [
+                    dbc.Label("Book ID", width=2),
+                    dbc.Col(
+                        dbc.Input(
+                            type="text", id="bookinfo_id", placeholder="Leave this blank",readonly=True
+                        ),
+                        width=7,
                     ),
-                    width=7,
-                ),
-            ],
-            className="mb-3",
+                ],
+                className="mb-3",
+            ),
+            id="bookinfo_id_div"
         ),
         dbc.Row(
             [
@@ -173,7 +176,8 @@ layout = html.Div(
         Output('bookinfo_genre', 'options'),
         Output('bookinfo_publisher', 'options'),
         Output('bookinfo_toload', 'data'),
-        Output('bookinfo_removerecord_div', 'style')
+        Output('bookinfo_removerecord_div', 'style'),
+        Output('bookinfo_id_div', 'style')
     ],
     [
         Input('url', 'pathname')
@@ -213,11 +217,12 @@ def bookinfo_loaddropdown(pathname, search):
         mode = parse_qs(parsed.query)['mode'][0]
         to_load = 1 if mode == 'edit' else 0
         removerecord_div = None if to_load else {'display': 'none'}
+        bookinfo_id_div = None if to_load else {'display': 'none'}
     
     else:
         raise PreventUpdate
 
-    return [genre_opts, pubs_opts, to_load, removerecord_div]
+    return [genre_opts, pubs_opts, to_load, removerecord_div, bookinfo_id_div]
 
 
 
