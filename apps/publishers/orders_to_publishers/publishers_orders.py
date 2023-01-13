@@ -91,7 +91,6 @@ def updatepublishers_orders_list(pathname, searchterm):
                 FROM publishers_orders
                     INNER JOIN publishers on publishers_orders.pub_id = publishers.pub_id
                 WHERE NOT pub_order_delete_ind
-                ORDER BY pub_order_date DESC
         """
         val = []
         cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]

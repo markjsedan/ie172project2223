@@ -89,8 +89,7 @@ def updatepurchases_institutions_list(pathname, searchterm):
         sql = """ SELECT pur_ins_id, cust_ins_name, pur_ins_date, pur_ins_amt
                 FROM purchases_institutions
                     INNER JOIN customers_institutions on purchases_institutions.cust_ins_id = customers_institutions.cust_ins_id
-                WHERE NOT pur_ins_delete_ind
-                ORDER BY pur_ins_date DESC
+                WHERE NOT pur_ins_delete_ind 
         """
         val = []
         cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]
@@ -99,7 +98,6 @@ def updatepurchases_institutions_list(pathname, searchterm):
         if searchterm:
             sql += """ AND cust_ins_name ILIKE %s"""
             val += [f"%{searchterm}%"]
-
 
         pur_ins_list = db.querydatafromdatabase(sql,val,cols)
         

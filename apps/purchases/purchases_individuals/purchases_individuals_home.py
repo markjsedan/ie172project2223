@@ -90,7 +90,6 @@ def updatepurchases_individuals_list(pathname, searchterm):
                 FROM purchases_individuals
                     INNER JOIN customers_individuals on purchases_individuals.cust_ind_id = customers_individuals.cust_ind_id
                 WHERE NOT pur_ind_delete_ind
-                ORDER BY pur_ind_date DESC
         """
         val = []
         cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]
@@ -99,7 +98,6 @@ def updatepurchases_individuals_list(pathname, searchterm):
         if searchterm:
             sql += """ AND cust_ind_name ILIKE %s"""
             val += [f"%{searchterm}%"]
-
 
         pur_ind_list = db.querydatafromdatabase(sql,val,cols)
         
