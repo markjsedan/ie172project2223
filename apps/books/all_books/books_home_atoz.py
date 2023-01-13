@@ -21,7 +21,7 @@ sort_add = dbc.NavbarSimple(
             ],
             nav=True,
             in_navbar=True,
-            label="Sort by",
+            label="Sort from A to Z",
         ),
         dbc.Button("Add a book", color="dark", className="me-2", href="/books/books_profile?mode=add"),
     ],
