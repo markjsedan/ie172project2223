@@ -15,6 +15,7 @@ sort_add = dbc.NavbarSimple(
     children=[
         dbc.DropdownMenu(
             children=[
+                dbc.DropdownMenuItem("No filter", href="/books/genres"),
                 dbc.DropdownMenuItem("A-Z", href="/books/genres_atoz"),
                 dbc.DropdownMenuItem("Z-A", href="/books/genres_ztoa"),
             ],
@@ -86,7 +87,7 @@ layout = html.Div(
     ]
 )
 def updategenres_list_atoz(pathname, searchterm):
-    if pathname == '/books/genres':
+    if pathname == '/books/genres_atoz':
         # 1. query the relevant records, add filter first before query
         
         sql = """ SELECT genre_id, genre_name
