@@ -44,7 +44,7 @@ layout = html.Div(
                 dbc.Label(html.H5("Search"), width=1, ),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="books_allbooks_filter", placeholder="Enter keyword/s"
+                        type="text", id="books_allbooks_filter_ztoa", placeholder="Enter keyword/s"
                     ),
                     width=5,
                 ),
@@ -66,7 +66,7 @@ layout = html.Div(
                             [
                                 html.Div(
                                     "This will contain the table for books",
-                                    id='books_allbooks_list',
+                                    id='books_allbooks_list_ztoa',
                                     style={'text-align': 'center'}
                                 ),
                             ]
@@ -79,14 +79,14 @@ layout = html.Div(
 )
 @app.callback(
     [
-        Output('books_allbooks_list', 'children'),
+        Output('books_allbooks_list_ztoa', 'children'),
     ],
     [
         Input('url', 'pathname'),
-        Input('books_allbooks_filter', 'value'),
+        Input('books_allbooks_filter_ztoa', 'value'),
     ]
 )
-def updatebooks_allbooks_list(pathname, searchterm):
+def updatebooks_allbooks_list_ztoa(pathname, searchterm):
     if pathname == '/' or '/books':
         # 1. query the relevant records, add filter first before query
         
@@ -104,12 +104,12 @@ def updatebooks_allbooks_list(pathname, searchterm):
             sql += """ AND bk_title ILIKE %s"""
             val += [f"%{searchterm}%"]
             
-        books_allbooks = db.querydatafromdatabase(sql,val,cols)
+        books_allbooks_ztoa = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if books_allbooks.shape[0]:
+        if books_allbooks_ztoa.shape[0]:
             buttons = []
-            for bk_id in books_allbooks['Book ID']:
+            for bk_id in books_allbooks_ztoa['Book ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_id}",
@@ -119,11 +119,11 @@ def updatebooks_allbooks_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            books_allbooks['Action'] = buttons
-            books_allbooks.drop('Book ID', axis=1, inplace=True)
-            books_allbooks_table = dbc.Table.from_dataframe(books_allbooks, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            books_allbooks_ztoa['Action'] = buttons
+            books_allbooks_ztoa.drop('Book ID', axis=1, inplace=True)
+            books_allbooks_table_ztoa = dbc.Table.from_dataframe(books_allbooks_ztoa, striped=True, bordered=True, hover=True, size='sm', dark=False,)
             
-            return [books_allbooks_table]
+            return [books_allbooks_table_ztoa]
         
         else:
             return ["There are no records that match the search term."]
