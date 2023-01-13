@@ -211,7 +211,6 @@ def bookinfo_loaddropdown(pathname, search):
         # to_load
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
-
         to_load = 1 if mode == 'edit' else 0
         removerecord_div = None if to_load else {'display': 'none'}
     

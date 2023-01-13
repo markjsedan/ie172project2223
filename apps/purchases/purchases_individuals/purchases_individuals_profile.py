@@ -139,8 +139,8 @@ def pur_ind_prof_toload(pathname, search):
         """ 
         values = []
         cols = ['label','value']
-        df = db.querydatafromdatabase(sql, values, cols)
-        cust_name_opts = df.to_dict()
+        cust_name_opts_df = db.querydatafromdatabase(sql, values, cols)
+        cust_name_opts = cust_name_opts_df.to_dict('records')
 
         #  to_load
         parsed = urlparse(search)
@@ -176,7 +176,7 @@ def pur_ind_prof_toload(pathname, search):
 )
 def pur_ind_submitprocess(submitbtn, closebtn,
 
-                            purchase_id, customer, date, amount,
+                            pur_id, customer, date, amount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
