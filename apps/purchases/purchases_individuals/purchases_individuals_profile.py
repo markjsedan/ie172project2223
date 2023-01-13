@@ -26,7 +26,7 @@ layout = html.Div(
                 dbc.Label("Purchase ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="info_pur_ind_id", placeholder="Leave this blank",readonly=True
+                        type="text", id="prof_pur_ind_id", placeholder="Leave this blank",readonly=True
                     ),
                     width=7,
                 ),
@@ -39,7 +39,7 @@ layout = html.Div(
                 dbc.Col(
                     html.Div(
                         dcc.Dropdown(
-                            id='info_cust_ind_name',
+                            id='prof_cust_ind_name',
                             clearable=True,
                             searchable=True
                         ),
@@ -55,7 +55,7 @@ layout = html.Div(
                 dbc.Label("Date", width=2),
                 dbc.Col(
                     dcc.DatePickerSingle(
-                        id="info_pur_ind_date"
+                        id="prof_pur_ind_date"
                     ),
                     width=7,
                 ),
@@ -67,7 +67,7 @@ layout = html.Div(
                 dbc.Label("Amount", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="info_pur_ind_amt", placeholder="Enter amount of purchase"
+                        type="text", id="prof_pur_ind_amt", placeholder="Enter amount of purchase"
                     ),
                     width=7,
                 ),
@@ -117,7 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('info_cust_ind_name','options'),
+        Output('prof_cust_ind_name','options'),
         Output('pur_ind_toload', 'data'),
         Output('pur_ind_removerecord_div', 'style')
     ],
@@ -166,10 +166,10 @@ def pur_ind_prof_toload(pathname, search):
         Input('pur_ind_closebtn', 'n_clicks')
     ],
     [
-        State('info_pur_ind_id', 'value'),
-        State('info_cust_ind_name', 'value'),
-        State('info_pur_ind_date', 'date'),
-        State('info_pur_ind_amt', 'value'),
+        State('prof_pur_ind_id', 'value'),
+        State('prof_cust_ind_name', 'value'),
+        State('prof_pur_ind_date', 'date'),
+        State('prof_pur_ind_amt', 'value'),
         State('url', 'search'),
         State('pur_ind_removerecord', 'value'),
     ]
@@ -256,10 +256,10 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
 @app.callback(
     [
-        Output('info_pur_ind_id', 'value'),
-        Output('info_cust_ind_name', 'value'),
-        Output('info_pur_ind_date', 'date'),
-        Output('info_pur_ind_amt', 'value'),
+        Output('prof_pur_ind_id', 'value'),
+        Output('prof_cust_ind_name', 'value'),
+        Output('prof_pur_ind_date', 'date'),
+        Output('prof_pur_ind_amt', 'value'),
     ],
     [
         Input('pur_ind_toload', 'modified_timestamp'),

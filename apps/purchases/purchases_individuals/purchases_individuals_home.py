@@ -86,7 +86,6 @@ layout = html.Div(
 def updatepurchases_individuals_list(pathname, searchterm):
     if pathname == '/purchases/individuals_home':
         # 1. query the relevant records, add filter first before query
-        
         sql = """ SELECT pur_ind_id, cust_ind_name, pur_ind_date, pur_ind_amt
                 FROM purchases_individuals
                     INNER JOIN customers_individuals on purchases_individuals.cust_ind_id = customers_individuals.cust_ind_id

@@ -87,8 +87,9 @@ def updatepublishers_orders_list(pathname, searchterm):
     if pathname == '/publishers/publishers_orders':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pub_order_id, pub_order_name, pub_order_date,pub_order_amt
+        sql = """ SELECT pub_order_id, pub_name, pub_order_date, pub_order_amt
                 FROM publishers_orders
+                    INNER JOIN publishers on publishers_orders.pub_id = publishers.pub_id
                 WHERE NOT pub_order_delete_ind
         """
         val = []
@@ -96,7 +97,7 @@ def updatepublishers_orders_list(pathname, searchterm):
         
 
         if searchterm:
-            sql += """ AND pub_order_name ILIKE %s"""
+            sql += """ AND pub_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
@@ -116,10 +117,6 @@ def updatepublishers_orders_list(pathname, searchterm):
             
             # we add the buttons to the table
             publishers_orders['Action'] = buttons
-
-            # remove ID col
-            # customers_individuals.drop('Customer ID', axis=1, inplace=True)
-
             publishers_orders_table = dbc.Table.from_dataframe(publishers_orders, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
             return [publishers_orders_table]

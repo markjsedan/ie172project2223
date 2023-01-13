@@ -85,14 +85,14 @@ layout = html.Div(
 )
 def updatepurchases_institutions_list(pathname, searchterm):
     if pathname == '/purchases/institutions_home':
-        # 1. query the relevant records, add filter first before query
-        
-        sql = """ SELECT pur_ins_id, pur_ins_name, pur_ins_date, pur_ins_amt
+        # 1. query the relevant records, add filter first before query       
+        sql = """ SELECT pur_ins_id, cust_ins_name, pur_ins_date, pur_ins_amt
                 FROM purchases_institutions
+                    INNER JOIN customers_institutions on purchases_institutions.cust_ins_id = customers_institutions.cust_ins_id
                 WHERE NOT pur_ins_delete_ind
         """
         val = []
-        cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
+        cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]
         
 
         if searchterm:
@@ -100,12 +100,12 @@ def updatepurchases_institutions_list(pathname, searchterm):
             val += [f"%{searchterm}%"]
 
 
-        purchases_institutions = db.querydatafromdatabase(sql,val,cols)
+        pur_ins_list = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if purchases_institutions.shape[0]:
+        if pur_ins_list.shape[0]:
             buttons = []
-            for pur_ins_id in purchases_institutions['Purchase ID']:
+            for pur_ins_id in pur_ins_list['Purchase ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/purchases/institutions_profile?mode=edit&id={pur_ins_id}",
@@ -115,12 +115,8 @@ def updatepurchases_institutions_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            purchases_institutions['Action'] = buttons
-
-            # remove ID col
-            # purchases_institutions.drop('puromer ID', axis=1, inplace=True)
-
-            purchases_institutions_table = dbc.Table.from_dataframe(purchases_institutions, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            pur_ins_list['Action'] = buttons
+            purchases_institutions_table = dbc.Table.from_dataframe(pur_ins_list, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
             return [purchases_institutions_table]
         

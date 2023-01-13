@@ -26,7 +26,7 @@ layout = html.Div(
                 dbc.Label("Purchase ID", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="pur_ins_id", placeholder="Leave this blank",readonly=True
+                        type="text", id="prof_pur_ins_id", placeholder="Leave this blank",readonly=True
                     ),
                     width=7,
                 ),
@@ -35,13 +35,13 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Purchaser", width=2),
+                dbc.Label("Customer Name", width=2),
                 dbc.Col(
                     html.Div(
                         dcc.Dropdown(
-                        id='pur_ins_name',
-                        clearable=True,
-                        searchable=True
+                            id='prof_cust_ins_name',
+                            clearable=True,
+                            searchable=True
                         ),
                         className="dash-bootstrap"
                     ),
@@ -55,7 +55,7 @@ layout = html.Div(
                 dbc.Label("Date", width=2),
                 dbc.Col(
                     dcc.DatePickerSingle(
-                        id="pur_ins_date"
+                        id="prof_pur_ins_date"
                     ),
                     width=7,
                 ),
@@ -67,7 +67,7 @@ layout = html.Div(
                 dbc.Label("Amount", width=2),
                 dbc.Col(
                     dbc.Input(
-                        type="text", id="pur_ins_amt", placeholder="Enter amount of purchase"
+                        type="text", id="prof_pur_ins_amt", placeholder="Enter amount of purchase"
                     ),
                     width=7,
                 ),
@@ -117,7 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('pur_ins_name','options'),
+        Output('prof_cust_ins_name','options'),
         Output('pur_ins_toload', 'data'),
         Output('pur_ins_removerecord_div', 'style')
     ],
@@ -130,28 +130,28 @@ layout = html.Div(
 )
 def pur_ins_prof_toload(pathname, search):
 
-    if pathname == '/purchasers/institutions_profile':
+    if pathname == '/purchases/institutions_profile':
+        # customer options
         sql = """
             SELECT cust_ins_name as label, cust_ins_id as value
             FROM customers_institutions
-            WHERE NOT cust_ins_delete_ind
+            WHERE cust_ins_delete_ind = False
         """ 
         values = []
-        cols = ['label', 'value']
-        df = db.querydatafromdatabase(sql, values, cols)
+        cols = ['label','value']
+        cust_name_opts_df = db.querydatafromdatabase(sql, values, cols)
+        cust_name_opts = cust_name_opts_df.to_dict('records')
 
-        cust_name_options = df.to_dict('records')
-
+        #  to_load
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
-        toload = 1 if mode == 'edit' else 0
-        removerecord_div = None if toload else {'display': 'None'}
-        
-        return [cust_name_options, toload, removerecord_div]
+        to_load = 1 if mode == 'edit' else 0
+        removerecord_div = None if to_load else {'display': 'None'}
 
     else:
         raise PreventUpdate
 
+    return [cust_name_opts, to_load, removerecord_div]
 
 
 
@@ -166,17 +166,17 @@ def pur_ins_prof_toload(pathname, search):
         Input('pur_ins_closebtn', 'n_clicks')
     ],
     [
-        State('pur_ins_id', 'value'),
-        State('pur_ins_name', 'value'),
-        State('pur_ins_date', 'value'),
-        State('pur_ins_amt', 'value'),
+        State('prof_pur_ins_id', 'value'),
+        State('prof_cust_ins_name', 'value'),
+        State('prof_pur_ins_date', 'date'),
+        State('prof_pur_ins_amt', 'value'),
         State('url', 'search'),
         State('pur_ins_removerecord', 'value'),
     ]
 )
 def pur_ins_submitprocess(submitbtn, closebtn,
 
-                            purchaser_id, name, date, amount,
+                            pur_id, customer, date, amount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -191,7 +191,7 @@ def pur_ins_submitprocess(submitbtn, closebtn,
         openmodal = True
 
         inputs = [
-            name,
+            customer,
             date,
             amount
         ]
@@ -204,28 +204,28 @@ def pur_ins_submitprocess(submitbtn, closebtn,
 
             if mode == 'add':
 
-                sqlcode = """INSERT INTO purchasers_institutions(
-                    pur_ins_name,
+                sqlcode = """INSERT INTO purchases_institutions(
+                    cust_ins_id,
                     pur_ins_date,
                     pur_ins_amt,
                     pur_ins_delete_ind
                 )
-                VALUES (%s, %s, %s)
+                VALUES (%s, %s, %s, %s)
                 """
-                values = [name, date, amount, False]
+                values = [customer, date, amount, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been saved."
-                okay_href = '/purchasers/institutions_home'
+                okay_href = '/purchases/institutions_home'
 
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                pur_ins_id = parse_qs(parsed.query)['id'][0]
+                pur_id = parse_qs(parsed.query)['id'][0]
 
-                sqlcode = """UPDATE purchasers_institutions
+                sqlcode = """UPDATE purchases_institutions
                 SET
-                    pur_ins_name = %s,
+                    cust_ins_id = %s,
                     pur_ins_date = %s,
                     pur_ins_amt = %s,
                     pur_ins_delete_ind = %s
@@ -233,13 +233,13 @@ def pur_ins_submitprocess(submitbtn, closebtn,
                     pur_ins_id = %s
                 """
 
-                todelete = bool(removerecord)
+                to_delete = bool(removerecord)
 
-                values = [name, date, amount, todelete, purchaser_id]
+                values = [customer, date, amount, to_delete, pur_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
-                okay_href = '/purchasers/institutions_home'
+                okay_href = '/purchases/institutions_home'
 
             else:
                 raise PreventUpdate 
@@ -256,10 +256,10 @@ def pur_ins_submitprocess(submitbtn, closebtn,
 
 @app.callback(
     [
-        Output('pur_ins_id', 'value'),
-        Output('pur_ins_name', 'value'),
-        Output('pur_ins_date', 'value'),
-        Output('pur_ins_amt', 'value'),
+        Output('prof_pur_ins_id', 'value'),
+        Output('prof_cust_ins_name', 'value'),
+        Output('prof_pur_ins_date', 'date'),
+        Output('prof_pur_ins_amt', 'value'),
     ],
     [
         Input('pur_ins_toload', 'modified_timestamp'),
@@ -269,33 +269,32 @@ def pur_ins_submitprocess(submitbtn, closebtn,
         State('url', 'search'),
     ]
 )
-def pur_ins_loadprofile(timestamp,toload, search):
-    if toload == 1:
+def pur_ins_loadprofile(timestamp,to_load, search):
+    if to_load == 1:
 
         parsed = urlparse(search)
-        pur_ins_id = parse_qs(parsed.query)['id'][0]
+        pur_id = parse_qs(parsed.query)['id'][0]
         # 1. query the details from the database
         sql = """ SELECT 
                     pur_ins_id,
-                    pur_ins_name,
+                    cust_ins_id,
                     pur_ins_date,
                     pur_ins_amt
-        FROM purchasers_institutions
+        FROM purchases_institutions
         WHERE pur_ins_id = %s """     
         
-
-        val = [pur_ins_id]
-        colnames = ["purchaser_id","name","date","amount"]
+        val = [pur_id]
+        colnames = ["pur_id","customer","date","amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        purchaser_id = df['purchaser_id'][0]
-        name = df['name'][0]
+        pur_id = df['pur_id'][0]
+        customer = df['customer'][0]
         date = df['date'][0]
         amount = df['amount'][0]
 
-        return [purchaser_id, name, date, amount]
+        return [pur_id, customer, date, amount]
 
     else:
         raise PreventUpdate
