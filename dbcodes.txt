@@ -13,6 +13,9 @@ ADD CONSTRAINT cust_ind_name_unique UNIQUE (cust_ind_name);
 ALTER TABLE genres
 DROP CONSTRAINT genre_name_unique;
 
+ALTER TABLE customers_individuals
+DROP COLUMN cust_ind_name;
+
 ALTER TABLE publishers_orders
 ADD pub_id int references publishers(pub_id);
 ALTER TABLE purchases_individuals
