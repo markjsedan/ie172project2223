@@ -93,7 +93,7 @@ def updatepublishers_orders_list(pathname, searchterm):
                 WHERE NOT pub_order_delete_ind
         """
         val = []
-        cols = ["Order ID", "Publisher", "Date Received", "Amount"]
+        cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]
         
 
         if searchterm:

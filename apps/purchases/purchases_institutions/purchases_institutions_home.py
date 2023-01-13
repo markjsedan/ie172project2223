@@ -62,7 +62,7 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    "This will contain the table for purchases of institutions",
+                                    "This will contain the table for purchases (institutions)",
                                     id='purchases_institutions_list',
                                     style={'text-align': 'center'}
                                 ),
