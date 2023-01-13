@@ -93,8 +93,8 @@ def updatebooks_allbooks_list_atoz(pathname, searchterm):
         sql = """ SELECT bk_title, bk_author, genre_name, bk_pub_yr, bk_inv_count, bk_id
                 FROM books
                     INNER JOIN genres on books.genre_id = genres.genre_id
-                ORDER BY bk_title
                 WHERE NOT bk_delete_ind
+                ORDER BY bk_title
         """
         val = []
         cols = ["Title", "Author", "Genre","Publication Year","Stock Quantity","Book ID"]
