@@ -35,11 +35,11 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                dbc.Label("Purchaser", width=2),
+                dbc.Label("Customer Name", width=2),
                 dbc.Col(
                     html.Div(
                         dcc.Dropdown(
-                            id='info_cust_ind_id',
+                            id='info_cust_ind_name',
                             clearable=True,
                             searchable=True
                         ),
@@ -117,7 +117,7 @@ layout = html.Div(
 
 @app.callback(
     [
-        Output('info_cust_ind_id','options'),
+        Output('info_cust_ind_name','options'),
         Output('pur_ind_toload', 'data'),
         Output('pur_ind_removerecord_div', 'style')
     ],
@@ -131,7 +131,7 @@ layout = html.Div(
 def pur_ind_prof_toload(pathname, search):
 
     if pathname == '/purchasers/individuals_profile':
-        print("pur_ind_toload")
+        # customer options
         sql = """
             SELECT cust_ind_name as label, cust_ind_id as value
             FROM customers_individuals
@@ -140,19 +140,18 @@ def pur_ind_prof_toload(pathname, search):
         values = []
         cols = ['label','value']
         df = db.querydatafromdatabase(sql, values, cols)
+        cust_name_opts = df.to_dict()
 
-        cust_name_options = df.to_dict()
-
+        #  to_load
         parsed = urlparse(search)
         mode = parse_qs(parsed.query)['mode'][0]
-        toload = 1 if mode == 'edit' else 0
-        removerecord_div = None if toload else {'display': 'None'}
-        
-        return [cust_name_options, toload, removerecord_div]
+        to_load = 1 if mode == 'edit' else 0
+        removerecord_div = None if to_load else {'display': 'None'}
 
     else:
         raise PreventUpdate
-
+        
+    return [cust_name_opts, to_load, removerecord_div]
 
 
 
@@ -168,7 +167,7 @@ def pur_ind_prof_toload(pathname, search):
     ],
     [
         State('info_pur_ind_id', 'value'),
-        State('info_cust_ind_id', 'value'),
+        State('info_cust_ind_name', 'value'),
         State('info_pur_ind_date', 'value'),
         State('info_pur_ind_amt', 'value'),
         State('url', 'search'),
@@ -177,7 +176,7 @@ def pur_ind_prof_toload(pathname, search):
 )
 def pur_ind_submitprocess(submitbtn, closebtn,
 
-                            purchase_id, cust_id, date, amount,
+                            purchase_id, customer, date, amount,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:
@@ -192,7 +191,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
         openmodal = True
 
         inputs = [
-            cust_id,
+            customer,
             date,
             amount
         ]
@@ -213,7 +212,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
                 )
                 VALUES (%s, %s, %s, %s)
                 """
-                values = [cust_id, date, amount, False]
+                values = [customer, date, amount, False]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been saved."
@@ -236,7 +235,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 
                 todelete = bool(removerecord)
 
-                values = [cust_id, date, amount, todelete, purchase_id]
+                values = [customer, date, amount, todelete, purchase_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
@@ -258,7 +257,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
 @app.callback(
     [
         Output('info_pur_ind_id', 'value'),
-        Output('info_cust_ind_id', 'value'),
+        Output('info_cust_ind_name', 'value'),
         Output('info_pur_ind_date', 'value'),
         Output('info_pur_ind_amt', 'value'),
     ],
@@ -270,8 +269,8 @@ def pur_ind_submitprocess(submitbtn, closebtn,
         State('url', 'search'),
     ]
 )
-def pur_ind_loadprofile(timestamp,toload, search):
-    if toload == 1:
+def pur_ind_loadprofile(timestamp,to_load, search):
+    if to_load == 1:
 
         parsed = urlparse(search)
         purchase_id = parse_qs(parsed.query)['id'][0]
@@ -286,17 +285,17 @@ def pur_ind_loadprofile(timestamp,toload, search):
         
 
         val = [purchase_id]
-        colnames = ["purchase_id","cust_id","date","amount"]
+        colnames = ["purchase_id","customer","date","amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
         purchase_id = df['purchase_id'][0]
-        cust_id = df['cust_id'][0]
+        customer = df['customer'][0]
         date = df['date'][0]
         amount = df['amount'][0]
 
-        return [purchase_id, cust_id, date, amount]
+        return [purchase_id, customer, date, amount]
 
     else:
         raise PreventUpdate

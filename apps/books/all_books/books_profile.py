@@ -248,7 +248,7 @@ def bookinfo_loaddropdown(pathname, search):
 )
 def bookinfo_submitprocess(submitbtn, closebtn,
 
-                            bookid,title, author, genre, publisher, pubyear, price, count,
+                            bookid, title, author, genre, publisher, pubyear, price, count,
                             search, removerecord):
     ctx = dash.callback_context
     if ctx.triggered:

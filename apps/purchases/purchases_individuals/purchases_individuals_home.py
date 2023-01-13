@@ -62,7 +62,7 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    "This will contain the table for purchases_individuals",
+                                    "This will contain the table for purchases of individuals",
                                     id='purchases_individuals_list',
                                     style={'text-align': 'center'}
                                 ),
@@ -87,25 +87,26 @@ def updatepurchases_individuals_list(pathname, searchterm):
     if pathname == '/purchases/individuals_home':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT pur_ind_id, cust_ind_id, pur_ind_date, pur_ind_amt
+        sql = """ SELECT pur_ind_id, cust_ind_name, pur_ind_date, pur_ind_amt
                 FROM purchases_individuals
+                    INNER JOIN customers_individuals on purchases_individuals.cust_ind_id = customers_individuals.cust_ind_id
                 WHERE NOT pur_ind_delete_ind
         """
         val = []
-        cols = ["Purchase ID", "Purchaser", "Date of Purchase", "Amount"]
+        cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]
         
 
         if searchterm:
-            sql += """ AND pur_ind_id ILIKE %s"""
+            sql += """ AND cust_ind_name ILIKE %s"""
             val += [f"%{searchterm}%"]
 
 
-        purchases_individuals = db.querydatafromdatabase(sql,val,cols)
+        pur_ind_list = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
-        if purchases_individuals.shape[0]:
+        if pur_ind_list.shape[0]:
             buttons = []
-            for pur_ind_id in purchases_individuals['Purchase ID']:
+            for pur_ind_id in pur_ind_list['Purchase ID']:
                 buttons += [
                     html.Div(
                         dbc.Button('View/Edit/Delete', href=f"/purchases/individuals_profile?mode=edit&id={pur_ind_id}",
@@ -115,17 +116,13 @@ def updatepurchases_individuals_list(pathname, searchterm):
                 ]
             
             # we add the buttons to the table
-            purchases_individuals['Action'] = buttons
-
-            # remove ID col
-            # purchases_individuals.drop('puromer ID', axis=1, inplace=True)
-
-            purchases_individuals_table = dbc.Table.from_dataframe(purchases_individuals, striped=True, bordered=True, hover=True, size='sm', dark=False,)
+            pur_ind_list['Action'] = buttons
+            purchases_individuals_table = dbc.Table.from_dataframe(pur_ind_list, striped=True, bordered=True, hover=True, size='sm', dark=False,)
 
             return [purchases_individuals_table]
         
         else:
-            return ["There are no records that match the search term."]
+            return ["There are no records that match the search term."] 
 
     else:
         raise PreventUpdate
