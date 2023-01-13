@@ -93,6 +93,7 @@ def updatebooks_allbooks_list(pathname, searchterm):
         sql = """ SELECT bk_title, bk_author, genre_name, bk_pub_yr, bk_inv_count, bk_id
                 FROM books
                     INNER JOIN genres on books.genre_id = genres.genre_id
+                ORDER BY bk_title DESC
                 WHERE NOT bk_delete_ind
         """
         val = []

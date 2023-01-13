@@ -9,7 +9,7 @@ import webbrowser
 
 from app import app
 from apps import commonmodules as cm
-from apps.books.all_books import books_home, books_profile
+from apps.books.all_books import books_home, books_home_atoz, books_home_ztoa, books_home_latest, books_profile
 from apps import aboutus
 from apps.customers.customers_individuals import customers_individuals_home, customers_individuals_profile
 from apps.customers.customers_institutions import customers_institutions_home, customers_institutions_profile
@@ -97,6 +97,12 @@ def displaypage(pathname, sessionlogout, currentuserid):
 
             elif pathname in ['/', '/books']:
                 returnlayout = books_home.layout
+            elif pathname == '/books/books_home_atoz':
+                returnlayout = books_home_atoz.layout
+            elif pathname == '/books/books_home_ztoa':
+                returnlayout = books_home_ztoa.layout
+            elif pathname == '/books/books_home_latest':
+                returnlayout = books_home_latest.layout
             elif pathname == '/books/books_profile':
                 returnlayout = books_profile.layout
             elif pathname == '/books/genres':
