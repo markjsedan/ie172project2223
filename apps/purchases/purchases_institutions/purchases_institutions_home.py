@@ -13,16 +13,16 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.DropdownMenu(
-            children=[
-                # dbc.DropdownMenuItem("A-Z", href="/purchases/institutions/a-z"),
-                # dbc.DropdownMenuItem("Z-A", href="/purchases/institutions/z-a"),
-                dbc.DropdownMenuItem("Latest", href="/purchases/institutions_latest"),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="Sort by",
-        ),
+        # dbc.DropdownMenu(
+        #     children=[
+        #         # dbc.DropdownMenuItem("A-Z", href="/purchases/institutions/a-z"),
+        #         # dbc.DropdownMenuItem("Z-A", href="/purchases/institutions/z-a"),
+        #         dbc.DropdownMenuItem("Latest", href="/purchases/institutions_latest"),
+        #     ],
+        #     nav=True,
+        #     in_navbar=True,
+        #     label="Sort by",
+        # ),
         dbc.Button("Add a purchase", color="dark", className="me-2", href="/purchases/institutions_profile?mode=add"),
     ],
     brand="",
@@ -90,6 +90,7 @@ def updatepurchases_institutions_list(pathname, searchterm):
                 FROM purchases_institutions
                     INNER JOIN customers_institutions on purchases_institutions.cust_ins_id = customers_institutions.cust_ins_id
                 WHERE NOT pur_ins_delete_ind
+                ORDER BY pur_ins_date DESC
         """
         val = []
         cols = ["Purchase ID", "Customer Name", "Date of Purchase", "Amount"]

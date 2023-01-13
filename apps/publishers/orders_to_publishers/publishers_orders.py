@@ -12,16 +12,16 @@ from dash.dependencies import Input, Output, State
 
 sort_add = dbc.NavbarSimple(
     children=[
-        dbc.DropdownMenu(
-            children=[
-                # dbc.DropdownMenuItem("A-Z", href="/publishers/allpublishers/a-z"),
-                # dbc.DropdownMenuItem("Z-A", href="/publishers/allpublishers/z-a"),
-                dbc.DropdownMenuItem("Latest", href="/publishers/publishers_orders_latest"),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="Sort by",
-        ),
+        # dbc.DropdownMenu(
+        #     children=[
+        #         # dbc.DropdownMenuItem("A-Z", href="/publishers/allpublishers/a-z"),
+        #         # dbc.DropdownMenuItem("Z-A", href="/publishers/allpublishers/z-a"),
+        #         dbc.DropdownMenuItem("Latest", href="/publishers/publishers_orders_latest"),
+        #     ],
+        #     nav=True,
+        #     in_navbar=True,
+        #     label="Sort by",
+        # ),
         dbc.Button("Add an order", color="dark", className="me-2", href="/publishers/publishers_orders_profile?mode=add"),
     ],
     brand="",
@@ -91,6 +91,7 @@ def updatepublishers_orders_list(pathname, searchterm):
                 FROM publishers_orders
                     INNER JOIN publishers on publishers_orders.pub_id = publishers.pub_id
                 WHERE NOT pub_order_delete_ind
+                ORDER BY pub_order_date DESC
         """
         val = []
         cols = ["Order ID", "Publisher Name", "Date Received", "Amount"]
