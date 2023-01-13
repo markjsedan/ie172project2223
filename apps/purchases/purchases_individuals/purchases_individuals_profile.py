@@ -150,7 +150,7 @@ def pur_ind_prof_toload(pathname, search):
 
     else:
         raise PreventUpdate
-        
+
     return [cust_name_opts, to_load, removerecord_div]
 
 
@@ -221,7 +221,7 @@ def pur_ind_submitprocess(submitbtn, closebtn,
             elif mode == 'edit':
 
                 parsed = urlparse(search)
-                pur_ind_id = parse_qs(parsed.query)['id'][0]
+                pur_id = parse_qs(parsed.query)['id'][0]
 
                 sqlcode = """UPDATE purchasers_individuals
                 SET
@@ -233,9 +233,9 @@ def pur_ind_submitprocess(submitbtn, closebtn,
                     pur_ind_id = %s
                 """
 
-                todelete = bool(removerecord)
+                to_delete = bool(removerecord)
 
-                values = [customer, date, amount, todelete, purchase_id]
+                values = [customer, date, amount, to_delete, pur_id]
                 db.modifydatabase(sqlcode, values)
 
                 feedbackmessage = "Purchase information has been updated."
@@ -285,17 +285,17 @@ def pur_ind_loadprofile(timestamp,to_load, search):
         
 
         val = [purchase_id]
-        colnames = ["purchase_id","customer","date","amount"]
+        colnames = ["pur_id","customer","date","amount"]
 
         df = db.querydatafromdatabase(sql, val, colnames)
 
         # 2. load the value to the interface
-        purchase_id = df['purchase_id'][0]
+        pur_id = df['pur_id'][0]
         customer = df['customer'][0]
         date = df['date'][0]
         amount = df['amount'][0]
 
-        return [purchase_id, customer, date, amount]
+        return [pur_id, customer, date, amount]
 
     else:
         raise PreventUpdate
