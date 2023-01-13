@@ -131,6 +131,7 @@ layout = html.Div(
 def pur_ind_prof_toload(pathname, search):
 
     if pathname == '/purchasers/individuals_profile':
+        print("pur_ind_toload")
         sql = """
             SELECT cust_ind_name as label, cust_ind_id as value
             FROM customers_individuals

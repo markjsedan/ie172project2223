@@ -19,6 +19,7 @@ layout = html.Div(
                 dcc.Store(id='genre_toload', storage_type='memory', data=0),
             ]
         ),
+        dbc.Alert(id='genreprofile_alert', is_open=False), # For feedback purposes
         html.H2("Genre"),
         html.Hr(),
         dbc.Row(

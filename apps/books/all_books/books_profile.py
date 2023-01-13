@@ -369,7 +369,7 @@ def bookinfo_loadprofile(timestamp, to_load, search):
         # 1. query the book details from the database
         sql = """ SELECT bk_id, bk_title, bk_author, genre_id, pub_id, bk_pub_yr, bk_price, bk_inv_count
         FROM books
-        WHERE bk_id = %s, genre_id="""     
+        WHERE bk_id = %s"""     
         
 
         val = [bookid]

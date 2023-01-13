@@ -90,28 +90,28 @@ def updatebooks_allbooks_list(pathname, searchterm):
     if pathname == '/' or '/books':
         # 1. query the relevant records, add filter first before query
         
-        sql = """ SELECT bk_title, bk_author, bk_pub_yr, bk_inv_count
+        sql = """ SELECT bk_title, bk_author, genre_name, bk_pub_yr, bk_inv_count, bk_id
                 FROM books
+                    INNER JOIN genres on books.genre_id = genres.genre_id
                 WHERE NOT bk_delete_ind
         """
         val = []
-        cols = ["Title", "Author", "Publication Year","Stock Quantity"]
+        cols = ["Title", "Author", "Genre","Publication Year","Stock Quantity","Book ID"]
         
 
         if searchterm:
             sql += """ AND bk_title ILIKE %s"""
             val += [f"%{searchterm}%"]
-
-
+            
         books_allbooks = db.querydatafromdatabase(sql,val,cols)
         
         # 2. create the table and add it to the db
         if books_allbooks.shape[0]:
             buttons = []
-            for bk_title in books_allbooks['Title']:
+            for bk_id in books_allbooks['Book ID']:
                 buttons += [
                     html.Div(
-                        dbc.Button('View/Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_title}",
+                        dbc.Button('View/Edit/Delete', href=f"/books/books_profile?mode=edit&id={bk_id}",
                             size='sm', color='dark', ),
                             style={'text-align': 'center'}
                     )
@@ -119,9 +119,9 @@ def updatebooks_allbooks_list(pathname, searchterm):
             
             # we add the buttons to the table
             books_allbooks['Action'] = buttons
-
+            books_allbooks.drop('Book ID', axis=1, inplace=True)
             books_allbooks_table = dbc.Table.from_dataframe(books_allbooks, striped=True, bordered=True, hover=True, size='sm', dark=False,)
-
+            
             return [books_allbooks_table]
         
         else:

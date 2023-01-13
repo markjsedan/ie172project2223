@@ -10,6 +10,9 @@ WHERE cust_ind_id IN (3,4,5,6,7,8);
 ALTER TABLE customers_individuals
 ADD CONSTRAINT cust_ind_name_unique UNIQUE (cust_ind_name);
 
+ALTER TABLE genres
+DROP CONSTRAINT genre_name_unique;
+
 ALTER TABLE publishers_orders
 ADD pub_id int references publishers(pub_id);
 ALTER TABLE purchases_individuals
